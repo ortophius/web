@@ -353,3 +353,75 @@ main {
 .text-input__btn:hover {
   background-color: #009cc2;
 }
+
+.download {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 117px 0 180px;
+  background-color: #F5F6F7;
+}
+
+.download__title {
+  letter-spacing: 1.05px;
+  margin-bottom: 20px;
+}
+
+.download__description {
+  font-size: 14px;
+  line-height: 1.4em;
+  width: 470px;
+  text-align: center;
+  margin-bottom: 31px;
+}
+
+.download__links {
+  display: flex;
+  padding-left: 1px;
+}
+
+.download__link {
+  margin-right: 30px;
+}
+
+.download__link:last-of-type {
+  margin-right: 0px;
+}
+
+.btn-store {
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #00AFDB;
+  text-decoration: none;
+  line-height: 50px;
+}
+
+.btn-store__text {
+  padding: 0 19px 0 18px;
+  color: #fff;
+
+  /* Простите, ребята, другого выхода нет */
+  position: relative;
+  top: 1px;
+}
+
+.btn-store__icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 0px;
+  width: 60px;
+  height: 50px;
+  background-color: #009CC2;
+}
+
+.btn-store_apple .btn-store__icon::after {
+  content: url('./assets/icon-apple.svg');
+}
+
+.btn-store_android .btn-store__icon::after {
+  content: url('./assets/icon-android.svg');
+}
