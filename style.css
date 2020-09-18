@@ -89,6 +89,7 @@ main {
   margin-bottom: 24px;
   font-size: 64px;
   letter-spacing: 4.5px;
+  font-weight: 600;
   line-height: 75px;
 }
 
@@ -99,6 +100,17 @@ main {
   font-size: 18px;
   line-height: 1.4em;
   text-align: center;
+}
+
+.welcome__social {
+  list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 170px;
+    position: absolute;
+    bottom: 85px;
 }
 
 .btn {
