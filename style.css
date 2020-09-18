@@ -4,8 +4,9 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-h1, h2, h3 {
+p, h1, h2, h3 {
   margin: 0px;
+  padding: 0px;
 }
 
 #wrapper {
@@ -114,6 +115,7 @@ main {
 }
 
 .btn {
+  display: inline-block;
   padding: 0px 47px;
   background-color: #00afdB;
   color: #fff;
@@ -128,4 +130,47 @@ main {
 
 .btn:hover {
   background-color: #009cc2;
+}
+
+.design {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: space-between;
+  padding: 120px 270px 140px 268px;
+}
+
+.design__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 405px;
+}
+
+.design__title {
+  text-transform: uppercase;
+  font-size: 24px;
+  letter-spacing: 1px;
+  color: #373737;
+  padding-right: 30px;
+  margin-bottom: 20px;
+}
+
+.design__title:first-line {
+  line-height: 25px;
+}
+
+.design__description {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.45em;
+  letter-spacing: 0.1px;
+  margin-bottom: 30px;
+  color: #4E4E4E;
+}
+
+.design__description strong {
+  font-weight: 500;
+  letter-spacing: 0.01px;
+  color: #373737;
 }
