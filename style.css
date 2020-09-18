@@ -9,6 +9,21 @@ p, h1, h2, h3 {
   padding: 0px;
 }
 
+strong {
+  font-weight: 500;
+  letter-spacing: 0.01px;
+  color: #373737;
+}
+
+h2 {
+  text-transform: uppercase;
+  color: #373737;
+}
+
+p {
+  color: #4E4E4E;
+}
+
 #wrapper {
   max-width: 1600px;
   margin: 0 auto;
@@ -101,6 +116,7 @@ main {
   font-size: 18px;
   line-height: 1.4em;
   text-align: center;
+  color: #fff;
 }
 
 .welcome__social {
@@ -151,7 +167,6 @@ main {
   text-transform: uppercase;
   font-size: 24px;
   letter-spacing: 1px;
-  color: #373737;
   padding-right: 30px;
   margin-bottom: 20px;
 }
@@ -166,13 +181,6 @@ main {
   line-height: 1.45em;
   letter-spacing: 0.1px;
   margin-bottom: 30px;
-  color: #4E4E4E;
-}
-
-.design__description strong {
-  font-weight: 500;
-  letter-spacing: 0.01px;
-  color: #373737;
 }
 
 .community {
@@ -201,13 +209,11 @@ main {
   letter-spacing: 2.4px;
   line-height: 20px;
   margin-bottom: 11px;
-  color: #373737;
 }
 
 .community__description {
   font-size: 14px;
   line-height: 1.45em;
-  color: #4E4E4E;
 }
 
 .community__slider {
@@ -264,4 +270,86 @@ main {
 
 .community__next img {
   transform: rotate(180deg);
+}
+
+.code {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 120px 0 140px 269px;
+}
+
+.code__photo {
+  height: 582px;
+  width: 407px;
+  margin-right: 139px;
+}
+
+.code__info {
+  width: 407px;
+  min-width: 407px;
+  margin-top: -2px;
+}
+
+.code__title {
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.code__description {
+  font-size: 14px;
+  line-height: 1.45em;
+  margin-bottom: 30px;
+}
+
+.sign-up {
+  display:flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 214px;
+  height: 598px;
+  background-image: url('./assets/5.png');
+  box-sizing: border-box;
+}
+
+.sign-up__title {
+  letter-spacing: 1.05px;
+  color: #fff;
+  margin-bottom: 29px;
+}
+
+.text-input {
+  display: flex;
+}
+
+.text-input__input {
+  padding: 14px 24px 12px 24px;
+  font-size: 14px;
+  min-width: 340px;
+  box-sizing: border-box;
+  border: none;
+  color: #373737;
+}
+
+.text-input__input::placeholder {
+  color: #4E4E4E;
+}
+
+.text-input__btn {
+  display: inline-block;
+  padding: 0px 24px;
+  background-color: #00afdB;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  line-height: 46px;
+  border: none;
+  text-decoration: none;
+  transition: background-color 0.4s;
+}
+
+.text-input__btn:hover {
+  background-color: #009cc2;
 }
