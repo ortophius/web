@@ -190,9 +190,8 @@ main {
 
 .design__description {
   font-size: 14px;
-  font-weight: 300;
   line-height: 1.45em;
-  letter-spacing: 0.1px;
+  letter-spacing: 0.02px;
   margin-bottom: 30px;
 }
 
