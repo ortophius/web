@@ -24,6 +24,10 @@ p {
   color: #4E4E4E;
 }
 
+.hidden {
+  display: none;
+}
+
 #wrapper {
   position: relative;
   width: 1600px;
@@ -92,14 +96,24 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-  padding-top: 228px;
-  height: 744px;
+  justify-content: center;
+  height: 100vh;
+  min-height: 500px;
   color: #fff;
   background-color: #000;
-  background-image: url('./assets/bg-image.png');
+  background-image: url(./assets/bg-image.png);
   background-position: center center;
+  background-size: cover;
+}
+
+.welcome__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  top: -32px;
 }
 
 .welcome__title {
@@ -190,7 +204,6 @@ main {
 
 .design__description {
   font-size: 14px;
-  line-height: 1.45em;
   letter-spacing: 0.02px;
   margin-bottom: 30px;
 }

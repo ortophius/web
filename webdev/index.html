@@ -8,112 +8,113 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div id="wrapper">
-    <header>
-      <nav>
-        <ul class="menu">
-          <li class="menu__item"><a href="javascript:void(0)" class="menu__link menu__link_active">About</a></li>
-          <li class="menu__item"><a href="javascript:void(0)" class="menu__link">Syllabus</a></li>
-        </ul>
-      </nav>
-      <a class="logo" href="javascript:void(0)">
-        <img src="./assets/logo.svg" alt="WebDev">
-      </a>
-      <nav>
-        <ul class="menu">
-          <li class="menu__item"><a href="javascript:void(0)" class="menu__link">Projects</a></li>
-          <li class="menu__item"><a href="javascript:void(0)" class="menu__link">FAQ</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <section class="welcome">
-          <h1 class="welcome__title">Your life is webdev</h1>
-          <p class="welcome__tagline">
-            Whatever the approach to development may be, the final program must satisfy some fundamental properties
-          </p>
-          <a href="javascript:void(0)" class="btn">Get started</a>
-          <ul class="welcome__social social">
-            <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/mail_fff.svg" alt="Email"></a></li>
-            <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/facebook_fff.svg" alt="Facebook"></a></li>
-            <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/insta_fff.svg" alt="Instagram"></a></li>
-            <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/youtube_fff.svg" alt="YouTube"></a></li>
-          </ul>
-      </section>
-      <section class="design">
-        <div class="design__info">
-          <h2 class="design__title">Rappresent your idea with a smart Design</h2>
-          <p class="design__description">Tasks accompanying and related to programming include: testing, debugging, source code maintenance, <strong>implementation of build systems</strong>, and management of derived artifacts, such as the machine code of computer programs. </p>
-          <a href="javascript:void(0)" class="btn">Get started</a>
-        </div>
-        <img src="./assets/content-image-1.png" alt="Rappresent your idea with a smart Design" class="design__photo">
-      </section>
-      <section class="community">
-        <div class="community__info">
-          <img class="community__icon" src="./assets/community_icon.png" alt="Our community">
-          <h2 class="community__title">Our community</h2>
-          <p class="community__description">
-            A hacker is any skilled computer expert that uses their technical knowledge to overcome a problem, but it can also mean a security hacker in common language
-          </p>
-        </div>
-        <div class="community__nav">
-          <a href="" class="community__prev">
-            <img src="./assets/nav_arrow.svg" alt="">
-          </a>
-          <span class="community__current">1</span>
-          <span> / </span>
-          <span class="community__total">5</span>
-          <a href="" class="community__next"><img src="./assets/nav_arrow.svg" alt=""></a>
-        </div>
-        <div class="community__slider">
-          <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item.png" alt="Photo"></a>
-          <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item-1.png" alt="Photo"></a>
-          <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item-2.png" alt="Photo"></a>
-        </div>
-      </section>
-      <section class="code">
-        <img src="./assets/content-image-2.png" alt="Implement right code" class="code__photo">
-        <div class="code__info">
-          <h2 class="code__title">Implement right code</h2>
-          <p class="code__description">These might be considered part of the <strong>programming process</strong>, but often the term software development is used for this larger process with the term programming, implementation</p>
-          <a href="javascript:void(0)" class="btn">Learn more</a>
-        </div>
-      </section>
-      <section class="sign-up">
-        <h2 class="sign-up__title">sign up for our newsletter</h2>
-        <form action="./index.html">
-          <div class="text-input">
-            <input type="text" class="text-input__input" name="email" placeholder="E-mail">
-            <a class="text-input__btn" href="javascript:void(0)"><img src="./assets/fa-check.svg" alt=""></a>
-          </div>
-        </form>
-      </section>
-      <section class="download">
-        <h2 class="download__title">Download the App</h2>
-        <p class="download__description">Machine code was the language of early programs, written in the instruction set of the particular machine, often in binary notation.</p>
-        <div class="download__links">
-          <a  href="javascript:void(0)" class="download__link btn-store  btn-store_apple">
-            <span class="btn-store__text">Apple store</span><span class="btn-store__icon"></span>
-          </a>
-          <a href="javascript:void(0)" class="download__link btn-store btn-store_android">
-            <span class="btn-store__text">Play Market</span><span class="btn-store__icon"></span>
-          </a>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <div class="footer">
-        <nav>
-          <ul class="footer-menu">
-            <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Credits</a></li>
-            <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Privacy</a></li>
-            <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Our teams</a></li>
-          </ul>
-        </nav>
-        <a class="footer-logo" href="./index.html"><img src="assets/logo.svg" alt="WebDev"></a>
-        <span class="footer-sub">by TonYem for RSS at 2020</span>
+  <header>
+    <h1 class="hidden">Webdev</h1>
+    <nav>
+      <ul class="menu">
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link menu__link_active">About</a></li>
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link">Syllabus</a></li>
+      </ul>
+    </nav>
+    <a class="logo" href="javascript:void(0)">
+      <img src="./assets/logo.svg" alt="WebDev">
+    </a>
+    <nav>
+      <ul class="menu">
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link">Projects</a></li>
+        <li class="menu__item"><a href="javascript:void(0)" class="menu__link">FAQ</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="welcome">
+      <div class="welcome__container">
+        <h1 class="welcome__title">Your life is webdev</h1>
+        <p class="welcome__tagline">
+          Whatever the approach to development may be, the final program must satisfy some fundamental properties
+        </p>
+        <a href="javascript:void(0)" class="btn">Get started</a>
       </div>
-    </footer>
-  </div>
+      <ul class="welcome__social social">
+        <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/mail_fff.svg" alt="Email"></a></li>
+        <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/facebook_fff.svg" alt="Facebook"></a></li>
+        <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/insta_fff.svg" alt="Instagram"></a></li>
+        <li><a href="javascript:void(0)" class="social__icon"><img src="./assets/youtube_fff.svg" alt="YouTube"></a></li>
+      </ul>
+    </section>
+    <section class="design">
+      <div class="design__info">
+        <h2 class="design__title">Rappresent your idea with a smart Design</h2>
+        <p class="design__description">Tasks accompanying and related to programming include: testing, debugging, source code maintenance, <strong>implementation of build systems</strong>, and management of derived artifacts, such as the machine code of computer programs. </p>
+        <a href="javascript:void(0)" class="btn">Get started</a>
+      </div>
+      <img src="./assets/content-image-1.png" alt="Rappresent your idea with a smart Design" class="design__photo">
+    </section>
+    <section class="community">
+      <div class="community__info">
+        <img class="community__icon" src="./assets/community_icon.png" alt="Our community">
+        <h2 class="community__title">Our community</h2>
+        <p class="community__description">
+          A hacker is any skilled computer expert that uses their technical knowledge to overcome a problem, but it can also mean a security hacker in common language
+        </p>
+      </div>
+      <div class="community__nav">
+        <a href="" class="community__prev">
+          <img src="./assets/nav_arrow.svg" alt="">
+        </a>
+        <span class="community__current">1</span>
+        <span> / </span>
+        <span class="community__total">5</span>
+        <a href="" class="community__next"><img src="./assets/nav_arrow.svg" alt=""></a>
+      </div>
+      <div class="community__slider">
+        <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item.png" alt="Photo"></a>
+        <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item-1.png" alt="Photo"></a>
+        <a href="javascript:void(0)" class="community__photo"><img src="./assets/slider-item-2.png" alt="Photo"></a>
+      </div>
+    </section>
+    <section class="code">
+      <img src="./assets/content-image-2.png" alt="Implement right code" class="code__photo">
+      <div class="code__info">
+        <h2 class="code__title">Implement right code</h2>
+        <p class="code__description">These might be considered part of the <strong>programming process</strong>, but often the term software development is used for this larger process with the term programming, implementation</p>
+        <a href="javascript:void(0)" class="btn">Learn more</a>
+      </div>
+    </section>
+    <section class="sign-up">
+      <h2 class="sign-up__title">sign up for our newsletter</h2>
+      <form action="./index.html">
+        <div class="text-input">
+          <input type="text" class="text-input__input" name="email" placeholder="E-mail">
+          <a class="text-input__btn" href="javascript:void(0)"><img src="./assets/fa-check.svg" alt=""></a>
+        </div>
+      </form>
+    </section>
+    <section class="download">
+      <h2 class="download__title">Download the App</h2>
+      <p class="download__description">Machine code was the language of early programs, written in the instruction set of the particular machine, often in binary notation.</p>
+      <div class="download__links">
+        <a  href="javascript:void(0)" class="download__link btn-store  btn-store_apple">
+          <span class="btn-store__text">Apple store</span><span class="btn-store__icon"></span>
+        </a>
+        <a href="javascript:void(0)" class="download__link btn-store btn-store_android">
+          <span class="btn-store__text">Play Market</span><span class="btn-store__icon"></span>
+        </a>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer">
+      <nav>
+        <ul class="footer-menu">
+          <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Credits</a></li>
+          <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Privacy</a></li>
+          <li class="footer-menu__item"><a class="footer-menu__link" href="javascript:void(0)">Our teams</a></li>
+        </ul>
+      </nav>
+      <a class="footer-logo" href="./index.html"><img src="assets/logo.svg" alt="WebDev"></a>
+      <span class="footer-sub">by TonYem for RSS at 2020</span>
+    </div>
+  </footer>
 </body>
 </html>
