@@ -24,6 +24,10 @@ p {
   color: #4E4E4E;
 }
 
+.hidden {
+  display: none;
+}
+
 #wrapper {
   position: relative;
   width: 1600px;
