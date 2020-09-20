@@ -95,11 +95,21 @@ main {
   justify-content: flex-start;
   box-sizing: border-box;
   padding-top: 228px;
-  height: 744px;
+  height: 100vh;
   color: #fff;
   background-color: #000;
   background-image: url('./assets/bg-image.png');
   background-position: center center;
+  background-size: cover;
+}
+
+.welcome__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  text-align: center;
 }
 
 .welcome__title {
@@ -190,8 +200,9 @@ main {
 
 .design__description {
   font-size: 14px;
+  font-weight: 300;
   line-height: 1.45em;
-  letter-spacing: 0.02px;
+  letter-spacing: 0.1px;
   margin-bottom: 30px;
 }
 
