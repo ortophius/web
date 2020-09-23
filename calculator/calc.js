@@ -43,8 +43,9 @@ class Calculator {
       .map(char => {
         if (char === "." && isFloat) return "";
         if (char === "." && !isFloat) isFloat = true;
-        if (/[\/\*\+\-\=]/.test(char)) {
-          if (/[\/\*\+\-\=]/.test(prevChar)) return "";
+        if (/[\/\*\+\=\-]/.test(char)) {
+          if (char === "-" && prevChar === "-") return "";
+          if (char !== "-" && /[\/\*\+\=\-]/.test(prevChar)) return "";
           isFloat = false;
         }
         prevChar = char;
