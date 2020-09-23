@@ -5,33 +5,27 @@ class Calculator {
     this.memory = document.getElementById('memory');
     this.buttons = document.getElementById('buttons');
     this.setupListeners();
-  }
-
-  set previousOperand(x) { }
-
-  set currentOperand(val) {
-    this.lastValidOperand = val;
-    this.input.value = val;
-  }
-
-  get currentOperand() {
-    return parseFloat(document.getElementById('input').value);
+    this.resetMemory();
+    this.input.focus();
   }
 
   save(operand, operation) {
-    this.previousOperand = operand;
+    this.previousOperand = parseFloat(operand);
     this.operation = operation;
     this.memory.innerHTML = `${operand} ${operation}`;
   }
 
+  resetMemory() {
+    this.previousOperand = null;
+    this.operation = null;
+    this.memory.innerHTML = "";
+  }
+
   setupListeners() {
+    document.addEventListener('keydown', this.processKeyPress.bind(this));
     this.input.addEventListener('paste', this.processInput.bind(this));
     this.input.addEventListener('input', this.processInput.bind(this));
     this.buttons.addEventListener('click', this.onButtonInput.bind(this));
-  }
-
-  restoreOperand() {
-    this.currentOperand = this.lastValidOperand;
   }
 
   filterInput(inputString) {
@@ -69,13 +63,50 @@ class Calculator {
       .join("");
   }
 
+  processKeyPress(e) {
+    if (e.target !== this.input) return;
+    console.log(e);
+    if (e.which === 13 && this.previousOperand) {
+      this.input.value = this.compute(this.input.value);
+      this.resetMemory();
+    }
+    if (e.which === 27) {
+      this.resetMemory();
+      this.input.value = "";
+    };
+  }
+
   processInput() {
     const isOperator = /^[0-9]+[\/\*\+\-\=]/.test(input.value);
     this.input.value = this.filterInput(this.input.value);
+    const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=]/;
+    console.log(regex.exec(input.value));
+    for (let nextPart = regex.exec(input.value); nextPart !== null; nextPart = regex.exec(input.value)) {
+      const operand = nextPart[0].slice(0, -1);
+      const operation = nextPart[0].slice(-1);
+
+      if (operation === "=") {
+        if (!this.previousOperand) this.input.value = operand;
+        else this.input.value = this.compute(operand);
+        this.resetMemory();
+        continue;
+      }
+
+      console.log(operand, operation);
+
+      if (this.previousOperand) this.save(this.compute(operand), operation);
+      else this.save(operand, operation);
+
+      this.input.value = this.input.value.slice(nextPart[0].length);
+    }
   }
 
   onButtonInput(e) {
     if (e.target.tagName !== 'BUTTON') return;
+
+  }
+
+  compute(rightOperand) {
 
   }
 }
