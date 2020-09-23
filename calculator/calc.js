@@ -107,7 +107,21 @@ class Calculator {
   }
 
   compute(rightOperand) {
+    rightOperand = parseFloat(rightOperand);
+    const leftOperand = this.previousOperand;
 
+    let digitsAfterDot = [];
+    digitsAfterDot.push((leftOperand % 1 === 0) ? 0 : String(leftOperand).split(".")[1].length);
+    digitsAfterDot.push((rightOperand % 1 === 0) ? 0 : String(rightOperand).split(".")[1].length);
+
+    const k = 10 ** Math.max(digitsAfterDot[0], digitsAfterDot[1]);
+    console.log(k);
+
+    switch (this.operation) {
+      case "+":
+        return ((leftOperand * k) + (rightOperand * k)) / k;
+
+    }
   }
 }
 
