@@ -7,7 +7,7 @@ class Calculator {
     this.setupListeners();
   }
 
-  set previousOperand(x) {}
+  set previousOperand(x) { }
 
   set currentOperand(val) {
     this.lastValidOperand = val;
@@ -35,48 +35,48 @@ class Calculator {
   }
 
   filterInput(inputString) {
-    let isFloat = false;
-    let prevChar = '';
+    let isDotPermitted = true;
+    let isMinusPermitted = true;
+    let isOPeratorPermitted = false;
     return inputString
-      .replace(/[^0-9\.\/\*\+\-\=]/g, '')
+      .replace(/[^0-9\.\/\*\+\-\=\,]/g, '')
+      .replace(/\,/g, ".")
       .split("")
       .map(char => {
-        if (char === "." && isFloat) return "";
-        if (char === "." && !isFloat) isFloat = true;
-        if (/[\/\*\+\=\-]/.test(char)) {
-          if (char === "-" && prevChar === "-") return "";
-          if (char !== "-" && /[\/\*\+\=\-]/.test(prevChar)) return "";
-          isFloat = false;
+        if (char === ".") {
+          if (!isDotPermitted) return "";
+          else isDotPermitted = false;
         }
-        prevChar = char;
+
+        if (/[\/\*\+\=]/.test(char)) {
+          if (!isOPeratorPermitted) return "";
+          else isOPeratorPermitted = false;
+        }
+
+        if (char === "-") {
+          if (!isOPeratorPermitted && !isMinusPermitted) return "";
+          if (!isOPeratorPermitted && isMinusPermitted) isMinusPermitted = false;
+          if (isOPeratorPermitted) isOPeratorPermitted = false;
+        }
+
+        if (/[0-9\.]/.test(char)) {
+          isOPeratorPermitted = true;
+          isMinusPermitted = true;
+        }
+
         return char;
       })
       .join("");
   }
 
-  processInput(e) {
-    const input = e.target;
+  processInput() {
     const isOperator = /^[0-9]+[\/\*\+\-\=]/.test(input.value);
     this.input.value = this.filterInput(this.input.value);
-    // if (this.previousOperand !== 0)
-    // const isDelete = e.inputType === 'deleteContentBackward';
-
-    // if (!isDigit && !isOperator && input.value !== "") {
-    //   this.restoreOperand();
-    //   return;
-    // }
-
-    // if (isDigit) this.currentOperand = input.value;
-    // if (isOperator) {
-    //   const i = input.value.search(/[\/\*\+\-\=]/);
-    //   if (/^[\-]?[0-9\.]+$/.test(input.value.slice(0, i)))
-    // }
-
   }
 
   onButtonInput(e) {
     if (e.target.tagName !== 'BUTTON') return;
-    
+
   }
 }
 
