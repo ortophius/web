@@ -110,11 +110,30 @@ class Calculator {
     const button = e.target;
     const input = this.input;
 
+    switch (button.getAttribute('data-operation')) {
+      case "ac":
+        this.fullReset();
+        break;
+      case "del":
+        input.value = input.value.slice(0, -1);
+        this.processInput();
+        break;
+      case "sqrt":
+        input.value = this.compute(input.value, "sqrt");
+        break;
+      case "square":
+        input.value = this.compute(input.value, "square");
+        break;
+      default:
+        input.value += button.innerHTML;
+        this.processInput();
+    }
+
   }
 
   compute(leftOperand, operation, rightOperand = 0) {
     rightOperand = parseFloat(rightOperand);
-    leftOperand = parseFloat(this.previousOperand);
+    leftOperand = parseFloat(leftOperand);
     
     switch (operation) {
       case "+":
@@ -127,7 +146,7 @@ class Calculator {
         return parseFloat((leftOperand * rightOperand).toFixed(10));
       case "sqrt":
         return parseFloat(Math.sqrt(leftOperand).toFixed(10));
-      case "sq":
+      case "square":
         return parseFloat((leftOperand ** 2).toFixed(10));
     }
   }
