@@ -21,6 +21,11 @@ class Calculator {
     this.memory.innerHTML = "";
   }
 
+  fullReset() {
+    this.resetMemory();
+    this.input.value = "";
+  }
+
   setupListeners() {
     document.addEventListener('keydown', this.processKeyPress.bind(this));
     this.input.addEventListener('paste', this.processInput.bind(this));
@@ -67,12 +72,11 @@ class Calculator {
     if (e.target !== this.input) return;
     console.log(e);
     if (e.which === 13 && this.previousOperand) {
-      this.input.value = this.compute(this.input.value);
+      this.input.value = this.compute(this.previousOperand, this.operation, this.input.value);
       this.resetMemory();
     }
     if (e.which === 27) {
-      this.resetMemory();
-      this.input.value = "";
+      this.fullReset();
     };
   }
 
@@ -87,14 +91,14 @@ class Calculator {
 
       if (operation === "=") {
         if (!this.previousOperand) this.input.value = operand;
-        else this.input.value = this.compute(operand);
+        else this.input.value = this.compute(this.previousOperand, this.operation, operand);
         this.resetMemory();
         continue;
       }
 
       console.log(operand, operation);
 
-      if (this.previousOperand) this.save(this.compute(operand), operation);
+      if (this.previousOperand) this.save(this.compute(this.previousOperand, this.operation, operand), operation);
       else this.save(operand, operation);
 
       this.input.value = this.input.value.slice(nextPart[0].length);
@@ -104,14 +108,15 @@ class Calculator {
   onButtonInput(e) {
     if (e.target.tagName !== 'BUTTON') return;
     const button = e.target;
+    const input = this.input;
 
   }
 
-  compute(rightOperand) {
+  compute(leftOperand, operation, rightOperand = 0) {
     rightOperand = parseFloat(rightOperand);
-    let leftOperand = this.previousOperand;
+    leftOperand = parseFloat(this.previousOperand);
     
-    switch (this.operation) {
+    switch (operation) {
       case "+":
         return parseFloat((leftOperand + rightOperand).toFixed(10));
       case "-":
