@@ -2,28 +2,36 @@ class Calculator {
   constructor() {
     this.lastValidOperand = "";
     this.input = document.getElementById('input');
-    this.memory = document.getElementById('memory');
     this.buttons = document.getElementById('buttons');
     this.setupListeners();
-    this.resetMemory();
+    this.fullReset();
     this.input.focus();
+  }
+
+  set error(err) {
+    const errorDiv = document.getElementById("error");
+    if (err) errorDiv.innerHTML = "E";
+    else errorDiv.innerHTML = ""
   }
 
   save(operand, operation) {
     this.previousOperand = parseFloat(operand);
     this.operation = operation;
-    this.memory.innerHTML = `${operand} ${operation}`;
+    document.getElementById("previous-operand").innerHTML = this.previousOperand;
+    document.getElementById("operation").innerHTML = operation;
   }
 
   resetMemory() {
     this.previousOperand = null;
     this.operation = null;
-    this.memory.innerHTML = "";
+    document.getElementById("previous-operand").innerHTML = "";
+    document.getElementById("operation").innerHTML = "";
   }
 
   fullReset() {
     this.resetMemory();
     this.input.value = "";
+    this.error = false;
   }
 
   setupListeners() {
@@ -81,6 +89,7 @@ class Calculator {
   }
 
   processInput() {
+    this.error = false;
     const isOperator = /^[0-9]+[\/\*\+\-\=]/.test(input.value);
     this.input.value = this.filterInput(this.input.value);
     const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=]/;
@@ -119,11 +128,21 @@ class Calculator {
         this.processInput();
         break;
       case "sqrt":
+        if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "sqrt");
+        this.resetMemory();
         break;
       case "square":
+        if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "square");
+        this.resetMemory();
         break;
+      case "divide":
+        input.value += "/";
+        this.processInput();
+      case "multiply":
+        input.value += "*";
+        this.processInput();
       default:
         input.value += button.innerHTML;
         this.processInput();
@@ -145,7 +164,9 @@ class Calculator {
       case "*":
         return parseFloat((leftOperand * rightOperand).toFixed(10));
       case "sqrt":
-        return parseFloat(Math.sqrt(leftOperand).toFixed(10));
+        if(leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
+        this.error = true;
+        return "";
       case "square":
         return parseFloat((leftOperand ** 2).toFixed(10));
     }

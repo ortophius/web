@@ -54,13 +54,13 @@ body {
   padding: 0 20px;
   background-color: #020202cf;
   overflow-x: hidden;
+  color: #fff;
 }
 
-.display__memory {
+.display__status {
   display: flex;
   align-items: center;
   flex-basis: 33%;
-  color: #fff;
 }
 
 .display__input {
