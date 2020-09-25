@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Calculator</title>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display">
+      <div id="memory" class="display__status">
+        <div class="display_memory">
+          <span id="previous-operand">0</span><span id="operation">+</span>
+        </div>
+        <div id="error" class="display__error"></div>
+      </div>
+      <input type="text" name="input" id="input" class="display__input" placeholder="0">
+    </div>
+    <div id="buttons" class="buttons">
+      <button class="buttons__operation" data-key="Escape" data-operation="ac">AC</button>
+      <button class="buttons__operation" data-key="Backspace Delete" data-operation="del">DEL</button>
+      <button class="buttons__operation" data-key="" data-operation="sqrt">&radic;</button>
+      <button class="buttons__operation" data-key="" data-operation="square">X<sup>2</sup></button>
+      <button class="buttons__number" data-key="1">1</button>
+      <button class="buttons__number" data-key="2">2</button>
+      <button class="buttons__number" data-key="3">3</button>
+      <button class="buttons__operation" data-key="/" data-operation="divide">&divide;</button>
+      <button class="buttons__number" data-key="4">4</button>
+      <button class="buttons__number" data-key="5">5</button>
+      <button class="buttons__number" data-key="6">6</button>
+      <button class="buttons__operation" data-key="*" data-operation="multiply">&times;</button>
+      <button class="buttons__number" data-key="7">7</button>
+      <button class="buttons__number" data-key="8">8</button>
+      <button class="buttons__number" data-key="9">9</button>
+      <button class="buttons__operation" data-key="-">-</button>
+      <button class="buttons__number" data-key=".">.</button>
+      <button class="buttons__number" data-key="0">0</button>
+      <button class="buttons__operation" data-key="Enter">=</button>
+      <button class="buttons__operation" data-key="+">+</button>
+    </div>
+  </div>
+  <script src="calc.js"></script>
+</body>
+</html>
