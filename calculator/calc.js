@@ -78,6 +78,7 @@ class Calculator {
 
   processKeyPress(e) {
     if (e.target !== this.input) return;
+
     switch(e.key) {
       case "Enter":
         if (this.previousOperand) {
@@ -85,11 +86,13 @@ class Calculator {
           this.resetMemory();
         }
         break;
+  
       case "Escape":
         this.fullReset();
     }
 
     const button = document.querySelector(`[data-key~="${e.key}"]`);
+
     if (button !== null) {
       button.classList.add("active");
       setTimeout(() => button.classList.remove("active"), 1);
@@ -101,7 +104,7 @@ class Calculator {
     const isOperator = /^[0-9]+[\/\*\+\-\=]/.test(input.value);
     this.input.value = this.filterInput(this.input.value);
     const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=]/;
-    console.log(regex.exec(input.value));
+
     for (let nextPart = regex.exec(input.value); nextPart !== null; nextPart = regex.exec(input.value)) {
       const operand = nextPart[0].slice(0, -1);
       const operation = nextPart[0].slice(-1);
@@ -109,11 +112,10 @@ class Calculator {
       if (operation === "=") {
         if (!this.previousOperand) this.input.value = operand;
         else this.input.value = this.compute(this.previousOperand, this.operation, operand);
+      
         this.resetMemory();
         continue;
       }
-
-      console.log(operand, operation);
 
       if (this.previousOperand) this.save(this.compute(this.previousOperand, this.operation, operand), operation);
       else this.save(operand, operation);
@@ -124,6 +126,7 @@ class Calculator {
 
   onButtonInput(e) {
     if (e.target.tagName !== 'BUTTON') return;
+
     const button = e.target;
     const input = this.input;
 
@@ -131,28 +134,34 @@ class Calculator {
       case "ac":
         this.fullReset();
         break;
+
       case "del":
         input.value = input.value.slice(0, -1);
         this.processInput();
         break;
+
       case "sqrt":
         if (input.value === "") return;
         if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "sqrt");
         this.resetMemory();
         break;
+
       case "square":
         if (input.value === "") return;
         if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "square");
         this.resetMemory();
         break;
+
       case "divide":
         input.value += "/";
         this.processInput();
+
       case "multiply":
         input.value += "*";
         this.processInput();
+
       default:
         input.value += button.innerHTML;
         this.processInput();
@@ -177,19 +186,24 @@ class Calculator {
       case "+":
         res = parseFloat((leftOperand + rightOperand).toFixed(10));
         break;
+
       case "-":
         res = parseFloat((leftOperand - rightOperand).toFixed(10));
         break;
+
       case "/":
         res =  parseFloat((leftOperand / rightOperand).toFixed(10));
         break;
+
       case "*":
         res = parseFloat((leftOperand * rightOperand).toFixed(10));
         break;
+
       case "sqrt":
         if(leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
         this.error = true;
         return "";
+
       case "square":
         res = parseFloat((leftOperand ** 2).toFixed(10));
     }
