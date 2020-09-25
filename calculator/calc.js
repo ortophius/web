@@ -77,16 +77,22 @@ class Calculator {
   }
 
   processKeyPress(e) {
-    switch(e.which) {
-      case 13:
+    if (e.target !== this.input) return;
+    switch(e.key) {
+      case "Enter":
         if (this.previousOperand) {
           this.input.value = this.compute(this.previousOperand, this.operation, this.input.value);
           this.resetMemory();
         }
         break;
-      case 27:
+      case "Escape":
         this.fullReset();
-        break;
+    }
+
+    const button = document.querySelector(`[data-key~="${e.key}"]`);
+    if (button !== null) {
+      button.classList.add("active");
+      setTimeout(() => button.classList.remove("active"), 1);
     }
   }
 
