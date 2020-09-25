@@ -77,15 +77,17 @@ class Calculator {
   }
 
   processKeyPress(e) {
-    if (e.target !== this.input) return;
-    console.log(e);
-    if (e.which === 13 && this.previousOperand) {
-      this.input.value = this.compute(this.previousOperand, this.operation, this.input.value);
-      this.resetMemory();
+    switch(e.which) {
+      case 13:
+        if (this.previousOperand) {
+          this.input.value = this.compute(this.previousOperand, this.operation, this.input.value);
+          this.resetMemory();
+        }
+        break;
+      case 27:
+        this.fullReset();
+        break;
     }
-    if (e.which === 27) {
-      this.fullReset();
-    };
   }
 
   processInput() {
@@ -168,12 +170,16 @@ class Calculator {
     switch (operation) {
       case "+":
         res = parseFloat((leftOperand + rightOperand).toFixed(10));
+        break;
       case "-":
         res = parseFloat((leftOperand - rightOperand).toFixed(10));
+        break;
       case "/":
         res =  parseFloat((leftOperand / rightOperand).toFixed(10));
+        break;
       case "*":
         res = parseFloat((leftOperand * rightOperand).toFixed(10));
+        break;
       case "sqrt":
         if(leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
         this.error = true;
