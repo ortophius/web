@@ -128,11 +128,13 @@ class Calculator {
         this.processInput();
         break;
       case "sqrt":
+        if (input.value === "") return;
         if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "sqrt");
         this.resetMemory();
         break;
       case "square":
+        if (input.value === "") return;
         if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "square");
         this.resetMemory();
@@ -153,23 +155,39 @@ class Calculator {
   compute(leftOperand, operation, rightOperand = 0) {
     rightOperand = parseFloat(rightOperand);
     leftOperand = parseFloat(leftOperand);
+
+    const max = 2 ** 53;
+
+    if (Math.abs(rightOperand) > max || Math.abs(leftOperand) > max) {
+      this.error = true;
+      return "";
+    }
+
+    let res;
     
     switch (operation) {
       case "+":
-        return parseFloat((leftOperand + rightOperand).toFixed(10));
+        res = parseFloat((leftOperand + rightOperand).toFixed(10));
       case "-":
-        return parseFloat((leftOperand - rightOperand).toFixed(10));
+        res = parseFloat((leftOperand - rightOperand).toFixed(10));
       case "/":
-        return parseFloat((leftOperand / rightOperand).toFixed(10));
+        res =  parseFloat((leftOperand / rightOperand).toFixed(10));
       case "*":
-        return parseFloat((leftOperand * rightOperand).toFixed(10));
+        res = parseFloat((leftOperand * rightOperand).toFixed(10));
       case "sqrt":
         if(leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
         this.error = true;
         return "";
       case "square":
-        return parseFloat((leftOperand ** 2).toFixed(10));
+        res = parseFloat((leftOperand ** 2).toFixed(10));
     }
+
+    if (Math.abs(res) > max) {
+      this.error = true;
+      return "";
+    }
+
+    return res;
   }
 }
 
