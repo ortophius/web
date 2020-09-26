@@ -104,9 +104,16 @@ class Calculator {
   }
 
   processInput() {
+    const input = this.input;
     this.error = false;
+
+    if (this.readyToReset) {
+      input.value = input.value.slice(-1);
+      this.readyToReset = false;
+    }
+
     const isOperator = /^[0-9]+[\/\*\+\-\=\^]/.test(input.value);
-    this.input.value = this.filterInput(this.input.value);
+    input.value = this.filterInput(input.value);
     const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=\^]/;
 
     for (let nextPart = regex.exec(input.value); nextPart !== null; nextPart = regex.exec(input.value)) {
@@ -114,8 +121,8 @@ class Calculator {
       const operation = nextPart[0].slice(-1);
 
       if (operation === "=") {
-        if (!this.previousOperand) this.input.value = operand;
-        else this.input.value = this.compute(this.previousOperand, this.operation, operand);
+        if (!this.previousOperand) input.value = operand;
+        else input.value = this.compute(this.previousOperand, this.operation, operand);
 
         this.resetMemory();
         continue;
@@ -124,7 +131,7 @@ class Calculator {
       if (this.previousOperand) this.save(this.compute(this.previousOperand, this.operation, operand), operation);
       else this.save(operand, operation);
 
-      this.input.value = this.input.value.slice(nextPart[0].length);
+      input.value = input.value.slice(nextPart[0].length);
     }
   }
 
@@ -218,6 +225,7 @@ class Calculator {
       return "";
     }
 
+    this.readyToReset = true;
     return res;
   }
 }
