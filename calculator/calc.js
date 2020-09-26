@@ -2,7 +2,7 @@ class Calculator {
   constructor() {
     this.lastValidOperand = "";
     this.input = document.getElementById('input');
-    this.buttons = document.getElementById('buttons');
+    this.buttons = document.querySelectorAll('#buttons button');
     this.setupListeners();
     this.fullReset();
     this.input.focus();
@@ -38,7 +38,11 @@ class Calculator {
     document.addEventListener('keydown', this.processKeyPress.bind(this));
     this.input.addEventListener('paste', this.processInput.bind(this));
     this.input.addEventListener('input', this.processInput.bind(this));
-    this.buttons.addEventListener('click', this.onButtonInput.bind(this));
+    // this.buttons.addEventListener('click', this.onButtonInput.bind(this), true);
+
+    for (let i = 0; i < this.buttons.length; i ++) {
+      this.buttons[i].addEventListener('click', this.onButtonInput.bind(this));
+    }
   }
 
   filterInput(inputString) {
@@ -125,9 +129,10 @@ class Calculator {
   }
 
   onButtonInput(e) {
-    if (e.target.tagName !== 'BUTTON') return;
+    console.log(e.currentTarget); 
+    if (e.currentTarget.tagName !== "BUTTON") return;
 
-    const button = e.target;
+    const button = e.currentTarget;
     const input = this.input;
 
     switch (button.getAttribute('data-operation')) {
