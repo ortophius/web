@@ -15,10 +15,11 @@ class Calculator {
   }
 
   save(operand, operation) {
-    this.previousOperand = parseFloat(operand);
+    this.previousOperand = operand;
     this.operation = operation;
-    document.getElementById("previous-operand").innerHTML = this.previousOperand;
+    document.getElementById("previous-operand").innerHTML = this.previousOperand || "";
     document.getElementById("operation").innerHTML = operation;
+    this.input.value = "";
   }
 
   resetMemory() {
@@ -38,19 +39,22 @@ class Calculator {
     document.addEventListener('keydown', this.processKeyPress.bind(this));
     this.input.addEventListener('paste', this.processInput.bind(this));
     this.input.addEventListener('input', this.processInput.bind(this));
-    // this.buttons.addEventListener('click', this.onButtonInput.bind(this), true);
 
     for (let i = 0; i < this.buttons.length; i++) {
       this.buttons[i].addEventListener('click', this.onButtonInput.bind(this));
     }
   }
 
+  // Вообще, это было нужно для фильтрации ввода с клавиатуры
+  // Например, с помощью CTRL+V
+  // Но потом я почитал условия задания внимательнее...
+  // В общем, пусть будет.
   filterInput(inputString) {
     let isDotPermitted = true;
     let isMinusPermitted = true;
     let isOPeratorPermitted = false;
     return inputString
-      .replace(/[^0-9\.\/\*\+\-\=\^\,]/g, '')
+      .replace(/[^0-9\.\/\*\+\-\=\^\,\u221a]/g, '')
       .replace(/\,/g, ".")
       .split("")
       .map(char => {
@@ -59,7 +63,7 @@ class Calculator {
           else isDotPermitted = false;
         }
 
-        if (/[\/\*\+\=]/.test(char)) {
+        if (/[\/\*\+\=\^]/.test(char)) {
           if (!isOPeratorPermitted) return "";
           else isOPeratorPermitted = false;
         }
@@ -69,6 +73,8 @@ class Calculator {
           if (!isOPeratorPermitted && isMinusPermitted) isMinusPermitted = false;
           if (isOPeratorPermitted) isOPeratorPermitted = false;
         }
+
+        if (char === "√" && !isMinusPermitted) return "";
 
         if (/[0-9\.]/.test(char)) {
           isOPeratorPermitted = true;
@@ -104,32 +110,53 @@ class Calculator {
   }
 
   processInput() {
+    const input = this.input;
+    const operatorRegex = /[\/\*\+\-\=\^\u221a\^]$/;
+    const numRegex = /^[\-]?[0-9\.]+/;
+
+    input.value = this.filterInput(input.value);
     this.error = false;
-    const isOperator = /^[0-9]+[\/\*\+\-\=\^]/.test(input.value);
-    this.input.value = this.filterInput(this.input.value);
-    const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=\^]/;
 
-    for (let nextPart = regex.exec(input.value); nextPart !== null; nextPart = regex.exec(input.value)) {
-      const operand = nextPart[0].slice(0, -1);
-      const operation = nextPart[0].slice(-1);
+    if (this.readyToReset && !operatorRegex.test(input.value)) {
+      input.value = input.value.slice(-1);
+      this.readyToReset = false;
+    }
 
-      if (operation === "=") {
-        if (!this.previousOperand) this.input.value = operand;
-        else this.input.value = this.compute(this.previousOperand, this.operation, operand);
-
-        this.resetMemory();
-        continue;
+    if (operatorRegex.test(input.value)) {
+      const operator = input.value.slice(-1);
+      const operand = input.value.slice(0, -1);
+      if (numRegex.test(input.value)) {
+        if (operator === "=") {
+          if (!this.operation || !operand) {
+            input.value = input.value.slice(0, -1);
+            return;
+          }
+          else {
+            input.value = this.compute(this.previousOperand, this.operation, operand);
+            this.resetMemory();
+            return;
+          }
+        }
+        else if (operator === "√") {
+          input.value = this.compute(operand, "sqrt");
+        }
+        else if (this.operation === "√") {
+          this.save(this.compute(input.value, "sqrt"), operator)
+        }
+        else if (this.operation) {
+          this.save(this.compute(this.previousOperand, this.operation, operand), operator);
+        }
+        else {
+          this.save(operand, operator);
+        }
       }
-
-      if (this.previousOperand) this.save(this.compute(this.previousOperand, this.operation, operand), operation);
-      else this.save(operand, operation);
-
-      this.input.value = this.input.value.slice(nextPart[0].length);
+      else if (operator === "√") {
+        this.save(null, "√");
+      }
     }
   }
 
   onButtonInput(e) {
-    console.log(e.currentTarget);
     if (e.currentTarget.tagName !== "BUTTON") return;
 
     const button = e.currentTarget;
@@ -150,13 +177,6 @@ class Calculator {
         this.processInput();
         break;
 
-      case "sqrt":
-        if (input.value === "") return;
-        if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
-        input.value = this.compute(input.value, "sqrt");
-        this.resetMemory();
-        break;
-
       case "divide":
         input.value += "/";
         this.processInput();
@@ -169,7 +189,7 @@ class Calculator {
         input.value += button.innerHTML;
         this.processInput();
     }
-    
+
     this.input.focus();
   }
 
@@ -204,20 +224,22 @@ class Calculator {
         break;
 
       case "sqrt":
-        if (leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
-        this.error = true;
-        return "";
+        if (leftOperand >= 0) res = parseFloat(Math.sqrt(leftOperand).toFixed(10));
+        else res = NaN;
+        break;
 
       case "^":
         res = (leftOperand) ** (rightOperand);
         break;
     }
 
-    if (res === NaN || Math.abs(res) > max) {
+    if (!res || Math.abs(res) > max) {
+      this.fullReset();
       this.error = true;
       return "";
     }
 
+    this.readyToReset = true;
     return res;
   }
 }
