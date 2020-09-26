@@ -40,7 +40,7 @@ class Calculator {
     this.input.addEventListener('input', this.processInput.bind(this));
     // this.buttons.addEventListener('click', this.onButtonInput.bind(this), true);
 
-    for (let i = 0; i < this.buttons.length; i ++) {
+    for (let i = 0; i < this.buttons.length; i++) {
       this.buttons[i].addEventListener('click', this.onButtonInput.bind(this));
     }
   }
@@ -50,7 +50,7 @@ class Calculator {
     let isMinusPermitted = true;
     let isOPeratorPermitted = false;
     return inputString
-      .replace(/[^0-9\.\/\*\+\-\=\,]/g, '')
+      .replace(/[^0-9\.\/\*\+\-\=\^\,]/g, '')
       .replace(/\,/g, ".")
       .split("")
       .map(char => {
@@ -83,14 +83,14 @@ class Calculator {
   processKeyPress(e) {
     if (e.target !== this.input) return;
 
-    switch(e.key) {
+    switch (e.key) {
       case "Enter":
         if (this.previousOperand) {
-          this.input.value = this.compute(this.previousOperand, this.operation, this.input.value);
-          this.resetMemory();
+          this.input.value += "="
+          this.processInput();
         }
         break;
-  
+
       case "Escape":
         this.fullReset();
     }
@@ -105,9 +105,9 @@ class Calculator {
 
   processInput() {
     this.error = false;
-    const isOperator = /^[0-9]+[\/\*\+\-\=]/.test(input.value);
+    const isOperator = /^[0-9]+[\/\*\+\-\=\^]/.test(input.value);
     this.input.value = this.filterInput(this.input.value);
-    const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=]/;
+    const regex = /^[\-]?[0-9\.]+[\/\*\+\-\=\^]/;
 
     for (let nextPart = regex.exec(input.value); nextPart !== null; nextPart = regex.exec(input.value)) {
       const operand = nextPart[0].slice(0, -1);
@@ -116,7 +116,7 @@ class Calculator {
       if (operation === "=") {
         if (!this.previousOperand) this.input.value = operand;
         else this.input.value = this.compute(this.previousOperand, this.operation, operand);
-      
+
         this.resetMemory();
         continue;
       }
@@ -129,7 +129,7 @@ class Calculator {
   }
 
   onButtonInput(e) {
-    console.log(e.currentTarget); 
+    console.log(e.currentTarget);
     if (e.currentTarget.tagName !== "BUTTON") return;
 
     const button = e.currentTarget;
@@ -145,17 +145,15 @@ class Calculator {
         this.processInput();
         break;
 
+      case "^":
+        input.value += "^";
+        this.processInput();
+        break;
+
       case "sqrt":
         if (input.value === "") return;
         if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
         input.value = this.compute(input.value, "sqrt");
-        this.resetMemory();
-        break;
-
-      case "square":
-        if (input.value === "") return;
-        if (this.previousOperand) input.value = this.compute(this.previousOperand, this.operation, input.value);
-        input.value = this.compute(input.value, "square");
         this.resetMemory();
         break;
 
@@ -171,7 +169,8 @@ class Calculator {
         input.value += button.innerHTML;
         this.processInput();
     }
-
+    
+    this.input.focus();
   }
 
   compute(leftOperand, operation, rightOperand = 0) {
@@ -186,7 +185,7 @@ class Calculator {
     }
 
     let res;
-    
+
     switch (operation) {
       case "+":
         res = parseFloat((leftOperand + rightOperand).toFixed(10));
@@ -197,7 +196,7 @@ class Calculator {
         break;
 
       case "/":
-        res =  parseFloat((leftOperand / rightOperand).toFixed(10));
+        res = parseFloat((leftOperand / rightOperand).toFixed(10));
         break;
 
       case "*":
@@ -205,15 +204,16 @@ class Calculator {
         break;
 
       case "sqrt":
-        if(leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
+        if (leftOperand >= 0) return parseFloat(Math.sqrt(leftOperand).toFixed(10));
         this.error = true;
         return "";
 
-      case "square":
-        res = parseFloat((leftOperand ** 2).toFixed(10));
+      case "^":
+        res = (leftOperand) ** (rightOperand);
+        break;
     }
 
-    if (Math.abs(res) > max) {
+    if (res === NaN || Math.abs(res) > max) {
       this.error = true;
       return "";
     }
