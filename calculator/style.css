@@ -4,6 +4,12 @@ body {
   background: linear-gradient(#4d54aa, #478476);
 }
 
+sup {
+  font-size: 0.5em;
+  top: -10px;
+  position: relative;
+}
+
 .calculator {
   height: 100vh;
   display: grid;
