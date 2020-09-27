@@ -131,6 +131,11 @@ class Calculator {
             input.value = input.value.slice(0, -1);
             return;
           }
+          else if (this.operation === "√") {
+            input.value = this.compute(input.value, "sqrt");
+            this.resetMemory();
+            return;
+          }
           else {
             input.value = this.compute(this.previousOperand, this.operation, operand);
             this.resetMemory();
@@ -204,6 +209,8 @@ class Calculator {
       return "";
     }
 
+    console.log(leftOperand, operation, rightOperand)
+
     let res;
 
     switch (operation) {
@@ -225,7 +232,7 @@ class Calculator {
 
       case "sqrt":
         if (leftOperand >= 0) res = parseFloat(Math.sqrt(leftOperand).toFixed(10));
-        else res = NaN;
+        else res = false;
         break;
 
       case "^":
