@@ -1,0 +1,148 @@
+@import '../node_modules/reset-css/sass/reset';
+
+//fonts
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+// Vars
+// Colors
+// Light
+$color-light-s: #FAFAFA;
+$color-light-l: #F6F6F6;
+$color-light-xl: #FFFFFF;
+
+// Dark
+$color-dark-s: #CDCDCD;
+$color-dark-m: #B2B2B2;
+$color-dark-l: #545454;
+$color-dark-xl: #4C4C4C;
+$color-dark-2xl: #444444;
+$color-dark-3xl: #292929;
+
+// Primary
+$color-primary: #F1CDB3;
+$color-primary-light: #FDDCC4;
+
+// Content-area
+$content-width: 1200px;
+
+// Mixins
+@mixin flex-horizontal {
+  display: flex;
+}
+
+@mixin flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin section($height) {
+  @include flex-horizontal;
+  justify-content: center;
+  box-sizing: border-box;
+  height: $height;
+  width: 100%;
+  padding: 80px 0 100px 0;
+  &__content {
+    width: 100%;
+    max-width: $content-width;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+p {
+  font-size: 15px;
+  line-height: 160%;
+  color: $color-dark-xl;
+}
+
+h1, h2, h3 {
+  font-family: Georgia;
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  color: $color-dark-l;
+}
+
+.header {
+  @include flex-horizontal();
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: inline-block;
+  padding-top: 3px;
+  font-family: Arial;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: 0.1em;
+  color: $color-light-xl;
+  text-align: right;
+  &__title {
+    margin-bottom: 9px;
+    font-size: 32px;
+    line-height: 110%;
+    color: $color-primary;
+  }
+  &__motto {
+    padding-right: 2px;
+  }
+}
+
+.menu {
+  list-style: none;
+  &__item {
+    display: inline;
+    margin-left: 29.7px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+  &__link {
+    padding: 0 1px 3px 1px;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: $color-light-l;
+    &_active {
+      color: $color-light-s;
+      border-bottom: 3px solid $color-primary;
+    }
+  }
+}
