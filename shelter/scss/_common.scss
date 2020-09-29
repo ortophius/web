@@ -115,7 +115,6 @@ h3 {
 }
 
 a, a.link {
-  padding: 0 1px 3px 1px;
   letter-spacing: -0.5px;
   text-decoration: none;
   color: $color-light-l;
@@ -125,7 +124,7 @@ a, a.link {
   }
   &:active, &_active {
     color: $color-light-s;
-    border-bottom: 3px solid $color-primary;
+    
   }
 }
 
@@ -164,6 +163,12 @@ a, a.link {
       margin-left: 0;
     }
   }
+  &__link {
+    padding: 0 1px 3px 1px;
+    &_active {
+      border-bottom: 3px solid $color-primary;
+    }
+  }
 }
 
 .button {
@@ -191,9 +196,6 @@ a, a.link {
     &:hover {
       border-color: $color-primary-light;
     }
-  }
-  &_link {
-
   }
 }
 
@@ -248,3 +250,47 @@ a, a.link {
   }
 }
 
+.footer {
+  @include section(auto);
+  padding-top: 40px;
+  background: 
+    radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
+  &__content {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 160px;
+  }
+  &__info {
+    @include flex-vertical();
+    justify-content: space-between;
+    height: 234px;
+    padding-top: 21px;
+    a {
+      @include flex-horizontal();
+      align-items: center;
+      font-family: 'Georgia', serif;
+      font-size: 20px;
+      line-height: 115%;
+      letter-spacing: 0.06em;
+      color: $color-primary;
+      &::before {
+        margin-right: 20px;
+      }
+      &:hover {
+        color: $color-primary-light;
+      }
+    }
+  }
+  &__title {
+    color: $color-light-xl;
+  }
+  &__email::before {
+    content: url('../assets/icons/mail.svg');
+  }
+  &__phone::before {
+    content: url('../assets/icons/phone.svg');
+  }
+  &__address::before {
+    content: url('../assets/icons/pin.svg');
+  }
+}
