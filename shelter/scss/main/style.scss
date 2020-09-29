@@ -1,0 +1,181 @@
+@import '../common';
+
+.start-screen {
+  @include section(908px);
+  padding: 58px 0 0 0;
+  background: 
+    url('../assets/images/start-screen-gradient-background.png'),
+    radial-gradient(100% 215.42% at 0% 0%, #5B483A 0%, #262425 100%),
+    #211F20;
+  background-size: cover;
+  &__content {
+    @include flex-vertical();
+    justify-content: space-between;
+  }
+  &__main {
+    @include flex-horizontal();
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  &__info {
+    align-self: center;
+  }
+}
+
+.start-info {
+  position: relative;
+  top: -40px;
+  height: 321px;
+  @include flex-vertical();
+  align-items: flex-start;
+  justify-content: space-between;
+  &__title {
+    width: 310px;
+    color: $color-light-xl;
+    font-size: 44px;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  &__description {
+    width: 460px;
+    color: $color-dark-s;
+  }
+}
+
+.about {
+  @include section(auto);
+  &__content {
+    display: grid;
+    grid-template-columns: min-content 430px;
+    grid-gap: 120px;
+    padding: 80px 0 100px 0;
+    justify-content: center;
+  }
+  &__info {
+    align-self: center;
+  }
+  &__title {
+    width: 370px;
+    font-size: 35px;
+    line-height: 130%;
+    color: $color-dark-l;
+  }
+  &__description {
+    font-size: 15px;
+    line-height: 160%;
+    margin-top: 25px;
+    color: $color-dark-xl;
+  }
+}
+
+.pets {
+  @include section(auto);
+  background-color: $color-light-ll;
+  &__content {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: 100%;
+    justify-content: center;
+    justify-items: center;
+    grid-row-gap: 60px;
+    padding: 81px 0 100px 0;
+  }
+  &__title {
+    width: 400px;
+    text-align: center;
+  }
+}
+
+.help {
+  @include section(auto);
+  padding: 80px 0 100px 0;
+  &__content {
+    display: grid;
+    row-gap: 60px;
+    grid-template-rows: repeat(2, max-content);
+    justify-items: center;
+  }
+  &__title {
+    text-align: center;
+  }
+  &__options {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 120px;
+    justify-self: center;
+    justify-items: center;
+    margin-bottom: 55px;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+  &__option {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    row-gap: 30px;
+    justify-items: center;
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    color: $color-dark-l;
+  }
+  &__wrapper {
+    @include flex-vertical();
+    align-items: center;
+  }
+}
+
+.donation {
+  @include section(auto);
+  background-color: $color-light-ll;
+  padding: 81px 0 101px 0;
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(2, max-content);
+    column-gap: 30px;
+    justify-content: center;
+    align-items: center;
+  }
+  &__title {
+    line-height: 130%;
+  }
+  &__info {
+    display: grid;
+    row-gap: 20px;
+    width: 380px;
+    justify-items: flex-start;
+  }
+  &__card-info {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    color: $color-dark-l;
+  }
+  &__card-number {
+    display: flex;
+    align-items: center;
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    letter-spacing: 0.06em;
+    background-color: $color-primary;
+    color: $color-dark-l;
+    padding: 8.5px 15px;
+    border-radius: 9px;
+    &::before {
+      content: url('../assets/images/credit-card.png');
+      margin-right: 15px;
+    }
+    &:hover {
+      color: $color-dark-l;
+      background-color: $color-primary-light;
+    }
+  }
+  &__disclaimer {
+    font-size: 12px;
+    font-style: italic;
+    line-height: 18px;
+    color: $color-dark-m;
+  }
+}

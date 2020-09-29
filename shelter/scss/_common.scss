@@ -1,0 +1,296 @@
+@import '../node_modules/reset-css/sass/reset';
+
+//fonts
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Georgia';
+  src: url('../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
+      url('../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+// Vars
+// Colors
+// Light
+$color-light-s: #FAFAFA;
+$color-light-l: #CDCDCD;
+$color-light-ll: #F6F6F6;
+$color-light-xl: #FFFFFF;
+
+// Dark
+$color-dark-s: #CDCDCD;
+$color-dark-m: #B2B2B2;
+$color-dark-l: #545454;
+$color-dark-xl: #4C4C4C;
+$color-dark-2xl: #444444;
+$color-dark-3xl: #292929;
+
+// Primary
+$color-primary: #F1CDB3;
+$color-primary-light: #FDDCC4;
+
+// Content-area
+$content-width: 1200px;
+
+// Mixins
+@mixin flex-horizontal {
+  display: flex;
+}
+
+@mixin flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin section($height) {
+  @include flex-horizontal;
+  justify-content: center;
+  box-sizing: border-box;
+  height: $height;
+  width: 100%;
+  &__content {
+    width: $content-width;
+    min-width: $content-width;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  
+}
+
+p {
+  font-size: 15px;
+  line-height: 160%;
+  color: $color-dark-xl;
+}
+
+h1, h2, h3 {
+  font-family: Georgia;
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  color: $color-dark-l;
+}
+
+h2 {
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+}
+
+h3 {
+  font-size: 20px;
+  line-height: 23px;
+  letter-spacing: 0.06em;
+}
+
+a, a.link {
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  color: $color-light-l;
+  transition: color 0.2s;
+  &:hover {
+    color: $color-light-s;
+  }
+  &:active, &_active {
+    color: $color-light-s;
+    
+  }
+}
+
+.header {
+  @include flex-horizontal();
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: inline-block;
+  padding-top: 3px;
+  font-family: Arial;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: 0.1em;
+  color: $color-light-xl;
+  text-align: right;
+  &__title {
+    margin-bottom: 9px;
+    font-size: 32px;
+    line-height: 110%;
+    color: $color-primary;
+  }
+  &__motto {
+    padding-right: 2px;
+  }
+}
+
+.menu {
+  list-style: none;
+  &__item {
+    display: inline;
+    margin-left: 29.7px;
+    &:first-of-type {
+      margin-left: 0;
+    }
+  }
+  &__link {
+    padding: 0 1px 3px 1px;
+    &_active {
+      border-bottom: 3px solid $color-primary;
+    }
+  }
+}
+
+.button {
+  display: inline-block;
+  padding: 15px 45px;
+  min-width: max-content;
+  font-family: 'Georgia', serif;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+  font-size: 17px;
+  color: $color-dark-xl;
+  border: none;
+  outline: none;
+  background-color: $color-primary;
+  border-radius: 30px;
+  transition: background-color 0.2s, border-color 0.2s;
+  &:hover {
+    cursor: pointer;
+    background-color: $color-primary-light;
+  }
+  &_transparent {
+    padding: 13px 43px;
+    border: 2px solid $color-primary;
+    background-color: transparent;
+    &:hover {
+      border-color: $color-primary-light;
+    }
+  }
+}
+
+.slider {
+  @include flex-horizontal();
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  &__button{
+    @include flex-horizontal();
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    color: #292929;
+    outline: none;
+    border: 2px solid $color-primary;
+    border-radius: 26px;
+    transition: background-color 0.2s;
+    &:hover{
+      cursor: pointer;
+      background-color: $color-primary;
+    }
+    &_next {
+      transform: rotate(180deg);
+    }
+    &_inactive {
+      border-color: $color-dark-s;
+      svg path{
+        fill: $color-dark-s;
+      }
+    }
+  }
+  &__cards {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 90px;
+  }
+  &__card {
+    display: grid;
+    grid-auto-flow: row;
+    justify-items: center;
+    row-gap: 30px;
+    padding: 30px 35px;
+    border-radius: 8px;;
+    background-color: $color-light-s;
+    transition: background-color 0.2s;
+    &:hover {
+      cursor: pointer;
+      background-color: $color-light-xl;
+    }
+  }
+}
+
+.footer {
+  @include section(auto);
+  padding-top: 40px;
+  background: 
+    radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
+  &__content {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 160px;
+  }
+  &__info {
+    @include flex-vertical();
+    justify-content: space-between;
+    height: 234px;
+    padding-top: 21px;
+    a {
+      @include flex-horizontal();
+      align-items: center;
+      font-family: 'Georgia', serif;
+      font-size: 20px;
+      line-height: 115%;
+      letter-spacing: 0.06em;
+      color: $color-primary;
+      &::before {
+        margin-right: 20px;
+      }
+      &:hover {
+        color: $color-primary-light;
+      }
+    }
+  }
+  &__title {
+    color: $color-light-xl;
+  }
+  &__email::before {
+    content: url('../assets/icons/mail.svg');
+  }
+  &__phone::before {
+    content: url('../assets/icons/phone.svg');
+  }
+  &__address::before {
+    content: url('../assets/icons/pin.svg');
+  }
+}
