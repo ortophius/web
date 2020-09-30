@@ -205,13 +205,18 @@ a, a.link {
     grid-auto-flow: row;
     justify-items: center;
     row-gap: 30px;
-    padding: 30px 35px;
+    padding-bottom: 30px;
     border-radius: 8px;
     background-color: #FAFAFA;
     transition: background-color 0.2s; }
     .slider__card:hover {
       cursor: pointer;
       background-color: #FFFFFF; }
+  .slider__photo {
+    width: 270px;
+    height: 270px;
+    background-position: center center;
+    background-repeat: no-repeat; }
 
 .footer {
   display: flex;
@@ -233,17 +238,19 @@ a, a.link {
     flex-direction: column;
     justify-content: space-between;
     height: 234px;
-    padding-top: 21px; }
+    padding-top: 17px; }
     .footer__info a {
       display: flex;
       align-items: center;
       font-family: 'Georgia', serif;
       font-size: 20px;
-      line-height: 115%;
       letter-spacing: 0.06em;
       color: #F1CDB3; }
       .footer__info a::before {
-        margin-right: 20px; }
+        position: relative;
+        bottom: 2px;
+        margin-right: 20px;
+        font-size: 0px; }
       .footer__info a:hover {
         color: #FDDCC4; }
   .footer__title {
@@ -394,7 +401,7 @@ a, a.link {
   height: auto;
   width: 100%;
   background-color: #F6F6F6;
-  padding: 81px 0 101px 0; }
+  padding: 80px 0 101px 0; }
   .donation__content {
     width: 1200px;
     min-width: 1200px; }
