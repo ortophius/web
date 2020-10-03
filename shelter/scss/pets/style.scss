@@ -1,12 +1,12 @@
 @import '../common';
 
 main {
-  padding-top: 90px;
+  padding-top: 120px;
 }
 
 .pets {
   @include section(auto);
-  background-color: $color-light-ll;
+  background-color: $color-light-s;
   &__content {
     display: grid;
     grid-auto-flow: row;
@@ -20,5 +20,74 @@ main {
     color: $color-dark-l;
     max-width: 40rem;
     text-align: center;
+  }
+}
+
+.cards {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 40px;
+  row-gap: 30px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $color-light-s;
+  transition: background-color 0.4s;
+  &:hover {
+    cursor: pointer;
+    background-color: $color-light-xl;
+  }
+  &__photo {
+    width: 270px;
+    height: 270px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  & * {
+    margin-bottom: 30px;
+  }
+}
+
+.pagination {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 20px;
+  &__button {
+    width: 52px;
+    height: 52px;
+    font-family: "Georgia", serif;
+    font-size: 20px;
+    font-weight: 600;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    cursor: pointer;
+    color: $color-dark-3xl;
+    outline: none;
+    background-color: transparent;
+    transition: background-color 0.4s;
+
+    &_page {
+      font-weight: 300;
+    }
+
+    &:hover, &_active {
+      background-color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-dark-s;
+      border-color: $color-dark-s;
+      cursor: default;
+      
+      &:hover {
+        background-color: initial;
+      }
+    }
   }
 }
