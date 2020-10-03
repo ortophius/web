@@ -82,6 +82,17 @@ $content-width: 1200px;
   }
 }
 
+@mixin h2 {
+  font-family: Georgia;
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+}
+
+:root {
+  font-size: 10px;
+}
+
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -132,6 +143,26 @@ a, a.link {
   @include flex-horizontal();
   justify-content: space-between;
   align-items: center;
+  justify-content: center;
+
+  &_light {
+    background-color: $color-light-xl;
+  }
+
+  &_fixed {
+    position: fixed;
+    width: 100%;
+  }
+
+  &__wrapper {
+    @include flex-horizontal();
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding-top: 28px;
+    padding-bottom: 30px;
+  }
 }
 
 .logo {
@@ -152,6 +183,16 @@ a, a.link {
   &__motto {
     padding-right: 2px;
   }
+
+  &_light {
+    .logo__title {
+      color: $color-dark-l;
+    }
+
+    .logo__motto {
+      color: $color-dark-3xl;
+    }
+  }
 }
 
 .menu {
@@ -167,6 +208,18 @@ a, a.link {
     padding: 0 1px 3px 1px;
     &_active {
       border-bottom: 3px solid $color-primary;
+    }
+    &:hover {
+      color: $color-light-s;
+    }
+  }
+
+  &_light {
+    .menu__link {
+      color: $color-dark-l;
+      &:hover {
+        color: $color-dark-3xl;
+      }
     }
   }
 }
