@@ -60,6 +60,7 @@ $color-primary-light: #FDDCC4;
 // Content-area
 $content-width: 1200px;
 $content-width-768: 708px;
+$content-width-320: 300px;
 
 // Mixins
 @mixin flex-horizontal {
@@ -116,6 +117,10 @@ $content-width-768: 708px;
   @include md {
     max-width: $content-width-768;
   }
+  @include sm {
+    min-width: $content-width-320;
+    width: $content-width-320;
+  }
 }
 
 :root {
@@ -146,6 +151,10 @@ h2 {
   font-size: 35px;
   line-height: 130%;
   letter-spacing: 0.06em;
+
+  @include sm {
+    font-size: 25px;
+  }
 }
 
 h3 {
@@ -190,6 +199,9 @@ a, a.link {
   &__content {
     @include flex-horizontal();
     @include adaptiveWidth();
+    @include sm {
+      justify-content: flex-start;
+    }
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -199,6 +211,9 @@ a, a.link {
 }
 
 .logo {
+  @include sm {
+    margin-right: 41px;
+  }
   display: inline-block;
   padding-top: 3px;
   font-family: Arial;
@@ -231,6 +246,9 @@ a, a.link {
 .menu {
   list-style: none;
   &__item {
+    @include sm {
+      display: none;
+    }
     display: inline;
     margin-left: 29.7px;
     &:first-of-type {
@@ -253,6 +271,15 @@ a, a.link {
       &:hover {
         color: $color-dark-3xl;
       }
+    }
+  }
+
+  &__burger {
+    display: none;
+    @include sm {
+      display: initial;
+      position: relative;
+      top: 4px;
     }
   }
 }

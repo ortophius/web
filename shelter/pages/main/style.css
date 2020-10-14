@@ -100,6 +100,9 @@ h2 {
   font-size: 35px;
   line-height: 130%;
   letter-spacing: 0.06em; }
+  @media screen and (max-width: 768px) {
+    h2 {
+      font-size: 25px; } }
 
 h3 {
   font-size: 20px;
@@ -141,6 +144,13 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .header__content {
         max-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .header__content {
+        min-width: 300px;
+        width: 300px; } }
+    @media screen and (max-width: 768px) {
+      .header__content {
+        justify-content: flex-start; } }
 
 .logo {
   display: inline-block;
@@ -151,6 +161,9 @@ a, a.link {
   letter-spacing: 0.1em;
   color: #FFFFFF;
   text-align: right; }
+  @media screen and (max-width: 768px) {
+    .logo {
+      margin-right: 41px; } }
   .logo__title {
     margin-bottom: 9px;
     font-size: 32px;
@@ -168,6 +181,9 @@ a, a.link {
   .menu__item {
     display: inline;
     margin-left: 29.7px; }
+    @media screen and (max-width: 768px) {
+      .menu__item {
+        display: none; } }
     .menu__item:first-of-type {
       margin-left: 0; }
   .menu__link {
@@ -180,6 +196,13 @@ a, a.link {
     color: #545454; }
     .menu_light .menu__link:hover {
       color: #292929; }
+  .menu__burger {
+    display: none; }
+    @media screen and (max-width: 768px) {
+      .menu__burger {
+        display: initial;
+        position: relative;
+        top: 4px; } }
 
 .button {
   display: inline-block;
@@ -214,6 +237,10 @@ a, a.link {
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .slider {
       max-width: 708px; } }
+  @media screen and (max-width: 768px) {
+    .slider {
+      min-width: 300px;
+      width: 300px; } }
   .slider__button {
     display: flex;
     align-items: center;
@@ -365,6 +392,10 @@ a, a.link {
     .start-screen {
       padding-top: 0px;
       height: auto; } }
+  @media screen and (max-width: 768px) {
+    .start-screen {
+      padding-top: 0px;
+      height: auto; } }
   .start-screen__content {
     display: flex;
     max-width: 1200px;
@@ -372,9 +403,17 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .start-screen__content {
         max-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .start-screen__content {
+        min-width: 300px;
+        width: 300px; } }
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .start-screen__content {
         flex-direction: column; } }
+    @media screen and (max-width: 768px) {
+      .start-screen__content {
+        flex-direction: column;
+        justify-content: flex-start; } }
   .start-screen__main {
     display: flex;
     justify-content: space-between;
@@ -384,6 +423,11 @@ a, a.link {
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .start-screen__doggo {
       width: 569px;
+      height: auto;
+      align-self: flex-end; } }
+  @media screen and (max-width: 768px) {
+    .start-screen__doggo {
+      width: 260px;
       height: auto;
       align-self: flex-end; } }
 
@@ -402,15 +446,31 @@ a, a.link {
       margin-bottom: 100px; }
       .start-info__button {
         align-self: center; } }
+  @media screen and (max-width: 768px) {
+    .start-info {
+      margin-top: 31px;
+      position: static;
+      height: 296px;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 105px; } }
   .start-info__title {
     width: 310px;
     color: #FFFFFF;
     font-size: 44px;
     line-height: 130%;
     letter-spacing: 0; }
+    @media screen and (max-width: 768px) {
+      .start-info__title {
+        width: 230px;
+        font-size: 25px;
+        letter-spacing: 0.06em; } }
   .start-info__description {
     width: 460px;
     color: #CDCDCD; }
+    @media screen and (max-width: 768px) {
+      .start-info__description {
+        width: 295px; } }
 
 .about {
   display: flex;
@@ -499,6 +559,10 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .help__content {
         max-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .help__content {
+        min-width: 300px;
+        width: 300px; } }
   .help__title {
     text-align: center; }
   .help__options {

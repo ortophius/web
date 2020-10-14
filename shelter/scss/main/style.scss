@@ -15,11 +15,19 @@
     padding-top: 0px;
     height: auto;
   }
+  @include sm {
+    padding-top: 0px;
+    height: auto;
+  }
   &__content {
     @include flex-horizontal();
     @include adaptiveWidth();
     @include md {
       flex-direction: column;
+    }
+    @include sm {
+      flex-direction: column;
+      justify-content: flex-start;
     }
     justify-content: space-between;
   }
@@ -35,6 +43,11 @@
   &__doggo {
     @include md {
       width: 569px;
+      height: auto;
+      align-self: flex-end;
+    }
+    @include sm {
+      width: 260px;
       height: auto;
       align-self: flex-end;
     }
@@ -56,16 +69,32 @@
       align-self: center;
     }
   }
+  @include sm {
+    margin-top: 31px;
+    position: static;
+    height: 296px;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 105px;
+  }
   &__title {
     width: 310px;
     color: $color-light-xl;
     font-size: 44px;
     line-height: 130%;
     letter-spacing: 0;
+    @include sm {
+      width: 230px;
+      font-size: 25px;
+      letter-spacing: 0.06em;
+    }
   }
   &__description {
     width: 460px;
     color: $color-dark-s;
+    @include sm {
+      width: 295px;
+    }
   }
 }
 
