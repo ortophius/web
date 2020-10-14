@@ -8,8 +8,8 @@
 </head>
 <body>
   <section class="start-screen">
-    <div class="start-screen__content">
-      <header class="header">
+    <header class="header">
+      <div class="header__content">
         <div class="header__logo logo">
           <h1 class="logo__title">Cozy House</h1>
           <span class="logo__motto">Shelter for pets in Boston</span>
@@ -22,15 +22,15 @@
             <li class="menu__item"><a href="" class="menu__link">Contacts</a></li>
           </ul>
         </nav>
-      </header>
-      <div class="start-screen__main">
+      </div>
+    </header>
+    <div class="start-screen__content">
         <div class="start-screen__info start-info">
           <h2 class="start-info__title">Not only people need a house</h2>
           <p class="start-info__description">We offer to give a chance to a little and nice puppy with an extremely wide and open heart. He or she will love you more than anybody else in the world, you will see!</p>
           <button class="start-info__button button">Make a friend</button>
         </div>
         <img src="../assets/images/start-screen-puppy.png" alt="A doggo" class="start-screen__doggo">
-      </div>
     </div>
   </section>
   <main>
@@ -85,26 +85,22 @@
     <section class="help">
       <div class="help__content">
         <h2 class="help__title">How you can help <br> our shelter</h2>
-        <div class="help__wrapper">
           <ul class="help__options">
             <li class="help__option"><img src="../assets/icons/icon-pet-food.svg" alt="Food" class="help__icon">Pet food</li>
             <li class="help__option"><img src="../assets/icons/icon-transportation.svg" alt="Transportation" class="help__icon">Transportation</li>
             <li class="help__option"><img src="../assets/icons/icon-toys.svg" alt="Toys" class="help__icon">Toys</li>
             <li class="help__option"><img src="../assets/icons/icon-bowls-and-cups.svg" alt="" class="help__icon">Bowls and cups</li>
             <li class="help__option"><img src="../assets/icons/icon-shampoos.svg" alt="" class="help__icon">Shampoos</li>
-          </ul>
-          <ul class="help__options">
             <li class="help__option"><img src="../assets/icons/icon-vitamins.svg" alt="" class="help__icon">Vitamins</li>
             <li class="help__option"><img src="../assets/icons/icon-medicines.svg" alt="" class="help__icon">Medicines</li>
             <li class="help__option"><img src="../assets/icons/icon-collars-leashes.svg" alt="" class="help__icon">Collars / leashes</li>
             <li class="help__option"><img src="../assets/icons/icon-sleeping-area.svg" alt="" class="help__icon">Sleeping areas</li>
           </ul>
-        </div>
       </div>
     </section>
     <section class="donation">
       <div class="donation__content">
-        <img src="../assets/images/donation-dog.png" alt="Donate pls...">
+        <img src="../assets/images/donation-dog.png" class="donation__image" alt="Donate pls...">
         <div class="donation__info">
           <h2 class="donation__title">
             You can also <br> make a donation
@@ -122,17 +118,15 @@
   </main>
   <footer class="footer">
     <div class="footer__content" itemscope itemtype="https://schema.org/Organization">
-      <div class="footer__info">
-        <h2 class="footer__title">For questions <br> and suggestions</h2>
-        <a href="mailto:email@shelter.com" class="footer__email" itemprop="email">email@shelter.com</a>
-        <a href="tel:+136745677554" class="footer__phone" itemprop="telephone">+13 674 567 75 54</a>
+      <div class="footer-info">
+        <h2 class="footer-info__title">For questions <br> and suggestions</h2>
+        <a href="mailto:email@shelter.com" class="footer-info__email" itemprop="email">email@shelter.com</a>
+        <a href="tel:+136745677554" class="footer-info__phone" itemprop="telephone">+13 674 567 75 54</a>
+        <h2 class="footer-info__title">We are waiting <br> for your visit</h2>
+        <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer-info__address" itemprop="address">1 Central Street, Boston <br> (entrance from the store)</a>
+        <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer-info__address" itemprop="address">18 South Park, London </a>
       </div>
-      <div class="footer__info">
-        <h2 class="footer__title">We are waiting for your visit</h2>
-        <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer__address" itemprop="address">1 Central Street, Boston (entrance from the store)</a>
-        <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer__address" itemprop="address">18 South Park, London </a>
-      </div>
-      <img src="../assets/images/footer-puppy.png" alt="Hello!">
+      <img src="../assets/images/footer-puppy.png" alt="Bye!" class="footer__image">
     </div>
   </footer>
   <script src="script.js"></script>
