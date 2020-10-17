@@ -398,7 +398,8 @@ a, a.link {
       font-size: 0px; }
       @media screen and (max-width: 768px) {
         .footer-info a::before {
-          font-size: 30px; } }
+          font-size: 30px;
+          top: 0px; } }
     .footer-info a:hover {
       color: #FDDCC4; }
   .footer-info__title {

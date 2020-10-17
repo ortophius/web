@@ -508,6 +508,7 @@ a, a.link {
       font-size: 0px;
       @include sm {
         font-size: 30px;
+        top: 0px;
       }
     }
     &:hover {
