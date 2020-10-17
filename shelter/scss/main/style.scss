@@ -113,26 +113,52 @@
         "img";
       justify-items: center;
     }
+    @include sm {
+      grid-template-areas: 
+      "txt"
+      "img";
+    justify-items: center;
+    width: 300px;
+    min-width: 300px;
+    padding: 43px 0 42px 0;
+    row-gap: 40px;
+    }
   }
   &__info {
     width: 430px;
     align-self: center;
     grid-area: txt;
+    @include sm {
+      @include flex-vertical();
+      align-items: center;
+      width: 270px;
+    }
   }
   &__title {
     width: 370px;
-    font-size: 35px;
-    line-height: 130%;
     color: $color-dark-l;
+    @include sm {
+      width: auto;
+      text-align: center;
+    }
   }
   &__description {
     font-size: 15px;
     line-height: 160%;
     margin-top: 25px;
     color: $color-dark-xl;
+    @include sm {
+      text-align: justify;
+      &:last-of-type {
+        margin-top: 22px;
+      }
+    }
   }
   &__image{
     grid-area: img;
+    @include sm {
+      width: 260px;
+    }
   }
 }
 
@@ -147,9 +173,14 @@
     justify-items: center;
     grid-row-gap: 60px;
     padding: 81px 0 100px 0;
+    @include adaptiveWidth();
+    @include sm {
+      grid-row-gap: 42px;
+      padding: 42px 0px;
+    }
   }
   &__title {
-    width: 400px;
+    width: 300px;
     text-align: center;
   }
 }
@@ -157,12 +188,18 @@
 .help {
   @include section(auto);
   padding: 80px 0 100px 0;
+  @include sm {
+    padding: 42px 0px;
+  }
   &__content {
-    @include adaptiveWidth();
     display: grid;
     row-gap: 60px;
     grid-template-rows: repeat(2, max-content);
     justify-items: center;
+    @include sm {
+      row-gap: 42px;
+      min-width: 300px;
+    }
   }
   &__title {
     text-align: center;
@@ -174,7 +211,20 @@
     align-content: space-between;
     margin-bottom: -56px;
     @include md {
-      width: 685px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 64px;
+      row-gap: 55px;
+      align-content: space-between;
+      margin-bottom: -2px;
+    }
+    @include sm {
+      display: grid;
+      grid-template-columns: repeat(2, 130px);
+      column-gap: 32px;
+      row-gap: 30px;
+      align-content: space-between;
+      margin-bottom: -2px;
     }
   }
   &__option {
@@ -187,21 +237,24 @@
     line-height: 115%;
     letter-spacing: 0.06em;
     color: $color-dark-l;
+    img {
+      @include sm {
+        height: 50px;
+      }
+    }
     &:last-of-type {
       margin-right: 0px;
     }
-    margin-bottom: 55px;
     @include lg {
+      margin-bottom: 55px;
       margin-right: 120px;
       &:nth-child(5n) {
         margin-right: 0px;
       }
     }
-    @include md {
-      flex: 1 0 calc(100% / 3);
-    }
     @include sm {
-      flex: 1 0 calc(100% / 2);
+      font-size: 15px;
+      row-gap: 20px;
     }
   }
 
@@ -211,9 +264,11 @@
   @include section(auto);
   background-color: $color-light-ll;
   padding: 82px 0 100px 0;
+  @include sm {
+    padding: 45px 0 43px 0;
+  }
   &__content {
     display: grid;
-    //grid-template-columns: repeat(2, max-content);
     grid-template-areas:
       "img txt";
     column-gap: 30px;
@@ -226,6 +281,12 @@
         "txt"
         "img";
     }
+    @include sm {
+      grid-template-areas: 
+      "txt"
+      "img";
+      row-gap: 20px;
+    }
   }
   &__title {
     line-height: 130%;
@@ -236,6 +297,12 @@
     width: 380px;
     justify-items: flex-start;
     grid-area: txt;
+    @include sm {
+      width: 280px;
+      justify-items: center;
+      text-align: center;
+      line-height: 160%;
+    }
   }
   &__card-info {
     font-family: 'Georgia', serif;
@@ -243,6 +310,10 @@
     line-height: 115%;
     letter-spacing: 0.06em;
     color: $color-dark-l;
+    @include sm {
+      letter-spacing: 0;
+      line-height: 160%;
+    }
   }
   &__card-number {
     display: flex;
@@ -257,10 +328,18 @@
     &::before {
       content: url('../assets/images/credit-card.png');
       margin-right: 15px;
+      @include sm {
+        font-size: 35px;
+      }
     }
     &:hover {
       color: $color-dark-l;
       background-color: $color-primary-light;
+    }
+    @include sm {
+      font-size: 15px;
+      width: 281px;
+      box-sizing: border-box;
     }
   }
   &__disclaimer {
@@ -268,8 +347,15 @@
     font-style: italic;
     line-height: 18px;
     color: $color-dark-m;
+    @include sm {
+      text-align: justify;
+    }
   }
   &__image {
     grid-area: img;
+    @include sm {
+      padding-top: 22px;
+      width: 260px;
+    }
   }
 }

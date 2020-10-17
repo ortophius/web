@@ -229,11 +229,12 @@ a, a.link {
       border-color: #FDDCC4; }
 
 .slider {
-  display: flex;
-  max-width: 1200px;
+  display: grid;
+  grid-template-areas: "prev cards next";
   align-items: center;
   justify-content: space-between;
-  width: 100%; }
+  width: 100%;
+  max-width: 1200px; }
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .slider {
       max-width: 708px; } }
@@ -241,6 +242,14 @@ a, a.link {
     .slider {
       min-width: 300px;
       width: 300px; } }
+  @media screen and (max-width: 768px) {
+    .slider {
+      grid-template-areas: "cards cards" "prev next";
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+      justify-content: center;
+      row-gap: 20px;
+      column-gap: 80px; } }
   .slider__button {
     display: flex;
     align-items: center;
@@ -255,13 +264,22 @@ a, a.link {
     .slider__button:hover {
       cursor: pointer;
       background-color: #F1CDB3; }
+    .slider__button_prev {
+      grid-area: prev;
+      justify-self: flex-end; }
+      @media screen and (max-width: 768px) {
+        .slider__button_prev {
+          margin-left: 10px; } }
     .slider__button_next {
+      grid-area: next;
+      justify-self: flex-start;
       transform: rotate(180deg); }
     .slider__button_inactive {
       border-color: #CDCDCD; }
       .slider__button_inactive svg path {
         fill: #CDCDCD; }
   .slider__cards {
+    grid-area: cards;
     display: grid;
     grid-template-rows: 1fr;
     grid-auto-rows: 0;
@@ -271,6 +289,10 @@ a, a.link {
       .slider__cards {
         grid-template-columns: repeat(2, min-content);
         column-gap: 40px;
+        overflow: hidden; } }
+    @media screen and (max-width: 768px) {
+      .slider__cards {
+        grid-template-columns: min-content;
         overflow: hidden; } }
   .slider__card {
     display: grid;
@@ -301,12 +323,18 @@ a, a.link {
   .footer__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .footer__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .footer__content {
+        min-width: 300px; } }
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .footer {
       padding-top: 13px; } }
+  @media screen and (max-width: 768px) {
+    .footer {
+      padding-top: 30px; } }
   .footer__content {
     display: grid;
     grid-template-areas: "info image";
@@ -324,6 +352,11 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .footer__image {
         justify-self: center; } }
+    @media screen and (max-width: 768px) {
+      .footer__image {
+        width: 260px;
+        justify-self: center;
+        margin-top: 40px; } }
 
 .footer-info {
   grid-area: info;
@@ -341,9 +374,13 @@ a, a.link {
       margin-bottom: 65px; } }
   @media screen and (max-width: 768px) {
     .footer-info {
+      height: 470px;
+      margin-top: 0px;
       grid-template-rows: repeat(6, max-content);
       grid-template-columns: 1fr;
-      grid-auto-flow: row; } }
+      grid-auto-flow: row;
+      justify-items: center;
+      text-align: center; } }
   .footer-info a {
     display: flex;
     position: relative;
@@ -359,14 +396,26 @@ a, a.link {
       top: 5px;
       margin-right: 20px;
       font-size: 0px; }
+      @media screen and (max-width: 768px) {
+        .footer-info a::before {
+          font-size: 30px; } }
     .footer-info a:hover {
       color: #FDDCC4; }
   .footer-info__title {
     color: #FFFFFF; }
+    @media screen and (max-width: 768px) {
+      .footer-info__title {
+        width: 240px; }
+        .footer-info__title br {
+          display: none; } }
   .footer-info__email::before {
     content: url("../assets/icons/mail.svg"); }
   .footer-info__phone::before {
     content: url("../assets/icons/phone.svg"); }
+  @media screen and (max-width: 768px) {
+    .footer-info__address {
+      justify-self: flex-start;
+      text-align: left; } }
   .footer-info__address::before {
     content: url("../assets/icons/pin.svg"); }
 
@@ -383,9 +432,12 @@ main {
   .pets__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .pets__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .pets__content {
+        min-width: 300px; } }
   .pets__content {
     display: grid;
     grid-auto-flow: row;

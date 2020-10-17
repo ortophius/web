@@ -229,11 +229,12 @@ a, a.link {
       border-color: #FDDCC4; }
 
 .slider {
-  display: flex;
-  max-width: 1200px;
+  display: grid;
+  grid-template-areas: "prev cards next";
   align-items: center;
   justify-content: space-between;
-  width: 100%; }
+  width: 100%;
+  max-width: 1200px; }
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .slider {
       max-width: 708px; } }
@@ -241,6 +242,14 @@ a, a.link {
     .slider {
       min-width: 300px;
       width: 300px; } }
+  @media screen and (max-width: 768px) {
+    .slider {
+      grid-template-areas: "cards cards" "prev next";
+      grid-template-columns: 1fr 1fr;
+      justify-items: center;
+      justify-content: center;
+      row-gap: 20px;
+      column-gap: 80px; } }
   .slider__button {
     display: flex;
     align-items: center;
@@ -255,13 +264,22 @@ a, a.link {
     .slider__button:hover {
       cursor: pointer;
       background-color: #F1CDB3; }
+    .slider__button_prev {
+      grid-area: prev;
+      justify-self: flex-end; }
+      @media screen and (max-width: 768px) {
+        .slider__button_prev {
+          margin-left: 10px; } }
     .slider__button_next {
+      grid-area: next;
+      justify-self: flex-start;
       transform: rotate(180deg); }
     .slider__button_inactive {
       border-color: #CDCDCD; }
       .slider__button_inactive svg path {
         fill: #CDCDCD; }
   .slider__cards {
+    grid-area: cards;
     display: grid;
     grid-template-rows: 1fr;
     grid-auto-rows: 0;
@@ -271,6 +289,10 @@ a, a.link {
       .slider__cards {
         grid-template-columns: repeat(2, min-content);
         column-gap: 40px;
+        overflow: hidden; } }
+    @media screen and (max-width: 768px) {
+      .slider__cards {
+        grid-template-columns: min-content;
         overflow: hidden; } }
   .slider__card {
     display: grid;
@@ -301,12 +323,18 @@ a, a.link {
   .footer__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .footer__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .footer__content {
+        min-width: 300px; } }
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .footer {
       padding-top: 13px; } }
+  @media screen and (max-width: 768px) {
+    .footer {
+      padding-top: 30px; } }
   .footer__content {
     display: grid;
     grid-template-areas: "info image";
@@ -324,6 +352,11 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .footer__image {
         justify-self: center; } }
+    @media screen and (max-width: 768px) {
+      .footer__image {
+        width: 260px;
+        justify-self: center;
+        margin-top: 40px; } }
 
 .footer-info {
   grid-area: info;
@@ -341,9 +374,13 @@ a, a.link {
       margin-bottom: 65px; } }
   @media screen and (max-width: 768px) {
     .footer-info {
+      height: 470px;
+      margin-top: 0px;
       grid-template-rows: repeat(6, max-content);
       grid-template-columns: 1fr;
-      grid-auto-flow: row; } }
+      grid-auto-flow: row;
+      justify-items: center;
+      text-align: center; } }
   .footer-info a {
     display: flex;
     position: relative;
@@ -359,14 +396,26 @@ a, a.link {
       top: 5px;
       margin-right: 20px;
       font-size: 0px; }
+      @media screen and (max-width: 768px) {
+        .footer-info a::before {
+          font-size: 30px; } }
     .footer-info a:hover {
       color: #FDDCC4; }
   .footer-info__title {
     color: #FFFFFF; }
+    @media screen and (max-width: 768px) {
+      .footer-info__title {
+        width: 240px; }
+        .footer-info__title br {
+          display: none; } }
   .footer-info__email::before {
     content: url("../assets/icons/mail.svg"); }
   .footer-info__phone::before {
     content: url("../assets/icons/phone.svg"); }
+  @media screen and (max-width: 768px) {
+    .footer-info__address {
+      justify-self: flex-start;
+      text-align: left; } }
   .footer-info__address::before {
     content: url("../assets/icons/pin.svg"); }
 
@@ -385,9 +434,12 @@ a, a.link {
   .start-screen__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .start-screen__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .start-screen__content {
+        min-width: 300px; } }
   @media screen and (min-width: 768px) and (max-width: 1280px) {
     .start-screen {
       padding-top: 0px;
@@ -481,9 +533,12 @@ a, a.link {
   .about__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .about__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .about__content {
+        min-width: 300px; } }
   .about__content {
     display: grid;
     grid-template-areas: "img txt";
@@ -495,22 +550,46 @@ a, a.link {
       .about__content {
         grid-template-areas: "txt" "img";
         justify-items: center; } }
+    @media screen and (max-width: 768px) {
+      .about__content {
+        grid-template-areas: "txt" "img";
+        justify-items: center;
+        width: 300px;
+        min-width: 300px;
+        padding: 43px 0 42px 0;
+        row-gap: 40px; } }
   .about__info {
     width: 430px;
     align-self: center;
     grid-area: txt; }
+    @media screen and (max-width: 768px) {
+      .about__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 270px; } }
   .about__title {
     width: 370px;
-    font-size: 35px;
-    line-height: 130%;
     color: #545454; }
+    @media screen and (max-width: 768px) {
+      .about__title {
+        width: auto;
+        text-align: center; } }
   .about__description {
     font-size: 15px;
     line-height: 160%;
     margin-top: 25px;
     color: #4C4C4C; }
+    @media screen and (max-width: 768px) {
+      .about__description {
+        text-align: justify; }
+        .about__description:last-of-type {
+          margin-top: 22px; } }
   .about__image {
     grid-area: img; }
+    @media screen and (max-width: 768px) {
+      .about__image {
+        width: 260px; } }
 
 .pets {
   display: flex;
@@ -522,9 +601,12 @@ a, a.link {
   .pets__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .pets__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .pets__content {
+        min-width: 300px; } }
   .pets__content {
     display: grid;
     grid-template-rows: repeat(3, auto);
@@ -532,9 +614,21 @@ a, a.link {
     justify-content: center;
     justify-items: center;
     grid-row-gap: 60px;
-    padding: 81px 0 100px 0; }
+    padding: 81px 0 100px 0;
+    max-width: 1200px; }
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
+      .pets__content {
+        max-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .pets__content {
+        min-width: 300px;
+        width: 300px; } }
+    @media screen and (max-width: 768px) {
+      .pets__content {
+        grid-row-gap: 42px;
+        padding: 42px 0px; } }
   .pets__title {
-    width: 400px;
+    width: 300px;
     text-align: center; }
 
 .help {
@@ -547,22 +641,24 @@ a, a.link {
   .help__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .help__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .help__content {
+        min-width: 300px; } }
+  @media screen and (max-width: 768px) {
+    .help {
+      padding: 42px 0px; } }
   .help__content {
-    max-width: 1200px;
     display: grid;
     row-gap: 60px;
     grid-template-rows: repeat(2, max-content);
     justify-items: center; }
-    @media screen and (min-width: 768px) and (max-width: 1280px) {
-      .help__content {
-        max-width: 708px; } }
     @media screen and (max-width: 768px) {
       .help__content {
-        min-width: 300px;
-        width: 300px; } }
+        row-gap: 42px;
+        min-width: 300px; } }
   .help__title {
     text-align: center; }
   .help__options {
@@ -573,7 +669,20 @@ a, a.link {
     margin-bottom: -56px; }
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .help__options {
-        width: 685px; } }
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 64px;
+        row-gap: 55px;
+        align-content: space-between;
+        margin-bottom: -2px; } }
+    @media screen and (max-width: 768px) {
+      .help__options {
+        display: grid;
+        grid-template-columns: repeat(2, 130px);
+        column-gap: 32px;
+        row-gap: 30px;
+        align-content: space-between;
+        margin-bottom: -2px; } }
   .help__option {
     display: grid;
     grid-template-rows: repeat(2, auto);
@@ -583,21 +692,22 @@ a, a.link {
     font-size: 20px;
     line-height: 115%;
     letter-spacing: 0.06em;
-    color: #545454;
-    margin-bottom: 55px; }
+    color: #545454; }
+    @media screen and (max-width: 768px) {
+      .help__option img {
+        height: 50px; } }
     .help__option:last-of-type {
       margin-right: 0px; }
     @media screen and (min-width: 1280px) {
       .help__option {
+        margin-bottom: 55px;
         margin-right: 120px; }
         .help__option:nth-child(5n) {
           margin-right: 0px; } }
-    @media screen and (min-width: 768px) and (max-width: 1280px) {
-      .help__option {
-        flex: 1 0 calc(100% / 3); } }
     @media screen and (max-width: 768px) {
       .help__option {
-        flex: 1 0 calc(100% / 2); } }
+        font-size: 15px;
+        row-gap: 20px; } }
 
 .donation {
   display: flex;
@@ -610,9 +720,15 @@ a, a.link {
   .donation__content {
     width: 1200px;
     min-width: 1200px; }
-    @media (min-width: 768px) and (max-width: 1600px) {
+    @media screen and (min-width: 768px) and (max-width: 1280px) {
       .donation__content {
         min-width: 708px; } }
+    @media screen and (max-width: 768px) {
+      .donation__content {
+        min-width: 300px; } }
+  @media screen and (max-width: 768px) {
+    .donation {
+      padding: 45px 0 43px 0; } }
   .donation__content {
     display: grid;
     grid-template-areas: "img txt";
@@ -624,6 +740,10 @@ a, a.link {
     @media screen and (min-width: 768px) and (max-width: 1280px) {
       .donation__content {
         grid-template-areas: "txt" "img"; } }
+    @media screen and (max-width: 768px) {
+      .donation__content {
+        grid-template-areas: "txt" "img";
+        row-gap: 20px; } }
   .donation__title {
     line-height: 130%; }
   .donation__info {
@@ -632,12 +752,22 @@ a, a.link {
     width: 380px;
     justify-items: flex-start;
     grid-area: txt; }
+    @media screen and (max-width: 768px) {
+      .donation__info {
+        width: 280px;
+        justify-items: center;
+        text-align: center;
+        line-height: 160%; } }
   .donation__card-info {
     font-family: 'Georgia', serif;
     font-size: 15px;
     line-height: 115%;
     letter-spacing: 0.06em;
     color: #545454; }
+    @media screen and (max-width: 768px) {
+      .donation__card-info {
+        letter-spacing: 0;
+        line-height: 160%; } }
   .donation__card-number {
     display: flex;
     align-items: center;
@@ -651,13 +781,28 @@ a, a.link {
     .donation__card-number::before {
       content: url("../assets/images/credit-card.png");
       margin-right: 15px; }
+      @media screen and (max-width: 768px) {
+        .donation__card-number::before {
+          font-size: 35px; } }
     .donation__card-number:hover {
       color: #545454;
       background-color: #FDDCC4; }
+    @media screen and (max-width: 768px) {
+      .donation__card-number {
+        font-size: 15px;
+        width: 281px;
+        box-sizing: border-box; } }
   .donation__disclaimer {
     font-size: 12px;
     font-style: italic;
     line-height: 18px;
     color: #B2B2B2; }
+    @media screen and (max-width: 768px) {
+      .donation__disclaimer {
+        text-align: justify; } }
   .donation__image {
     grid-area: img; }
+    @media screen and (max-width: 768px) {
+      .donation__image {
+        padding-top: 22px;
+        width: 260px; } }
