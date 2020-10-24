@@ -9,7 +9,7 @@ const wrapper = document.querySelector('.wrapper'),
   quote = document.getElementById('quote'),
   city = document.getElementById('city'),
   img = document.createElement('img');
-  quotesURL = 'http://134.0.116.189:3000/';
+  quotesURL = 'https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=ru';
 
 let currentBackground = '';
 
@@ -94,8 +94,6 @@ function start() {
   update();
   setInterval(update, 1000);
 }
-
-// https://api.openweathermap.org/data/2.5/weather?q=BA&lang=ru&appid=4fd57fb55adeae28d057069a1cf77765
 
 function sendHTTPRequest(url, body = '', errcalback = () => {}) {
   return new Promise(function(resolve) {
