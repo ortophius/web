@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./owfont/css/owfont-regular.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,300;0,500;1,200&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+<body spellcheck="false">
+  <div class="wrapper">
+    <div id="weather">
+      <span id="city" contenteditable="true"></span>
+      <div class="weather-block">
+        <span id="weather-message"> </span>
+        <div id="weather-info" class="invisible">
+          <i id="weather-icon"></i>
+          <span id="weather-temp"></span>
+          <span id="weather-humidity"></span>
+          <span id="weather-wind"></span>
+        </div>
+      </div>
+    </div>
+    <span id="date"></span>
+    <time></time>
+    <h1 class="greeting"><span id="daytime">Добрый вечер</span>, <span id="name" contenteditable="true">Василий</span></h1>
+    <h2 class="focus">Какая цель на сегодня?</h2>
+    <span id="goal" contenteditable="true">Пожарить курочку</span>
+    <div class="secondary-panel">
+      <i id="bg-refresh" class="fas fa-sync-alt"></i>
+      <div class="quote-wrapper">
+        <span id="quote"></span>
+        <i id="quote-refresh" class="fas fa-sync-alt"></i>
+      </div>
+    </div>
+  </div>
+<script src="app.js"></script>
+</body>
+</html>
