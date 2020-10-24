@@ -67,12 +67,6 @@ const init = {
 
 // Load
 function load() {
-  updateWeather();
-  updateQuote();
-  createImageList();
-  updateBackgroundImage();
-  update();
-  setInterval(update, 1000);
 
   const nameText = storage.getItem('name'),
     goalText = storage.getItem('goal'),
@@ -80,6 +74,7 @@ function load() {
     cityText = storage.getItem('city');
 
   if (nameText && goalText && imageNum && cityText) {
+    console.log(1, cityText);
     city.textContent = cityText;
     name.textContent = nameText;
     goal.textContent = goalText;
@@ -90,6 +85,15 @@ function load() {
   else if (!goalText) storage.setItem('goal', init.GOAL);
   else if (!imageNum) storage.setItem('imageNum', init.CURRENT_IMAGE_NAME_NUM);
   load();
+}
+
+function start() {
+  updateWeather();
+  updateQuote();
+  createImageList();
+  updateBackgroundImage();
+  update();
+  setInterval(update, 1000);
 }
 
 // https://api.openweathermap.org/data/2.5/weather?q=BA&lang=ru&appid=4fd57fb55adeae28d057069a1cf77765
@@ -134,8 +138,7 @@ function setCity(e) {
 
 async function updateWeather() {
   cityName = storage.getItem('city');
-  console.log(cityName);
-  if (cityName === init.CITY) return;
+  if (cityName === init.CITY || !cityName) return;
   
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&lang=ru&appid=4fd57fb55adeae28d057069a1cf77765`;
   
@@ -178,6 +181,7 @@ async function updateQuote() {
 
 function createImageList() {
   IMAGE_FOLDERS.forEach(function(daytime) {
+    console.log(1);
     for (let i = 0; i < 6; i++) {
       imageList.push(getRandomImage(daytime));
     }
@@ -321,6 +325,7 @@ function setGoal(e) {
 }
 
 load();
+start();
 
 document.querySelector('#name').addEventListener('focus', clearInput);
 document.querySelector('#goal').addEventListener('focus', clearInput);
