@@ -67,12 +67,6 @@ const init = {
 
 // Load
 function load() {
-  updateWeather();
-  updateQuote();
-  createImageList();
-  updateBackgroundImage();
-  update();
-  setInterval(update, 1000);
 
   const nameText = storage.getItem('name'),
     goalText = storage.getItem('goal'),
@@ -90,6 +84,15 @@ function load() {
   else if (!goalText) storage.setItem('goal', init.GOAL);
   else if (!imageNum) storage.setItem('imageNum', init.CURRENT_IMAGE_NAME_NUM);
   load();
+}
+
+function start() {
+  updateWeather();
+  updateQuote();
+  createImageList();
+  updateBackgroundImage();
+  update();
+  setInterval(update, 1000);
 }
 
 // https://api.openweathermap.org/data/2.5/weather?q=BA&lang=ru&appid=4fd57fb55adeae28d057069a1cf77765
@@ -134,15 +137,13 @@ function setCity(e) {
 
 async function updateWeather() {
   cityName = storage.getItem('city');
-  console.log(cityName);
-  if (cityName === init.CITY) return;
+  if (cityName === init.CITY || !cityName) return;
   
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&lang=ru&appid=4fd57fb55adeae28d057069a1cf77765`;
   
   let error = null;
 
   const response = JSON.parse(await(sendHTTPRequest(url, '', function(code) {
-    console.log(code);
     document.querySelector('#weather-message').textContent = 'Информация о погоде для этого города не найдена :(';
     document.querySelector('#weather-info').classList.add('invisible');
   })));
@@ -182,7 +183,6 @@ function createImageList() {
       imageList.push(getRandomImage(daytime));
     }
   });
-  console.log(imageList);
 }
 
 function getRandomImage(daytime) {
@@ -278,7 +278,6 @@ function getDayTime(date) {
 
 function clearInput(e) {
   e.target.innerHTML = '\u00a0';
-  console.log(e.target);
 
   // A bugfix from stackoverflow
   // https://stackoverflow.com/questions/2388164/set-focus-on-div-contenteditable-element
@@ -321,6 +320,7 @@ function setGoal(e) {
 }
 
 load();
+start();
 
 document.querySelector('#name').addEventListener('focus', clearInput);
 document.querySelector('#goal').addEventListener('focus', clearInput);
