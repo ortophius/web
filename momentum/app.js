@@ -74,7 +74,6 @@ function load() {
     cityText = storage.getItem('city');
 
   if (nameText && goalText && imageNum && cityText) {
-    console.log(1, cityText);
     city.textContent = cityText;
     name.textContent = nameText;
     goal.textContent = goalText;
@@ -145,7 +144,6 @@ async function updateWeather() {
   let error = null;
 
   const response = JSON.parse(await(sendHTTPRequest(url, '', function(code) {
-    console.log(code);
     document.querySelector('#weather-message').textContent = 'Информация о погоде для этого города не найдена :(';
     document.querySelector('#weather-info').classList.add('invisible');
   })));
@@ -181,12 +179,10 @@ async function updateQuote() {
 
 function createImageList() {
   IMAGE_FOLDERS.forEach(function(daytime) {
-    console.log(1);
     for (let i = 0; i < 6; i++) {
       imageList.push(getRandomImage(daytime));
     }
   });
-  console.log(imageList);
 }
 
 function getRandomImage(daytime) {
@@ -282,7 +278,6 @@ function getDayTime(date) {
 
 function clearInput(e) {
   e.target.innerHTML = '\u00a0';
-  console.log(e.target);
 
   // A bugfix from stackoverflow
   // https://stackoverflow.com/questions/2388164/set-focus-on-div-contenteditable-element
