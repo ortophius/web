@@ -9,7 +9,7 @@ const wrapper = document.querySelector('.wrapper'),
   quote = document.getElementById('quote'),
   city = document.getElementById('city'),
   img = document.createElement('img');
-  quotesURL = 'https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=ru';
+  quotesURL = 'https://quotes-cors.herokuapp.com/';
 
 let currentBackground = '';
 
