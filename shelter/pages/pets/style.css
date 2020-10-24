@@ -459,7 +459,8 @@ main {
   grid-auto-flow: row;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 40px;
-  row-gap: 30px; }
+  row-gap: 30px;
+  overflow: hidden; }
 
 .card {
   display: flex;
