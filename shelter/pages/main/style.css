@@ -80,7 +80,11 @@ table {
 :root {
   font-size: 10px; }
 
+html, body {
+  overflow: hidden; }
+
 body {
+  position: relative;
   font-family: Arial, sans-serif;
   font-size: 16px; }
 
@@ -159,8 +163,8 @@ a, a.link {
   font-size: 13px;
   line-height: 15px;
   letter-spacing: 0.1em;
-  color: #FFFFFF;
-  text-align: right; }
+  text-align: right;
+  z-index: 3; }
   @media screen and (max-width: 768px) {
     .logo {
       margin-right: 41px; } }
@@ -168,41 +172,87 @@ a, a.link {
     margin-bottom: 9px;
     font-size: 32px;
     line-height: 110%;
-    color: #F1CDB3; }
+    color: #F1CDB3;
+    transition: color 0.4s; }
   .logo__motto {
-    padding-right: 2px; }
+    padding-right: 2px;
+    color: #FFFFFF;
+    transition: color 0.4s; }
   .logo_light .logo__title {
     color: #545454; }
   .logo_light .logo__motto {
     color: #292929; }
+  .logo_active .logo__title {
+    color: #F1CDB3 !important; }
+  .logo_active .logo__motto {
+    color: #FFFFFF !important; }
 
 .menu {
   list-style: none; }
+  @media screen and (max-width: 768px) {
+    .menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: calc(-50% - 160px);
+      width: calc(50% + 160px);
+      height: 100vh;
+      padding-top: 28px;
+      padding-right: calc(50% - 160px);
+      box-sizing: border-box;
+      background-color: #292929;
+      transition: right 0.4s; }
+      .menu_active {
+        right: 0px; } }
   .menu__item {
     display: inline;
     margin-left: 29.7px; }
-    @media screen and (max-width: 768px) {
-      .menu__item {
-        display: none; } }
     .menu__item:first-of-type {
       margin-left: 0; }
+    @media screen and (max-width: 768px) {
+      .menu__item {
+        margin-left: 0px;
+        font-size: 32px;
+        line-height: 290%; } }
   .menu__link {
     padding: 0 1px 3px 1px; }
     .menu__link_active {
       border-bottom: 3px solid #F1CDB3; }
     .menu__link:hover {
       color: #FAFAFA; }
+    @media screen and (max-width: 768px) {
+      .menu__link {
+        letter-spacing: 0px;
+        padding: 0 1px 7px 1px; } }
   .menu_light .menu__link {
     color: #545454; }
+    @media screen and (max-width: 768px) {
+      .menu_light .menu__link {
+        color: #CDCDCD; } }
     .menu_light .menu__link:hover {
       color: #292929; }
+      @media screen and (max-width: 768px) {
+        .menu_light .menu__link:hover {
+          color: #FAFAFA; } }
   .menu__burger {
-    display: none; }
+    display: none;
+    z-index: 3; }
     @media screen and (max-width: 768px) {
       .menu__burger {
         display: initial;
         position: relative;
         top: 4px; } }
+    .menu__burger svg {
+      transition: transform 0.4s; }
+      .menu__burger svg line {
+        transition: stroke 0.4s; }
+    .menu__burger_active svg {
+      transform: rotate(90deg); }
+      .menu__burger_active svg line {
+        stroke: #F1CDB3; }
 
 .button {
   display: inline-block;
