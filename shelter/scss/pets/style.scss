@@ -13,6 +13,16 @@ main {
     row-gap: 60px;
     justify-items: center;
     padding: 80px 0 100px;
+    
+    @include md {
+      row-gap: 30px;
+      padding: 80px 0 76px;
+    }
+
+    @include sm {
+      row-gap: 42px;
+      padding: 42px 0;
+    }
   }
 
   &__title {
@@ -20,6 +30,10 @@ main {
     color: $color-dark-l;
     max-width: 40rem;
     text-align: center;
+
+    @include sm {
+      font-size: 25px;
+    }
   }
 }
 
@@ -30,6 +44,12 @@ main {
   column-gap: 40px;
   row-gap: 30px;
   overflow: hidden;
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include sm {
+    grid-template-columns: 1fr;
+  }
 }
 
 .card {
@@ -59,6 +79,15 @@ main {
   display: grid;
   grid-auto-flow: column;
   column-gap: 20px;
+
+  @include md {
+    margin-top: 10px;
+  }
+
+  @include sm {
+    column-gap: 10px;
+  }
+
   &__button {
     width: 52px;
     height: 52px;

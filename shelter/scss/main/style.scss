@@ -7,7 +7,7 @@
   padding-top: 30px;
   align-items: center;
   background: 
-    url('../assets/images/start-screen-gradient-background.png'),
+    url('../../assets/images/start-screen-gradient-background.png'),
     radial-gradient(100% 215.42% at 0% 0%, #5B483A 0%, #262425 100%),
     #211F20;
   background-size: cover;
@@ -326,7 +326,7 @@
     padding: 8.5px 15px;
     border-radius: 9px;
     &::before {
-      content: url('../assets/images/credit-card.png');
+      content: url('../../assets/images/credit-card.png');
       margin-right: 15px;
       @include sm {
         font-size: 35px;

@@ -7,6 +7,24 @@
   <title>Shelter - Home</title>
 </head>
 <body>
+  <div class="pet-wrapper">
+    <div class="pet-wrapper__background"></div>
+    <div class="pet">
+      <img src="../../assets/icons/cross.svg" class="pet__close">
+      <div class="pet__image"></div>
+      <div class="pet__info">
+        <h3 class="pet__name">Jennifer</h3>
+        <h2 class="pet__breed">Dog - Labrador</h2>
+        <p class="pet__description">Jennifer is a sweet 2 months old Labrador that is patiently waiting to find a new forever home. This girl really enjoys being able to go outside to run and play, but won't hesitate to play up a storm in the house if she has all of her favorite toys.</p>
+        <ul class="pet__list">
+          <li class="pet__addinfo"><b>Age:</b> 2 months</li>
+          <li class="pet__addinfo"><b>Inoculations:</b> none</li>
+          <li class="pet__addinfo"><b>Diseases:</b> none</li>
+          <li class="pet__addinfo"><b>Parasites:</b> none</li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="blackout"></div>
   <section class="start-screen">
     <header class="header">
@@ -36,15 +54,17 @@
         <div class="start-screen__info start-info">
           <h2 class="start-info__title">Not only people need a house</h2>
           <p class="start-info__description">We offer to give a chance to a little and nice puppy with an extremely wide and open heart. He or she will love you more than anybody else in the world, you will see!</p>
-          <button class="start-info__button button">Make a friend</button>
+          <a href="../pets/">
+            <button class="start-info__button button">Make a friend</button>
+          </a>
         </div>
-        <img src="../assets/images/start-screen-puppy.png" alt="A doggo" class="start-screen__doggo">
+        <img src="../../assets/images/start-screen-puppy.png" alt="A doggo" class="start-screen__doggo">
     </div>
   </section>
   <main>
     <section class="about">
       <div class="about__content">
-        <img src="../assets/images/about-pets.png" alt="Pets" class="about__image">
+        <img src="../../assets/images/about-pets.png" alt="Pets" class="about__image">
         <div class="about__info">
           <h2 class="about__title">About the shelter “Cozy House”</h2>
           <p class="about__description">
@@ -65,21 +85,6 @@
             </svg>
           </button>
           <div class="slider__cards">
-            <div class="slider__card card">
-              <div class="slider__photo" data-src="../assets/images/pets-katrine-2.png"></div>
-              <h3 class="card__name">Katrine</h3>
-              <button class="button button_transparent">Learn more</button>
-            </div>
-            <div class="slider__card card">
-              <div class="slider__photo" data-src="../assets/images/pets-jennifer.png"></div>
-              <h3 class="card__name">Jennifer</h3>
-              <button class="button button_transparent">Learn more</button>
-            </div>
-            <div class="slider__card card">
-              <div class="slider__photo" data-src="../assets/images/pets-woody.png"></div>
-              <h3 class="card__name">Woody</h3>
-              <button class="button button_transparent">Learn more</button>
-            </div>
           </div>
           <button class="slider__button slider__button_next">
             <svg width="14" height="6" viewBox="0 0 14 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -87,28 +92,30 @@
             </svg>
           </button>
         </div>
-        <button class="button">Get to know the rest</button>
+        <a href="../pets/">
+          <button class="button">Get to know the rest</button>
+        </a>
       </div>
     </section>
     <section class="help">
       <div class="help__content">
         <h2 class="help__title">How you can help <br> our shelter</h2>
           <ul class="help__options">
-            <li class="help__option"><img src="../assets/icons/icon-pet-food.svg" alt="Food" class="help__icon">Pet food</li>
-            <li class="help__option"><img src="../assets/icons/icon-transportation.svg" alt="Transportation" class="help__icon">Transportation</li>
-            <li class="help__option"><img src="../assets/icons/icon-toys.svg" alt="Toys" class="help__icon">Toys</li>
-            <li class="help__option"><img src="../assets/icons/icon-bowls-and-cups.svg" alt="" class="help__icon">Bowls and cups</li>
-            <li class="help__option"><img src="../assets/icons/icon-shampoos.svg" alt="" class="help__icon">Shampoos</li>
-            <li class="help__option"><img src="../assets/icons/icon-vitamins.svg" alt="" class="help__icon">Vitamins</li>
-            <li class="help__option"><img src="../assets/icons/icon-medicines.svg" alt="" class="help__icon">Medicines</li>
-            <li class="help__option"><img src="../assets/icons/icon-collars-leashes.svg" alt="" class="help__icon">Collars / leashes</li>
-            <li class="help__option"><img src="../assets/icons/icon-sleeping-area.svg" alt="" class="help__icon">Sleeping areas</li>
+            <li class="help__option"><img src="../../assets/icons/icon-pet-food.svg" alt="Food" class="help__icon">Pet food</li>
+            <li class="help__option"><img src="../../assets/icons/icon-transportation.svg" alt="Transportation" class="help__icon">Transportation</li>
+            <li class="help__option"><img src="../../assets/icons/icon-toys.svg" alt="Toys" class="help__icon">Toys</li>
+            <li class="help__option"><img src="../../assets/icons/icon-bowls-and-cups.svg" alt="" class="help__icon">Bowls and cups</li>
+            <li class="help__option"><img src="../../assets/icons/icon-shampoos.svg" alt="" class="help__icon">Shampoos</li>
+            <li class="help__option"><img src="../../assets/icons/icon-vitamins.svg" alt="" class="help__icon">Vitamins</li>
+            <li class="help__option"><img src="../../assets/icons/icon-medicines.svg" alt="" class="help__icon">Medicines</li>
+            <li class="help__option"><img src="../../assets/icons/icon-collars-leashes.svg" alt="" class="help__icon">Collars / leashes</li>
+            <li class="help__option"><img src="../../assets/icons/icon-sleeping-area.svg" alt="" class="help__icon">Sleeping areas</li>
           </ul>
       </div>
     </section>
     <section class="donation">
       <div class="donation__content">
-        <img src="../assets/images/donation-dog.png" class="donation__image" alt="Donate pls...">
+        <img src="../../assets/images/donation-dog.png" class="donation__image" alt="Donate pls...">
         <div class="donation__info">
           <h2 class="donation__title">
             You can also <br> make a donation
@@ -134,7 +141,7 @@
         <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer-info__address" itemprop="address">1 Central Street, Boston <br> (entrance from the store)</a>
         <a href="https://goo.gl/maps/4xiBk5QgUxZzeRCa8" target="_blank" class="footer-info__address" itemprop="address">18 South Park, London </a>
       </div>
-      <img src="../assets/images/footer-puppy.png" alt="Bye!" class="footer__image">
+      <img src="../../assets/images/footer-puppy.png" alt="Bye!" class="footer__image">
     </div>
   </footer>
   <script src="script.js"></script>

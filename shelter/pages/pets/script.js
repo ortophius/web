@@ -1,4 +1,4 @@
-[
+let pets = [
   {
     "name": "Jennifer",
     "img": "../../assets/images/jennifer.png",
@@ -89,19 +89,16 @@
   }
 ]
 
-
-const photos = document.querySelectorAll('.card__photo');
-for (let i = 0; i < photos.length; i++) {
-  const photo = photos[i];
-  photo.style.backgroundImage = `url(${photo.getAttribute('data-src')})`;
-}
+const page = document.querySelector('.pagination__button_page');
 
 const burger = document.querySelector('.menu__burger'),
   menu = document.querySelector('.menu'),
   blackout = document.querySelector('.blackout'),
-  logo = document.querySelector('.logo');
+  logo = document.querySelector('.logo'),
+  cards = document.querySelector('.cards');
   
-  let menuActive = false;
+  let menuActive = false,
+    pageTemplate;
   
   function toggleMenu() {
     menuActive = !menuActive;
@@ -120,14 +117,216 @@ const burger = document.querySelector('.menu__burger'),
     blackout.addEventListener('click', closeMenu);
   }
   
-  function closeMenu() {
-    menuActive = false;
+function closeMenu() {
+  menuActive = false;
+
+  menu.classList.remove('menu_active');
+  burger.classList.remove('menu__burger_active');
+  blackout.classList.remove('blackout_active');
+  logo.classList.remove('logo_active');
+  blackout.removeEventListener('click', closeMenu);
+}
+
+function displayPhotos() {
+  const photos = document.querySelectorAll('.card__photo');
+  for (let i = 0; i < photos.length; i++) {
+    const photo = photos[i];
+    photo.style.backgroundImage = `url(${photo.getAttribute('data-src')})`;
+  }
+}
+
+function getSlotsCount() {
+  const width = window.innerWidth;
+  console.log(width);
+  if (width <= 768) { return 3 }
+  else if (width <= 1280) { return 6 }
+  else { return 8 }
+}
+
+function createCard(petInfo) {
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `
+  <div class="card" data-petid="${petInfo.id}">
+    <div class="card__photo" data-src="${petInfo.img}"></div>
+    <h3 class="card__name">${petInfo.name}</h3>
+    <button class="button button_transparent button_learn" data-petid="${petInfo.id}">Learn more</button>
+  </div>`;
+  return wrapper.firstElementChild;
+}
+
+function getFirstId () {
+  const cards = document.querySelectorAll('.card');
+  const firstId = cards[0].dataset.petid;
+  return Number(firstId);
+}
+
+function getLastId() {
+  const cards = document.querySelectorAll('.card');
+  const lastId = cards[cards.length - 1].dataset.petid;
+  return Number(lastId);
+}
+
+function start() {
+  createPetsList();
+  slotsCount = getSlotsCount();
+  for (let i = 0; i < slotsCount; i++) {
+    cards.appendChild(createCard(pets[i]));
+  }
+  displayPhotos();
+  updatePagination();
+  setupListeners();
+}
+
+function createPetsList() {
+  const newPets = [];
+  for (let i = 0; i < 6; i++) {
+    const tempPets = [... pets];
+    for (c = 0; c < 8; c++) {
+      const randomIndex = Math.round(Math.random() * (tempPets.length - 1));
+      newPets.push({... tempPets[randomIndex]});
+      tempPets.splice(randomIndex, 1);
+    }
+  }
+
+  pets = [... newPets];
   
-    menu.classList.remove('menu_active');
-    burger.classList.remove('menu__burger_active');
-    blackout.classList.remove('blackout_active');
-    logo.classList.remove('logo_active');
-    blackout.removeEventListener('click', closeMenu);
+  for (let i = 0; i < pets.length; i++) {
+    pets[i].id = i;
+  }
+
+  console.log(pets);
+}
+
+function next() {
+  const nextFirstId = getLastId() + 1;
+  const nextDataset = pets.slice(nextFirstId, nextFirstId + getSlotsCount());
+
+  const cardsList = nextDataset.map((item) => { return createCard(item) });
+  page.textContent = Number(page.textContent) + 1;
+  updateCards(cardsList);
+}
+
+function last() {
+  const slotsCount = getSlotsCount();
+  const nextFirstId = pets.length - slotsCount;
+  const nextDataset = pets.slice(nextFirstId);
+  const cardsList = nextDataset.map((item) => { return createCard(item) });
+
+  page.textContent = pets.length / slotsCount;
+  updateCards(cardsList);
+}
+
+function first() {
+  const slotsCount = getSlotsCount();
+  const nextDataset = pets.slice(0, slotsCount);
+  const cardsList = nextDataset.map((item) => { return createCard(item) });
+
+  page.textContent = 1;
+  updateCards(cardsList);
+}
+
+function prev() {
+  let nextFirstId = getFirstId() - getSlotsCount();
+  if (nextFirstId < 0) nextFirstId = 0;
+
+  const nextDataset = pets.slice(nextFirstId, getFirstId());
+  const cardsList = nextDataset.map((item) => { return createCard(item) });
+  page.textContent = Number(page.textContent) - 1;
+  updateCards(cardsList);
+}
+
+function updateCards(cardsList) {
+  cards.classList.add('fade-out');
+
+  setTimeout(function() {
+    cards.innerHTML = '';
+    cardsList.forEach((card) => { cards.appendChild(card) });
+    displayPhotos();
+    updatePagination();
+    cards.classList.remove('fade-out');
+    cards.classList.add('fade-in');
+    setupListeners();
+  }, 400)
+
+  setTimeout(function() {
+    cards.className = 'cards';
+  }, 800);
+}
+
+function updatePagination() {
+  const prevButton = document.querySelector('.pagination__button_prev'),
+    startButton = document.querySelector('.pagination__button_start'),
+    nextButton = document.querySelector('.pagination__button_next'),
+    lastButton = document.querySelector('.pagination__button_last'),
+    firstId = getFirstId(),
+    lastId = getLastId();
+  
+  if (pets[lastId + 1] !== undefined) {
+    nextButton.disabled = false;
+    lastButton.disabled = false;
+  }
+  else {
+    nextButton.disabled = true;
+    lastButton.disabled = true;
   }
   
-  burger.addEventListener('click', toggleMenu);
+  if (pets[firstId - 1] !== undefined) {
+    prevButton.disabled = false;
+    startButton.disabled = false;
+  }
+  else {
+    prevButton.disabled = true;
+    startButton.disabled = true;
+  }
+}
+
+function setupListeners() {
+  const buttons = document.querySelectorAll('.button_learn');
+  
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', openModal);
+  }
+}
+
+function openModal(e) {
+  const petId = e.target.dataset.petid;
+  
+  const imageBlock = document.querySelector('.pet__image'),
+    petName = document.querySelector('.pet__name'),
+    petBreed = document.querySelector('.pet__breed'),
+    petDescription = document.querySelector('.pet__description'),
+    petList = document.querySelector('.pet__list'),
+    wrapper = document.querySelector('.pet-wrapper');
+    petInfo = pets[petId];
+
+  imageBlock.style.backgroundImage = `url("${petInfo.img}")`;
+  petName.textContent = petInfo.name;
+  petBreed.textContent = `${petInfo.type} - ${petInfo.breed}`;
+  petDescription.textContent = petInfo.description
+
+  let list = '';
+  list += `<li class="pet__addinfo"><b>Age:</b> ${petInfo.age}</li>`;
+  list += `<li class="pet__addinfo"><b>Inoculations:</b> ${petInfo.inoculations.join(', ')}</li>`;
+  list += `<li class="pet__addinfo"><b>Diseases:</b> ${petInfo.diseases.join(', ')}</li>`;
+  list += `<li class="pet__addinfo"><b>Parasites:</b> ${petInfo.parasites.join(', ')}</li>`;
+
+  petList.innerHTML = list;
+
+  wrapper.classList.add('pet-wrapper_active');
+}
+
+function closeModal() {
+  const wrapper = document.querySelector('.pet-wrapper');
+  wrapper.classList.remove('pet-wrapper_active');
+}
+
+
+
+document.addEventListener('DOMContentLoaded', start);
+document.querySelector('.pagination__button_next').addEventListener('click', next);
+document.querySelector('.pagination__button_last').addEventListener('click', last);
+document.querySelector('.pagination__button_prev').addEventListener('click', prev);
+document.querySelector('.pagination__button_start').addEventListener('click', first);
+document.querySelector('.pet__close').addEventListener('click', closeModal);
+document.querySelector('.pet-wrapper__background').addEventListener('click', closeModal);
+burger.addEventListener('click', toggleMenu);

@@ -3,8 +3,8 @@
 //fonts
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
   font-weight: bold;
   font-style: italic;
   font-display: swap;
@@ -12,8 +12,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -21,8 +21,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -30,8 +30,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
   font-weight: normal;
   font-style: italic;
   font-display: swap;
@@ -126,6 +126,23 @@ $content-width-320: 300px;
   }
 }
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.4s 1 backwards;
+}
+
+.fade-out {
+  animation: fade-in 0.4s 1 reverse forwards;
+}
+
 :root {
   font-size: 10px;
 }
@@ -204,15 +221,6 @@ main {
     z-index: 2;
     background: rgba(41, 41, 41, 0.6);
     animation: fade-in 0.4s 1;
-  }
-}
-
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
   }
 }
 
@@ -620,11 +628,11 @@ main {
   }
 
   &__email::before {
-    content: url('../assets/icons/mail.svg');
+    content: url('../../assets/icons/mail.svg');
   }
 
   &__phone::before {
-    content: url('../assets/icons/phone.svg');
+    content: url('../../assets/icons/phone.svg');
   }
 
   &__address {
@@ -634,6 +642,189 @@ main {
     }
   }
   &__address::before {
-    content: url('../assets/icons/pin.svg');
+    content: url('../../assets/icons/pin.svg');
   }
 }
+
+.pet-wrapper {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+
+  &__background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(41, 41, 41, 0.6);
+    z-index: 11;
+    cursor: pointer;
+    &:hover + .pet .pet__close {
+      background-color: $color-primary;
+    }
+  }
+
+  &_active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.pet {
+  display: flex;
+  width: 900px;
+  position: relative;
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  z-index: 12;
+
+  @include md {
+    width: 630px;
+  }
+
+  @include sm {
+    width: 240px;
+  }
+
+  &__image {
+    min-width: 500px;
+    height: 500px;
+    border-radius: 8px 0px 0px 8px;
+    background-size: cover;
+
+    @include md {
+      min-width: 350px;
+      height: 350px;
+    }
+
+    @include sm {
+      display: none;
+    }
+  }
+
+  &__info {
+    padding: 50px 20px 9px 30px;
+    
+    @include md {
+      padding: 10px 9px 10px 11px;
+    }
+
+    @include sm {
+      text-align: center;
+      padding: 10px 10px 0px 10px;
+    }
+  }
+
+  &__name {
+    font-family: Georgia;
+    font-size: 35px;
+    line-height: 130%;
+    letter-spacing: 0.06em;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+
+  &__breed {
+    font-family: Georgia;
+    font-size: 20px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    color: #000000;
+    margin-bottom: 40px;
+
+    @include md {
+      margin-bottom: 20px;
+    }
+
+    @include sm {
+      margin-bottom: 20px;
+    }
+  }
+
+  &__description {
+    font-family: Georgia;
+    font-size: 15px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    margin-bottom: 40px;
+
+    @include md {
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    @include sm {
+      margin-bottom: 20px;
+      font-size: 13px;
+      text-align: justify;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__addinfo {
+    font-family: Georgia;
+    font-size: 15px;
+    line-height: 110%;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+
+    @include md {
+      margin-bottom: 8px;
+    }
+
+    @include sm {
+      margin-bottom: 7px;
+    }
+
+    b {
+      font-weight: bold;
+    }
+
+    &::before {
+      content: "\2022";
+      color: $color-primary;
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+      margin-right: 14px;
+
+      @include sm {
+        margin-left: 6px;
+        margin-right: 0px;
+      }
+    }
+  }
+
+  &__list {
+    list-style: none;
+    @include sm {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: -43px;
+    top: -54px;
+    padding: 19px;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    font-size: 0;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: $color-primary;
+    }
+
+    @include sm {
+      right: -31px;
+    }
+  }
+}
+
