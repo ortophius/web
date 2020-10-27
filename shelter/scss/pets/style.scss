@@ -1,0 +1,123 @@
+@import '../common';
+
+main {
+  padding-top: 120px;
+}
+
+.pets {
+  @include section(auto);
+  background-color: $color-light-s;
+  &__content {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 60px;
+    justify-items: center;
+    padding: 80px 0 100px;
+    
+    @include md {
+      row-gap: 30px;
+      padding: 80px 0 76px;
+    }
+
+    @include sm {
+      row-gap: 42px;
+      padding: 42px 0;
+    }
+  }
+
+  &__title {
+    @include h2;
+    color: $color-dark-l;
+    max-width: 40rem;
+    text-align: center;
+
+    @include sm {
+      font-size: 25px;
+    }
+  }
+}
+
+.cards {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 40px;
+  row-gap: 30px;
+  overflow: hidden;
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include sm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $color-light-s;
+  transition: background-color 0.4s;
+  &:hover {
+    cursor: pointer;
+    background-color: $color-light-xl;
+  }
+  &__photo {
+    width: 270px;
+    height: 270px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  & * {
+    margin-bottom: 30px;
+  }
+}
+
+.pagination {
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 20px;
+
+  @include md {
+    margin-top: 10px;
+  }
+
+  @include sm {
+    column-gap: 10px;
+  }
+
+  &__button {
+    width: 52px;
+    height: 52px;
+    font-family: "Georgia", serif;
+    font-size: 20px;
+    font-weight: 600;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    cursor: pointer;
+    color: $color-dark-3xl;
+    outline: none;
+    background-color: transparent;
+    transition: background-color 0.4s;
+
+    &_page {
+      font-weight: 300;
+    }
+
+    &:hover, &_active {
+      background-color: $color-primary;
+    }
+
+    &:disabled {
+      color: $color-dark-s;
+      border-color: $color-dark-s;
+      cursor: default;
+      
+      &:hover {
+        background-color: initial;
+      }
+    }
+  }
+}

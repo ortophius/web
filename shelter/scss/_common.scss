@@ -3,8 +3,8 @@
 //fonts
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-BoldItalic.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-BoldItalic.woff') format('woff');
   font-weight: bold;
   font-style: italic;
   font-display: swap;
@@ -12,8 +12,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-Bold.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -21,8 +21,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -30,8 +30,8 @@
 
 @font-face {
   font-family: 'Georgia';
-  src: url('../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
-      url('../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
+  src: url('../../assets/fonts/Georgia/Georgia-Italic.woff2') format('woff2'),
+      url('../../assets/fonts/Georgia/Georgia-Italic.woff') format('woff');
   font-weight: normal;
   font-style: italic;
   font-display: swap;
@@ -59,6 +59,8 @@ $color-primary-light: #FDDCC4;
 
 // Content-area
 $content-width: 1200px;
+$content-width-768: 708px;
+$content-width-320: 300px;
 
 // Mixins
 @mixin flex-horizontal {
@@ -79,10 +81,78 @@ $content-width: 1200px;
   &__content {
     width: $content-width;
     min-width: $content-width;
+    @include md {
+      min-width: $content-width-768;
+    }
+    @include sm {
+      min-width: $content-width-320;
+    }
   }
 }
 
+@mixin h2 {
+  font-family: Georgia;
+  font-size: 35px;
+  line-height: 130%;
+  letter-spacing: 0.06em;
+}
+
+@mixin lg {
+  @media screen and (min-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media screen and (min-width: 768px) and (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin adaptiveWidth {
+  max-width: $content-width;
+  @include md {
+    max-width: $content-width-768;
+  }
+  @include sm {
+    min-width: $content-width-320;
+    width: $content-width-320;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.4s 1 backwards;
+}
+
+.fade-out {
+  animation: fade-in 0.4s 1 reverse forwards;
+}
+
+:root {
+  font-size: 10px;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
 body {
+  position: relative;
   font-family: Arial, sans-serif;
   font-size: 16px;
   
@@ -106,6 +176,10 @@ h2 {
   font-size: 35px;
   line-height: 130%;
   letter-spacing: 0.06em;
+
+  @include sm {
+    font-size: 25px;
+  }
 }
 
 h3 {
@@ -128,45 +202,188 @@ a, a.link {
   }
 }
 
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.blackout {
+  display: none;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: #00000000;
+  animation: fade-in 0.4s 1 reverse;
+  &_active {
+    display: block;
+    z-index: 2;
+    background: rgba(41, 41, 41, 0.6);
+    animation: fade-in 0.4s 1;
+  }
+}
+
 .header {
   @include flex-horizontal();
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  width: 100%;
+  z-index: 3;
+  &_light {
+    background-color: $color-light-xl;
+  }
+
+  &_fixed {
+    position: fixed;
+    width: 100%;
+    justify-content: center;
+    .header__content {
+      padding-top: 28px;
+      padding-bottom: 30px;
+    }
+  }
+
+  &__content {
+    @include flex-horizontal();
+    @include adaptiveWidth();
+    @include sm {
+      justify-content: flex-start;
+    }
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-top: 28px;
+    padding-bottom: 30px;
+  }
 }
 
 .logo {
+  @include sm {
+    margin-right: 41px;
+  }
   display: inline-block;
   padding-top: 3px;
   font-family: Arial;
   font-size: 13px;
   line-height: 15px;
   letter-spacing: 0.1em;
-  color: $color-light-xl;
   text-align: right;
   &__title {
     margin-bottom: 9px;
     font-size: 32px;
     line-height: 110%;
     color: $color-primary;
+    transition: color 0.4s;
   }
   &__motto {
     padding-right: 2px;
+    color: $color-light-xl;
+    transition: color 0.4s;
   }
+
+  &_light {
+    .logo__title {
+      color: $color-dark-l;
+    }
+
+    .logo__motto {
+      color: $color-dark-3xl;
+    }
+  }
+  &_active {
+    .logo__title {
+      color: $color-primary !important;
+    }
+    .logo__motto {
+      color: $color-light-xl !important;
+    }
+  }
+  z-index: 3;
 }
 
 .menu {
   list-style: none;
+  @include sm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: calc(-50% - 160px);
+    width: calc(50% + 160px);
+    height: 100vh;
+    padding-top: 28px;
+    padding-right: calc(50% - 160px);
+    box-sizing: border-box;
+    background-color: #292929;
+    transition: right 0.4s;
+    &_active {
+      right: 0px;
+    }
+    z-index: 2;
+  }
   &__item {
     display: inline;
     margin-left: 29.7px;
     &:first-of-type {
       margin-left: 0;
     }
+    @include sm {
+      margin-left: 0px;
+      font-size: 32px;
+      line-height: 290%;
+    }
   }
   &__link {
     padding: 0 1px 3px 1px;
     &_active {
       border-bottom: 3px solid $color-primary;
+    }
+    &:hover {
+      color: $color-light-s;
+    }
+    @include sm {
+      letter-spacing: 0px;
+      padding: 0 1px 7px 1px;
+    }
+  }
+
+  &_light {
+    .menu__link {
+      color: $color-dark-l;
+      @include sm {
+        color: $color-light-l;
+      }
+      &:hover {
+        color: $color-dark-3xl;
+        @include sm {
+          color: $color-light-s;
+        }
+      }
+    }
+  }
+
+  &__burger {
+    display: none;
+    @include sm {
+      display: initial;
+      position: relative;
+      top: 4px;
+    }
+    z-index: 3;
+    & svg {
+      transition: transform 0.4s;
+      & line {
+        transition: stroke 0.4s;
+      }
+    }
+    &_active svg {
+      transform: rotate(90deg);
+      & line {
+        stroke: #F1CDB3;;
+      }
     }
   }
 }
@@ -200,10 +417,20 @@ a, a.link {
 }
 
 .slider {
-  @include flex-horizontal();
+  display: grid;
+  grid-template-areas: "prev cards next";
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  @include adaptiveWidth();
+  @include sm {
+    grid-template-areas: "cards cards" "prev next";
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    justify-content: center;
+    row-gap: 20px;
+    column-gap: 80px;
+  }
   &__button{
     @include flex-horizontal();
     align-items: center;
@@ -219,7 +446,16 @@ a, a.link {
       cursor: pointer;
       background-color: $color-primary;
     }
+    &_prev {
+      grid-area: prev;
+      justify-self: flex-end;
+      @include sm {
+        margin-left: 10px;
+      }
+    }
     &_next {
+      grid-area: next;
+      justify-self: flex-start;
       transform: rotate(180deg);
     }
     &_inactive {
@@ -230,9 +466,22 @@ a, a.link {
     }
   }
   &__cards {
+    grid-area: cards;
     display: grid;
-    grid-auto-flow: column;
+    grid-template-rows: 1fr;
+    grid-auto-rows: 0;
+    // grid-auto-flow: column;
+    grid-template-columns: repeat(3, min-content);
     column-gap: 90px;
+    @include md {
+      grid-template-columns: repeat(2, min-content);
+      column-gap: 40px;
+      overflow: hidden;
+    }
+    @include sm {
+      grid-template-columns: min-content;
+      overflow: hidden;
+    }
   }
   &__card {
     display: grid;
@@ -257,49 +506,325 @@ a, a.link {
   }
 }
 
+// .footer {
+//   @include section(auto);
+//   @include md {
+//     padding-top: 13px;
+//   }
+//   &__content {
+//     display: flex;
+//     justify-content: space-between;
+//     flex-wrap: wrap;
+//     @include md {
+//       width: 640px;
+//       justify-content: center;
+//     }
+//   }
+//   padding-top: 40px;
+//   background: 
+//     radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
+// }
+
 .footer {
   @include section(auto);
+  @include md {
+    padding-top: 13px;
+  }
+  @include sm {
+    padding-top: 30px;
+  }
+  &__content {
+    display: grid;
+    grid-template-areas: "info image";
+    justify-content: space-between;
+    
+    @include md {
+      justify-content: center;
+      grid-template-areas: "info" "image";
+    }
+
+    @include sm {
+      justify-content: center;
+      grid-template-areas: "info" "image";
+    }
+  }
+
   padding-top: 40px;
   background: 
     radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
-  &__content {
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 160px;
+
+  &__image {
+    grid-area: image;
+    @include md {
+      justify-self: center;
+    }
+    @include sm {
+      width: 260px;
+      justify-self: center;
+      margin-top: 40px;
+    }
   }
-  &__info {
-    @include flex-vertical();
-    justify-content: space-between;
-    height: 234px;
-    padding-top: 17px;
-    a {
-      @include flex-horizontal();
-      align-items: center;
-      font-family: 'Georgia', serif;
-      font-size: 20px;
-      letter-spacing: 0.06em;
-      color: $color-primary;
-      &::before {
-        position: relative;
-        bottom: 2px;
-        margin-right: 20px;
-        font-size: 0px;
+}
+
+.footer-info {
+  grid-area: info;
+  display: grid;
+  margin-top: 17px;
+  grid-template-rows: repeat(3, min-content);
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 160px;
+  grid-auto-flow: column;
+  height: 234px;
+  align-content: space-between;
+
+  @include md {
+    column-gap: 60px;
+    margin-bottom: 65px;
+  }
+
+  @include sm {
+    height: 470px;
+    margin-top: 0px;
+    grid-template-rows: repeat(6, max-content);
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    justify-items: center;
+    text-align: center;
+  }
+
+  a {
+    @include flex-horizontal();
+    position: relative;
+    top: 5px;
+    align-items: center;
+    font-family: 'Georgia', serif;
+    line-height: 115%;
+    font-size: 20px;
+    letter-spacing: 0.06em;
+    color: $color-primary;
+    &::before {
+      position: relative;
+      top: 5px;
+      margin-right: 20px;
+      font-size: 0px;
+      @include sm {
+        font-size: 30px;
+        top: 0px;
       }
-      &:hover {
-        color: $color-primary-light;
+    }
+    &:hover {
+      color: $color-primary-light;
+    }
+  }
+
+  &__title {
+    color: $color-light-xl;
+    @include sm {
+      width: 240px;
+      & br {
+        display: none;
       }
     }
   }
-  &__title {
-    color: $color-light-xl;
-  }
+
   &__email::before {
-    content: url('../assets/icons/mail.svg');
+    content: url('../../assets/icons/mail.svg');
   }
+
   &__phone::before {
-    content: url('../assets/icons/phone.svg');
+    content: url('../../assets/icons/phone.svg');
+  }
+
+  &__address {
+    @include sm {
+      justify-self: flex-start;
+      text-align: left;
+    }
   }
   &__address::before {
-    content: url('../assets/icons/pin.svg');
+    content: url('../../assets/icons/pin.svg');
   }
 }
+
+.pet-wrapper {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+
+  &__background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(41, 41, 41, 0.6);
+    z-index: 11;
+    cursor: pointer;
+    &:hover + .pet .pet__close {
+      background-color: $color-primary;
+    }
+  }
+
+  &_active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.pet {
+  display: flex;
+  width: 900px;
+  position: relative;
+  background-color: #FAFAFA;
+  border-radius: 8px;
+  z-index: 12;
+
+  @include md {
+    width: 630px;
+  }
+
+  @include sm {
+    width: 240px;
+  }
+
+  &__image {
+    min-width: 500px;
+    height: 500px;
+    border-radius: 8px 0px 0px 8px;
+    background-size: cover;
+
+    @include md {
+      min-width: 350px;
+      height: 350px;
+    }
+
+    @include sm {
+      display: none;
+    }
+  }
+
+  &__info {
+    padding: 50px 20px 9px 30px;
+    
+    @include md {
+      padding: 10px 9px 10px 11px;
+    }
+
+    @include sm {
+      text-align: center;
+      padding: 10px 10px 0px 10px;
+    }
+  }
+
+  &__name {
+    font-family: Georgia;
+    font-size: 35px;
+    line-height: 130%;
+    letter-spacing: 0.06em;
+    color: #000000;
+    margin-bottom: 10px;
+  }
+
+  &__breed {
+    font-family: Georgia;
+    font-size: 20px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    color: #000000;
+    margin-bottom: 40px;
+
+    @include md {
+      margin-bottom: 20px;
+    }
+
+    @include sm {
+      margin-bottom: 20px;
+    }
+  }
+
+  &__description {
+    font-family: Georgia;
+    font-size: 15px;
+    line-height: 115%;
+    letter-spacing: 0.06em;
+    margin-bottom: 40px;
+
+    @include md {
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+
+    @include sm {
+      margin-bottom: 20px;
+      font-size: 13px;
+      text-align: justify;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__addinfo {
+    font-family: Georgia;
+    font-size: 15px;
+    line-height: 110%;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+
+    @include md {
+      margin-bottom: 8px;
+    }
+
+    @include sm {
+      margin-bottom: 7px;
+    }
+
+    b {
+      font-weight: bold;
+    }
+
+    &::before {
+      content: "\2022";
+      color: $color-primary;
+      font-weight: bold;
+      display: inline-block;
+      width: 1em;
+      margin-left: -1em;
+      margin-right: 14px;
+
+      @include sm {
+        margin-left: 6px;
+        margin-right: 0px;
+      }
+    }
+  }
+
+  &__list {
+    list-style: none;
+    @include sm {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+  }
+
+  &__close {
+    position: absolute;
+    right: -43px;
+    top: -54px;
+    padding: 19px;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    font-size: 0;
+    width: 12px;
+    height: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: $color-primary;
+    }
+
+    @include sm {
+      right: -31px;
+    }
+  }
+}
+
