@@ -36,13 +36,45 @@ const layouts = [
 ]
 
 /**
+ * Class representing a Publisher pattern
+ */
+class Events {
+  constructor() {
+    this.subs = {};
+  }
+
+  /**
+   * Setup an event listener
+   * @param {String} eventName Event name
+   * @param {Function} callback Function callback
+   * @param {*} thisArg callback context
+   * @returns {Function} Link to a function used as a callback for deleting the listener.
+   */
+  on(eventName, callback, thisArg = null) {
+    if (!this.subs[eventName]) this.subs[eventName] = [];
+    const cb = callback.bind(thisArg);
+    this.subs[eventName].push(cb);
+    return cb;
+  }
+
+  emit(eventName, param) {
+    const listeners = this.subs[eventName];
+    if (!listeners) return false;
+
+    listeners.forEach(callback => { callback(param) });
+  }
+}
+
+/**
  * @class Layouts
  * Stores layout configurations
  */
-class Layouts {
+class Layout {
   constructor() {
     this.layouts = {};
     this.load(layouts);
+    this.setLayout('en');
+    this.events = new Events();
   }
 
   /**
@@ -50,18 +82,40 @@ class Layouts {
    * @param {object} layouts 
    */
   load(layouts) {
-    layouts.forEach(function(layout) {
+    const _ = this;
+    layouts.forEach((layout) => {
       this.layouts[layout.name] = layout;
     });
   }
 
   /**
    * Get layout by name
-   * @param {*} layoutName 
+   * @param {*} layoutName
    * @returns {layout}
    */
-  get(layoutName, shifted) {
-    if (!this[layoutName]) return false;
-    return (shifted) ? this[layoutName].normal : this[layoutName].shifted;
+  setLayout(layoutName) {
+    if (!this.layouts[layoutName]) return false;
+
+    this.currentLayout = layoutName;
+    this.chars = layoutName.normal;
+  }
+
+  /**
+   * Change layout view when pushing shift button
+   */
+  shift() {
+    const _ = this;
+    const currentLayout = this.layouts[this.currentLayout];
+    this.chars = currentLayout.shifted.map((keysLine, lineIndex) => {
+      return [... keysLine].map((char, charIndex) => {
+        if (!char) return  currentLayout.normal[lineIndex][charIndex].toUpperCase();
+        else return char;
+      });
+    });
   }
 }
+
+class Keyboard {
+
+}
+
