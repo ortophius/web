@@ -89,9 +89,8 @@ class Layout {
   }
 
   /**
-   * Get layout by name
-   * @param {*} layoutName
-   * @returns {layout}
+   * Set new layout
+   * @param {string} layoutName
    */
   setLayout(layoutName) {
     if (!this.layouts[layoutName]) return false;
@@ -113,9 +112,67 @@ class Layout {
       });
     });
   }
+
+  /**
+   * Get specified character from current layout
+   * @param {number} lineIndex Keyboard line index, starts from 0
+   * @param {number} charIndex Character index inside line, starts from 0
+   */
+  getChar(lineIndex, charIndex) {
+    return (this.chars[lineIndex][charIndex] || false);
+  }
 }
 
-class Keyboard {
+/**
+ * Class representing a keyboard button
+ */
+class Button {
+  constructor() {
+    this.domNode = document.createElement('button');
+  }
 
+  /**
+   * @type {string} key label
+   */
+  set label(value) {
+    this.domNode.innerHTML = String(vlaue);
+  }
+
+  get label() {
+    return String(this.domNode.innerHTML);
+  }
+
+  /**
+   * Set callback function
+   * @param {function} callback Callback function
+   * @param {*} thisArg Callback context
+   */
+  set onclick(callback, thisArg = null) {
+    this.callback = callback.bind(thisArg);
+    this.domNode.addEventListener('click', this.callback);
+  }
+
+  /**
+   * Insert a DOM representation of button into 
+   * a DOM element 
+   * @param {DomNode} node 
+   */
+  insert(node) {
+    node.appendChild(this.domNode);
+  }
 }
 
+class CharButton extends Button {
+  constructor(layout, lineIndex, charIndex) {
+    super();
+    this.layout = layout;
+    this.lineIndex = lineIndex;
+    this.charIndex = charIndex;
+    this.layout.on('changeLayout', this.update, this);
+    this.update();
+  }
+
+  update() {
+    this.label = this.layout.getChar(this.lineIndex, this.charIndex);
+  }
+}
