@@ -35,13 +35,14 @@ const printCodes = [
   ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal'],
   ['KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight', 'Backslash'],
   ['KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote'],
-  ['KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'Comma', 'Period', 'Slash'],
+  ['KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash'],
 ]
 
 const commandCodes = {
   shift: 'ShiftLeft ShiftRight',
+  capslock: 'CapsLock',
   left: 'ArrowLeft',
-  right: 'ArrowRIght',
+  right: 'ArrowRight',
 }
 
 const commandIcons = {
@@ -52,6 +53,8 @@ const commandIcons = {
   left: '&#9664;',
   right: '&#9654;',
   speech: '&#127897;',
+  capslock: '&#8682;',
+  sounds: '&#128266;'
 }
 
 /**
@@ -96,6 +99,7 @@ class Layout {
     this.setLayout('en');
 
     this.shifted = false;
+    this.upper = false;
   }
 
   /**
@@ -128,22 +132,55 @@ class Layout {
     this.setLayout(newLayout);
   }
 
-  /**
-   * Change layout view when pushing shift button
-   */
+  upperCase() {
+    this.chars = this.chars.map(line => {
+      return line.map(char => char.toUpperCase());
+    });
+    this.upper = true;
+    this.events.emit('changeLayout');
+  }
+
+  lowerCase() {
+    this.chars = this.chars.map(line => {
+      return line.map(char => char.toLowerCase());
+    });
+    this.upper = false;
+    this.events.emit('changeLayout');
+  }
+
+  toggleCase() {
+    if (this.upper) this.lowerCase();
+    else this.upperCase();
+  }
+
   shift() {
     const _ = this;
-    this.shifted = !this.shifted;
-    if (this.shifted) {
-      const currentLayout = this.layouts[this.currentLayout];
-      this.chars = currentLayout.shifted.map((keysLine, lineIndex) => {
-        return [... keysLine].map((char, charIndex) => {
-          if (!char) return  currentLayout.normal[lineIndex][charIndex].toUpperCase();
-          else return char;
-        });
+    const shiftedLayout = this.layouts[this.currentLayout].shifted;
+
+    this.toggleCase();
+
+    shiftedLayout.forEach((line, lineIndex) => {
+      [... line].forEach((char, charIndex) => {
+        if (char) this.chars[lineIndex][charIndex] = char;
       });
-    }
-    else this.setLayout(this.currentLayout);
+    });
+
+    this.shifted = true;
+    this.events.emit('changeLayout');
+  }
+
+  unshift() {
+    const shiftedLayout = this.layouts[this.currentLayout].shifted;
+    const normalLayout = this.layouts[this.currentLayout].normal;
+
+    this.toggleCase();
+
+    shiftedLayout.forEach((line, lineIndex) => {
+      [... line].forEach((char, charIndex) => {
+        if (char) this.chars[lineIndex][charIndex] = normalLayout[lineIndex][charIndex];
+      });
+    });
+
     this.events.emit('changeLayout');
   }
 
@@ -244,11 +281,15 @@ class Button {
 
   /**
    * Change button states beetwen active and inactive
+   * @param {boolean} [value] New button state
    * @returns {Button} this button
    */
-  toggle() {
-    this.active = !this.active;
-    if (this.active) this.domNode.classList.add('button__active');
+  toggle(value) {
+    if (value !== undefined) {
+      this.active = value;
+    }
+    else this.active = !this.active;
+    if (this.active) this.domNode.classList.add('button_active');
     else this.domNode.classList.remove('button_active');
   }
 }
@@ -266,7 +307,16 @@ class CharButton extends Button {
     this.lineIndex = lineIndex;
     this.charIndex = charIndex;
     this.layout.on('changeLayout', this.update.bind(this));
+    this.code = printCodes[lineIndex][charIndex];
     this.update();
+  }
+
+  set char(value) {
+    this.domNode.dataset.char = value;
+  }
+
+  get char() {
+    return this.domNode.dataset.char;
   }
 
   /**
@@ -274,6 +324,7 @@ class CharButton extends Button {
    */
   update() {
     this.label = this.layout.getChar(this.lineIndex, this.charIndex);
+    this.char = this.layout.getChar(this.lineIndex, this.charIndex);
   }
 }
 
@@ -286,16 +337,91 @@ class Keyboard {
   constructor(input) {
     this.input = input;
     this.active = true;
-    this.domNode = document.createElement('div');
-    this.speechBlackout = document.createElement('div');
+
     this.lines = [];
-    this.speechBlackout.classList.add('speech');
+
+    this.domNode = document.createElement('div');
     this.domNode.classList.add('keyboard');
     this.domNode.classList.add('keyboard_active');
+
+    this.toggleButton = document.createElement('button');
+    this.toggleButton.classList.add('button');
+    this.toggleButton.classList.add('keyboard__toggle');
+    this.toggleButton.innerHTML = '&#10060;';
+    this.toggleButton.addEventListener('click', this.toggle.bind(this));
+
+    this.domNode.appendChild(this.toggleButton);
+
     this.layout = new Layout();
+
     this.setupButtons();
-    document.body.appendChild(this.speechBlackout);
+    this.setupSounds();
+
     document.body.appendChild(this.domNode);
+
+    input.addEventListener('keydown', this.processKeyEvent.bind(this));
+    input.addEventListener('keyup', this.processKeyEvent.bind(this));
+  }
+
+  processKeyEvent(e) {
+    const type = e.type;
+    const code = e.code;
+
+    const button = document.querySelector(`.button[data-code~="${code}"]`);
+    
+    if (!button) return;
+
+    const name = button.dataset.name;
+
+    if (name !== 'shift' && name !== 'capslock') {
+      if (type === 'keydown') button.classList.add('button_active');
+      else button.classList.remove('button_active');
+    }
+    else if (name === 'shift') this.shift(e);
+    else if (name === 'capslock' && type === 'keydown') this.capsLock();
+
+    if (e.repeat) return;
+
+    if (name === 'char' || name === 'space') this.makeSound(e.type);
+    else if (type === 'keydown') this.makeSound('command');
+  }
+
+  setupSounds() {
+    const _ = this;
+
+    const soundsDir = './assets/sounds/';
+    const soundsList = ['keyup', 'keydown', 'command'];
+
+    _.audio = {};
+
+    soundsList.forEach(sound => {
+      const preloader = new Audio();
+      preloader.src = `${soundsDir}${sound}.ogg`;
+      preloader.addEventListener('loadeddata', () => { _.audio[sound] = preloader.src; })
+    });
+  }
+
+  makeSound(soundName) {
+    if (!this.soundsButton.active) return;
+
+    const audio = new Audio();
+    audio.src = this.audio[soundName];
+    audio.play();
+  }
+
+  /**
+   * Toggle keyboard visibility
+   */
+  toggle() {
+    this.active = !this.active;
+    if (this.active) {
+      this.domNode.classList.add('keyboard_active');
+      this.toggleButton.innerHTML = '&#10060;';
+    }
+    else {
+      this.domNode.classList.remove('keyboard_active');
+      this.toggleButton.innerHTML = '&#8963;';
+    }
   }
 
   /**
@@ -329,18 +455,29 @@ class Keyboard {
       left = this.createFuncButton('left'),
       right = this.createFuncButton('right'),
       speech = this.createFuncButton('speech'),
-      layout = this.createFuncButton('layout');
+      layout = this.createFuncButton('layout'),
+      capsLock = this.createFuncButton('capslock'),
+      sounds = this.createFuncButton('sounds');
 
     layout.label = this.layout.currentLayout;
 
     backspace.insert(this.lines[0]);
     enter.insert(this.lines[2]);
+    capsLock.insert(this.lines[2], 0);
     shift.insert(this.lines[3], 0);
     space.insert(this.lines[4]);
     left.insert(this.lines[3]);
     right.insert(this.lines[3]);
     layout.insert(this.lines[4], 0);
     speech.insert(this.lines[4]);
+    sounds.insert(this.lines[4]);
+
+    this.shiftButton = shift;
+    this.capsLockButton = capsLock;
+    this.speechButton = speech;
+    this.soundsButton = sounds 
+
+    this.soundsButton.toggle(true);
 
   }
 
@@ -374,7 +511,8 @@ class Keyboard {
    * @param {Button} button 
    */
   type(button) {
-    this.addChar(button.label);
+    this.makeSound('keydown');
+    this.addChar(button.domNode.dataset.char);
   }
 
   /**
@@ -386,7 +524,7 @@ class Keyboard {
     const text = this.input.value;
     this.input.value = text.slice(0, start) + char + text.slice(start);
     this.input.focus();
-    this.input.selectionStart = start + 1;
+    this.input.selectionStart = start + char.length;
     this.input.selectionEnd = this.input.selectionStart;
   }
 
@@ -407,12 +545,29 @@ class Keyboard {
   }
 
   /**
+   * Move input caret for n elements
+   * @param {*} n number of chars. Negative for moving left.
+   */
+  move(n) {
+    const input = this.input;
+    const start = this.input.selectionStart;
+
+    let newPosition = start + n;
+    if (newPosition < 0) newPosition = 0;
+
+    input.focus();
+
+    input.selectionStart = newPosition;
+    input.selectionEnd = this.input.selectionStart;
+  }
+
+  /**
    * Process command button click
    * @param {Button} button 
    */
   command(button) {
     const name = button.name;
-
+    this.makeSound('command');
     if (name === 'space') this.addChar(' ');
     else if (name === 'enter') this.addChar('\r\n');
     else if (name === 'backspace') this.deleteToLeft();
@@ -420,13 +575,84 @@ class Keyboard {
       this.layout.nextLayout();
       button.label = this.layout.currentLayout;
     }
+    else if (name === 'speech') {
+      this.speechToggle();
+    }
+    else if (name === 'left') {
+      this.move(-1);
+    }
+    else if (name === 'right') {
+      this.move(1);
+    }
     else if (name === 'shift') {
-      button.toggle();
+      this.shift();
+    }
+    else if (name === 'capslock') {
+      this.capsLock();
+    }
+    else if (name === 'sounds') {
+      this.soundsButton.toggle();
+    }
+  }
+
+  shift(e) {
+    if (e) {
+      if (e.type === 'keydown' && this.shiftButton.active) return;
+      if (e.type === 'keyup' && !this.shiftButton.active) return;
+    }
+    if (this.shiftButton.active) {
+      this.shiftButton.toggle(false);
+      this.layout.unshift();
+    }
+    else {
+      this.shiftButton.toggle(true);
       this.layout.shift();
     }
-    else if (name === 'speech') {
-      this.textFromSpeech();
+  }
+
+  capsLock() {
+    this.layout.toggleCase();
+    if (this.capsLockButton.active) this.capsLockButton.toggle(false);
+    else this.capsLockButton.toggle(true);
+  }
+
+  speechToggle() {
+    const button = this.speechButton
+    button.toggle();
+
+    if(button.active) {
+      const locale = (this.layout === 'en') ? 'en-US' : 'ru-RU';
+      this.rec = new SpeechRecognizer(locale, this.printSpeechResult.bind(this));
+      this.rec.start();
     }
+    else {
+      this.rec.stop();
+      this.rec = undefined;
+    }
+  }
+
+  printSpeechResult(res) {
+    this.addChar(res[res.length - 1][0].transcript);
+  }
+}
+
+class SpeechRecognizer {
+  constructor(lang, callback) {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.recognition = new SpeechRecognition();
+    this.recognition.lang = lang;
+    this.recognition.continuous = true;
+    
+    this.recognition.addEventListener('result', (r) => { callback(r.results) })
+    this.recognition.addEventListener('end', this.stop.bind(this));    
+  }
+
+  stop() { 
+    this.recognition.stop();
+  }
+
+  start() { 
+    this.recognition.start();
   }
 }
 
