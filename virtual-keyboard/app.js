@@ -361,6 +361,16 @@ class Keyboard {
 
     input.addEventListener('keydown', this.processKeyEvent.bind(this));
     input.addEventListener('keyup', this.processKeyEvent.bind(this));
+    
+    // Sh-h-h...
+    const nsfw = document.createElement('div');
+    nsfw.innerHTML = '<label for="nsfw"> Dont check (NSFW)<label/><input type="checkbox" name="nsfw" id="nsfw">';
+    this.domNode.appendChild(nsfw);
+
+    document.getElementById('nsfw').addEventListener('click', (e) => {
+      if (e.target.checked) document.querySelector('.shy').classList.add('shy_active');
+      else document.querySelector('.shy').classList.remove('shy_active');
+    });
   }
 
   processKeyEvent(e) {
@@ -389,23 +399,41 @@ class Keyboard {
   setupSounds() {
     const _ = this;
 
+    this.a = new Audio();
     const soundsDir = './assets/sounds/';
     const soundsList = ['keyup', 'keydown', 'command'];
+
+    const unsafeSoundsDir = './assets/sounds/hentai/';
+    const unsafeSoundsCount = 14;
+
+    _.fun = [];
+
+    for (let i = 0; i < unsafeSoundsCount; i++) {
+      const preloader = new Audio();
+      preloader.src = `${unsafeSoundsDir}${i}.mp3`;
+      preloader.addEventListener('loadeddata', () => { _.fun.push(preloader.src) });
+    }
 
     _.audio = {};
 
     soundsList.forEach(sound => {
       const preloader = new Audio();
       preloader.src = `${soundsDir}${sound}.ogg`;
-      preloader.addEventListener('loadeddata', () => { _.audio[sound] = preloader.src; })
+      preloader.addEventListener('loadeddata', () => { _.audio[sound] = preloader.src });
     });
   }
 
   makeSound(soundName) {
     if (!this.soundsButton.active) return;
 
-    const audio = new Audio();
-    audio.src = this.audio[soundName];
+    if (document.getElementById('nsfw').checked) {
+      const file = this.fun[Math.round(Math.random() * 12)];
+      this.a.src = file;
+      this.a.play();
+      return;
+    }
+
+    const audio = new Audio(this.audio[soundName]);
     audio.play();
   }
 

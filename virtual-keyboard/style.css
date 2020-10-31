@@ -126,3 +126,24 @@ body {
         transition: top 0.2s;
     }
 }
+
+.shy {
+    display: none
+}
+
+.shy_active {
+    display: flex;
+    width: 100vw;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 50%;
+}
+
+.shy img {
+    width: 36vw;
+    opacity: 0.6;
+}
+
+.shy__left {
+    transform: scaleX(-1);
+}
