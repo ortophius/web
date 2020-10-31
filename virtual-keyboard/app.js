@@ -286,16 +286,32 @@ class Keyboard {
   constructor(input) {
     this.input = input;
     this.active = true;
-    this.domNode = document.createElement('div');
-    this.speechBlackout = document.createElement('div');
+
     this.lines = [];
-    this.speechBlackout.classList.add('speech');
+
+    this.domNode = document.createElement('div');
     this.domNode.classList.add('keyboard');
     this.domNode.classList.add('keyboard_active');
+
+    this.toggleButton = document.createElement('button');
+    this.toggleButton.textContent = 'X';
+    this.toggleButton.addEventListener('click', this.toggle.bind(this));
+    this.domNode.appendChild(this.toggleButton);
+
     this.layout = new Layout();
+
     this.setupButtons();
-    document.body.appendChild(this.speechBlackout);
+
     document.body.appendChild(this.domNode);
+  }
+
+  /**
+   * Toggle keyboard visibility
+   */
+  toggle() {
+    this.active = !this.active;
+    if (this.active) this.domNode.classList.add('keyboard_active');
+    else this.domNode.classList.remove('keyboard_active');
   }
 
   /**
@@ -386,7 +402,7 @@ class Keyboard {
     const text = this.input.value;
     this.input.value = text.slice(0, start) + char + text.slice(start);
     this.input.focus();
-    this.input.selectionStart = start + 1;
+    this.input.selectionStart = start + char.length;
     this.input.selectionEnd = this.input.selectionStart;
   }
 
@@ -425,8 +441,37 @@ class Keyboard {
       this.layout.shift();
     }
     else if (name === 'speech') {
-      this.textFromSpeech();
+      const locale = (this.layout === 'en') ? 'en-US' : 'ru-RU';
+      new SpeechRecognizer(locale, this.addChar.bind(this)).start();
     }
+  }
+}
+
+class SpeechRecognizer {
+  constructor(lang, callback) {
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    this.recognition = new SpeechRecognition();
+    this.recognition.lang = lang;
+    
+    this.recognition.addEventListener('result', (r) => { callback(r.results[0][0].transcript) })
+    this.recognition.addEventListener('start', this.start.bind(this));
+    this.recognition.addEventListener('end', this.stop.bind(this));
+
+    this.speechBlackout = document.createElement('div');
+    this.speechBlackout.classList.add('speech');
+    this.speechBlackout.textContent = 'Say something...';
+    this.speechBlackout.addEventListener('click', this.stop.bind(this));
+
+    this.recognition.start();
+  }
+
+  stop() { 
+    this.speechBlackout.remove();
+    this.recognition.stop();
+  }
+
+  start() { 
+    document.body.appendChild(this.speechBlackout);
   }
 }
 
