@@ -2,38 +2,41 @@ const layouts = [
   {
     name: 'en',
     normal: [
-      ['1', '2','3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace', ],
-      ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\',],
-      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'enter',],
-      ['shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/',],
-      ['space']
+      ['1', '2','3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
+      ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\''],
+      [ 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/']
     ],
     shifted: [
-      ['!', '@','#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 'backspace', ],
-      [, , , , , , , , , , '{', '}', '|',],
-      [, , , , , , , , , ':', '"', 'enter',],
-      ['shift', , , , , , , , '<', '>', '?',],
-      ['space']
+      ['!', '@','#', '$', '%', '^', '&', '*', '(', ')', '_', '+'],
+      [, , , , , , , , , , '{', '}', '|'],
+      [, , , , , , , , , ':', '"'],
+      [ , , , , , , , '<', '>', '?']
     ],
   },
   {
     name: 'ru',
     normal: [
-      ['1', '2','3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'backspace', ],
-      ['й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\',],
-      ['ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э', 'enter',],
-      ['shift', 'я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.',],
-      ['space']
+      ['1', '2','3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
+      ['й', 'ц', 'у', 'к', 'е', 'н', 'г', 'ш', 'щ', 'з', 'х', 'ъ', '\\'],
+      ['ф', 'ы', 'в', 'а', 'п', 'р', 'о', 'л', 'д', 'ж', 'э'],
+      ['я', 'ч', 'с', 'м', 'и', 'т', 'ь', 'б', 'ю', '.']
     ],
     shifted: [
-      ['!', '"','№', ';', '%', ':', '?', '*', '(', ')', '_', '+', 'backspace', ],
-      [, , , , , , , , , , , , '/',],
-      [, , , , , , , , , , , 'enter',],
-      ['shift', , , , , , , , , , ',',],
-      ['space']
+      ['!', '"','№', ';', '%', ':', '?', '*', '(', ')', '_', '+'],
+      [, , , , , , , , , , , , '/'],
+      [, , , , , , , , , , , ],
+      [ , , , , , , , , , ',']
     ],
   }
 ]
+
+const commandIcons = {
+  backspace: '&#9003;',
+  enter: '&#9166;',
+  shift: '&#8679;',
+  space: '&#9251;',
+}
 
 /**
  * Class representing a Publisher pattern
@@ -68,13 +71,14 @@ class Events {
 /**
  * @class Layouts
  * Stores layout configurations
+ * @property {Array} chars current character table 
  */
 class Layout {
   constructor() {
     this.layouts = {};
+    this.events = new Events();
     this.load(layouts);
     this.setLayout('en');
-    this.events = new Events();
   }
 
   /**
@@ -94,9 +98,9 @@ class Layout {
    */
   setLayout(layoutName) {
     if (!this.layouts[layoutName]) return false;
-
     this.currentLayout = layoutName;
-    this.chars = layoutName.normal;
+    this.chars = this.layouts[layoutName].normal;
+    this.events.emit('changeLayout');
   }
 
   /**
@@ -111,6 +115,7 @@ class Layout {
         else return char;
       });
     });
+    this.events.emit('changeLayout');
   }
 
   /**
@@ -119,7 +124,18 @@ class Layout {
    * @param {number} charIndex Character index inside line, starts from 0
    */
   getChar(lineIndex, charIndex) {
-    return (this.chars[lineIndex][charIndex] || false);
+    const char = this.chars[lineIndex][charIndex];
+    if (!char) return false;
+    return (char);
+  }
+
+  /**
+   * Subscribe to an event
+   * @param {string} eventName An Layout event name
+   * @param {function} callback Callback function
+   */
+  on(eventName, cb) {
+    this.events.on(eventName, cb);
   }
 }
 
@@ -135,7 +151,7 @@ class Button {
    * @type {string} key label
    */
   set label(value) {
-    this.domNode.innerHTML = String(vlaue);
+    this.domNode.innerHTML = String(value);
   }
 
   get label() {
@@ -145,11 +161,17 @@ class Button {
   /**
    * Set callback function
    * @param {function} callback Callback function
-   * @param {*} thisArg Callback context
    */
-  set onclick(callback, thisArg = null) {
-    this.callback = callback.bind(thisArg);
-    this.domNode.addEventListener('click', this.callback);
+  set onclick(callback) {
+    this.callback = callback;
+    this.domNode.addEventListener('click', this.click.bind(this));
+  }
+
+  /**
+   * @private
+   */
+  click() {
+    this.callback(this);
   }
 
   /**
@@ -162,6 +184,12 @@ class Button {
   }
 }
 
+/**
+ * A character button
+ * @param {Layout} layout Layout object
+ * @param {number} lineIndex Line index inside layout table
+ * @param {number} charIndex Character index in line of layout table
+ */
 class CharButton extends Button {
   constructor(layout, lineIndex, charIndex) {
     super();
@@ -172,7 +200,49 @@ class CharButton extends Button {
     this.update();
   }
 
+  /**
+   * @private
+   */
   update() {
     this.label = this.layout.getChar(this.lineIndex, this.charIndex);
   }
 }
+
+/**
+ * Class representing a keyboard.
+ * A layer between GUI and businness-logic
+ * @param {DomNode} input an DOM input element
+ */
+class Keyboard {
+  constructor(input) {
+    this.input = input;
+    this.active = true;
+    this.domNode = document.createElement('div');
+    this.lines = [];
+    this.domNode.classList.add('keyboard');
+    this.domNode.classList.add('keyboard_active');
+    this.layout = new Layout();
+    this.setupButtons();
+    document.body.appendChild(this.domNode);
+  }
+
+  setupButtons() {
+    const _ = this;
+    const charTable = this.layout.chars;
+
+    this.layout.chars.forEach((line, lineIndex) => {
+      const buttonsLine = document.createElement('div');
+      buttonsLine.classList.add('keyboard__line');
+
+      _.lines.push(buttonsLine);
+      _.domNode.appendChild(buttonsLine);
+
+      line.forEach((char, charIndex) => {
+        const button = new CharButton(_.layout, lineIndex, charIndex);
+        button.insert(_.lines[lineIndex]);
+      });
+    })
+  }
+}
+
+const kBoard = new Keyboard(document.getElementById('text'));
