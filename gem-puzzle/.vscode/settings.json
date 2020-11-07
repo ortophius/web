@@ -1,0 +1,11 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "editor.fontSize": 12,
+  "editor.tabSize": 2,
+  "explorer.confirmDragAndDrop": false,
+  "eslint.validate": ["typescript"],
+  "typescript.validate.enable": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
