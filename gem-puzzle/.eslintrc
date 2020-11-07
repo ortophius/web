@@ -1,6 +1,26 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
   "env": {
-    "browser": true
+    "browser": true,
+    "mocha": true
   },
-  "extends": "airbnb-base"
+  "extends": [
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "project": "./gem-puzzle/tsconfig.json"
+  },
+  "rules": {
+    "import/extensions": [
+       "error",
+       "ignorePackages",
+       {
+         "js": "never",
+         "jsx": "never",
+         "ts": "never",
+         "tsx": "never"
+       }
+    ]
+  }
 }
