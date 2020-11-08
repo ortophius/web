@@ -9,7 +9,8 @@
   },
   "include": [
     "src/modules/**/*",
-    "@types/Extensions.d.ts"
+    "@types/Extensions.d.ts",
+    "@types/Config.d.ts"
   ],
   "exclude": [
     "node_modules"
