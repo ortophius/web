@@ -59,8 +59,8 @@ module.exports = {
   ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
-    open: true,
     port: 3000,
     clientLogLevel: 'info',
+    hot: true,
   },
 };

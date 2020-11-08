@@ -1,4 +1,5 @@
 {
+  "root":  true,
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "env": {
@@ -9,7 +10,7 @@
     "airbnb-typescript/base"
   ],
   "parserOptions": {
-    "project": "./gem-puzzle/tsconfig.json"
+    "project": "tsconfig.json"
   },
   "rules": {
     "import/extensions": [
