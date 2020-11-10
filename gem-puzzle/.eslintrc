@@ -22,6 +22,17 @@
          "ts": "never",
          "tsx": "never"
        }
+    ],
+    "class-methods-use-this": [
+      1,
+      {
+        "exceptMethods": [
+          "preRender",
+          "render",
+          "postRender",
+          "draw"
+        ]
+      }
     ]
   }
 }

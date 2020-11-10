@@ -1,12 +1,11 @@
 import Config from '../Config/Config';
-import GameObject from '../GameObject/GameObject';
 
 interface IMovingTo {
   x: number | null,
   y: number | null,
 }
 
-export default class Container implements GameObject {
+export default class Container {
   protected posX: number;
 
   protected posY: number;
@@ -71,18 +70,30 @@ export default class Container implements GameObject {
     return this.sizeHeight;
   }
 
-  draw(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
-    this.move(delta);
+  abstract render(ctx: CanvasRenderingContext2D = Config.ctx);
 
+  protected preRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.save();
     ctx.rect(this.x, this.y, this.width, this.height);
     ctx.clip();
+  }
 
+  protected renderChildren(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
     this.children.forEach((gameObject) => {
-      gameObject.draw(delta, ctx);
+      gameObject.update(delta, ctx);
     });
+  }
 
+  protected postRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.restore();
+  }
+
+  protected update(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
+    this.animatePosition(delta);
+    this.preRender(ctx);
+    this.render(ctx);
+    this.renderChildren(delta, ctx);
+    this.postRender(ctx);
   }
 
   addObject(gameObject: GameObject): number {
@@ -123,7 +134,7 @@ export default class Container implements GameObject {
     this.height = height;
   }
 
-  move(delta) {
+  animatePosition(delta) {
     const { moveSpeed } = this;
     function getNextStep(from: number, to: number) {
       const length = Math.abs(to - from);
