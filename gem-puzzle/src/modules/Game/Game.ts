@@ -2,6 +2,8 @@ import Chip from '../Chip/Chip';
 import Config from '../Config/Config';
 import template from './Game.pug';
 
+let chip: Chip;
+
 export default class Game {
   private lastTime: number = 0;
 
@@ -18,10 +20,10 @@ export default class Game {
   }
 
   start(): void {
-    this.chip = new Chip(0, 0, 40, 40);
-    this.chip.setNumber(433);
+    chip = new Chip(0, 0, 40, 40);
+    chip.setNumber(433);
     this.update();
-    this.chip.moveTo(100, 100);
+    this.update();
   }
 
   update(time: number = 0) {
@@ -31,7 +33,7 @@ export default class Game {
 
     const { ctx, canvas } = Config;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    this.chip.draw(delta);
-    window.requestAnimationFrame(this.update.bind(this));
+    chip.update(delta);
+    // window.requestAnimationFrame(this.update.bind(this));
   }
 }

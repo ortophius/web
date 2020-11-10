@@ -27,7 +27,7 @@ export default class Text extends Container {
     this.fontFamily = fontFamily;
   }
 
-  get width(): number {
+  get width(): number | 'auto' {
     if (this.maxWidth !== 'auto') return this.maxWidth;
 
     const { ctx } = Config;
@@ -52,8 +52,10 @@ export default class Text extends Container {
     this.size = height / 1;
   }
 
-  draw(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
+  render(ctx: CanvasRenderingContext2D = Config.ctx) {
+    console.log(ctx.font);
     ctx.save();
+
     ctx.font = `${this.size}px ${this.fontFamily}`;
     ctx.fillStyle = this.color;
     ctx.textBaseline = 'top';
@@ -64,7 +66,7 @@ export default class Text extends Container {
       ctx.fillText(this.text, this.x, this.y, this.maxWidth);
     }
 
-    super.draw(delta);
     ctx.restore();
+    console.log(ctx.font);
   }
 }
