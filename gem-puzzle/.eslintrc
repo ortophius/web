@@ -33,6 +33,12 @@
           "draw"
         ]
       }
+    ],
+    "no-underscore-dangle": [
+      2,
+      {
+        "allowAfterThis": true 
+      }
     ]
   }
 }
