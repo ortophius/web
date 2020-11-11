@@ -1,24 +1,22 @@
 type Subs = Array<Function>;
 
-export default class Events {
-  private events: Array<Subs>;
+export default abstract class Events {
+  events: Array<Subs> = [];
 
-  private eventObject: {
-    type: string,
-    caller: Events,
-    data: object
-  };
-
-  on(eventName: string, callback: Function) {
-    if (!this.events[eventName]) this.events[eventName] = [];
-    this.events[eventName].push(callback);
+  on(eventType: string, callback: Function) {
+    if (this.events[eventType] === undefined) this.events[eventType] = [];
+    this.events[eventType].push(callback);
+    console.log(this.events);
   }
 
-  emit(eventName: string, data?: object) {
-    const eventObject = { ...this.eventObject };
-    eventObject.data = data;
-
-    const subs: Subs = this.events[eventName];
+  emit(eventType: string, data: object = {}) {
+    const eventObject = {
+      eventType,
+      caller: this,
+      data,
+    };
+    console.log(this.events);
+    const subs: Subs = this.events[eventType];
 
     subs.forEach((callback) => { callback(eventObject); });
   }
