@@ -4,15 +4,11 @@ import Container from '../Container/Container';
 export default class Text extends Container {
   color: string = 'rgba(0, 0, 0, 1)';
 
-  maxWidth: number | 'auto' = 'auto';
+  private _text: string;
 
-  metricsWidth: number;
+  private _size: number;
 
-  text: string;
-
-  size: number;
-
-  fontFamily: string;
+  private _fontFamily: string;
 
   constructor(
     text: string = '',
@@ -27,46 +23,57 @@ export default class Text extends Container {
     this.fontFamily = fontFamily;
   }
 
-  get width(): number | 'auto' {
-    if (this.maxWidth !== 'auto') return this.maxWidth;
+  set text(text: string) {
+    this._text = text;
+    this.measureText();
+  }
 
+  get text(): string {
+    return this._text;
+  }
+
+  set size(size: number) {
+    this._size = size;
+    this.measureText();
+  }
+
+  get size(): number {
+    return this._size;
+  }
+
+  set fontFamily(fontFamily: string) {
+    this._fontFamily = fontFamily;
+    this.measureText();
+  }
+
+  get fontFamily(): string {
+    return this._fontFamily;
+  }
+
+  private measureText(): void {
     const { ctx } = Config;
 
+    ctx.save();
+
     ctx.font = `${this.size}px ${this.fontFamily}`;
+
     const metrics: TextMetrics = Config.ctx.measureText(this.text);
 
-    this.metricsWidth = metrics.width;
+    ctx.restore();
 
-    return this.metricsWidth;
-  }
-
-  set width(width: number | 'auto') {
-    this.maxWidth = width;
-  }
-
-  get height(): number {
-    return this.size;
-  }
-
-  set height(height: number) {
-    this.size = height / 1;
+    this.width = metrics.width;
+    this.height = this.size;
   }
 
   render(ctx: CanvasRenderingContext2D = Config.ctx) {
-    console.log(ctx.font);
     ctx.save();
 
     ctx.font = `${this.size}px ${this.fontFamily}`;
     ctx.fillStyle = this.color;
     ctx.textBaseline = 'top';
 
-    if (this.maxWidth === 'auto') {
-      ctx.fillText(this.text, this.x, this.y);
-    } else {
-      ctx.fillText(this.text, this.x, this.y, this.maxWidth);
-    }
+    ctx.fillText(this.text, this.x, this.y);
 
     ctx.restore();
-    console.log(ctx.font);
   }
 }

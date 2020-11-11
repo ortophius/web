@@ -1,18 +1,23 @@
 import Config from '../Config/Config';
+import Events from '../Events/Events';
 
 interface IMovingTo {
   x: number | null,
   y: number | null,
 }
 
-export default class Container {
-  protected posX: number;
+export default abstract class Container extends Events {
+  x: number;
 
-  protected posY: number;
+  y: number;
 
-  protected sizeWidth: number;
+  width: number;
 
-  protected sizeHeight: number;
+  height: number;
+
+  children: Array<Container>;
+
+  moveSpeed: number = 50;
 
   protected isMoving: boolean;
 
@@ -21,9 +26,7 @@ export default class Container {
     y: null,
   };
 
-  children: Array<GameObject>;
-
-  moveSpeed: number = 50;
+  protected _zIndex: number = 0;
 
   constructor(
     x: number = 0,
@@ -31,6 +34,7 @@ export default class Container {
     width: number = 0,
     height: number = 0,
   ) {
+    super();
     this.x = x;
     this.y = y;
     this.width = width;
@@ -38,49 +42,18 @@ export default class Container {
     this.children = [];
   }
 
-  set x(value: number) {
-    this.posX = value;
-  }
-
-  get x(): number {
-    return this.posX;
-  }
-
-  set y(value: number) {
-    this.posY = value;
-  }
-
-  get y(): number {
-    return this.posY;
-  }
-
-  set width(value: number) {
-    this.sizeWidth = value;
-  }
-
-  get width() {
-    return this.sizeWidth;
-  }
-
-  set height(value: number) {
-    this.sizeHeight = value;
-  }
-
-  get height() {
-    return this.sizeHeight;
-  }
-
-  abstract render(ctx: CanvasRenderingContext2D = Config.ctx);
+  abstract render(ctx: CanvasRenderingContext2D);
 
   protected preRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.save();
-    ctx.rect(this.x, this.y, this.width, this.height);
-    ctx.clip();
+    const path = new Path2D();
+    path.rect(this.x, this.y, this.width, this.height);
+    ctx.clip(path);
   }
 
   protected renderChildren(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
-    this.children.forEach((gameObject) => {
-      gameObject.update(delta, ctx);
+    this.children.forEach((container) => {
+      container.update(delta, ctx);
     });
   }
 
@@ -88,7 +61,7 @@ export default class Container {
     ctx.restore();
   }
 
-  protected update(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
+  update(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
     this.animatePosition(delta);
     this.preRender(ctx);
     this.render(ctx);
@@ -96,7 +69,7 @@ export default class Container {
     this.postRender(ctx);
   }
 
-  addObject(gameObject: GameObject): number {
+  addObject(gameObject: Container): number {
     const newPosition = {
       x: gameObject.x + this.x,
       y: gameObject.y + this.y,
@@ -147,7 +120,6 @@ export default class Container {
       return nextStep;
     }
 
-    // Move to the next position
     if (!this.isMoving) return;
     const newX = getNextStep(this.x, this.movingTo.x);
     const newY = getNextStep(this.y, this.movingTo.y);

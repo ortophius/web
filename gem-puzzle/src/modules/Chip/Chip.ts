@@ -29,7 +29,6 @@ export default class Chip extends Container {
   }
 
   render(ctx: CanvasRenderingContext2D = Config.ctx) {
-    console.log(ctx);
     ctx.save();
     ctx.fillStyle = this.backgroundColor;
     ctx.fillRect(this.x, this.y, this.width, this.height);

@@ -17,23 +17,26 @@ export default class Game {
     const ctx = Config.canvas.getContext('2d');
 
     Config.ctx = ctx;
+
+    // ctx.clip = function () { console.log(new Error().stack); };
   }
 
   start(): void {
     chip = new Chip(0, 0, 40, 40);
     chip.setNumber(433);
-    this.update();
+    chip.moveTo(200, 200);
     this.update();
   }
 
   update(time: number = 0) {
+    const { ctx, canvas } = Config;
+
     const newTime = parseFloat(time.toFixed(2)) / 1000;
     const delta = parseFloat((newTime - this.lastTime).toFixed(2));
     this.lastTime = newTime;
 
-    const { ctx, canvas } = Config;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     chip.update(delta);
-    // window.requestAnimationFrame(this.update.bind(this));
+    window.requestAnimationFrame(this.update.bind(this));
   }
 }
