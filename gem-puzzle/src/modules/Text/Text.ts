@@ -62,7 +62,7 @@ export default class Text extends Container {
     ctx.restore();
 
     this.width = metrics.width;
-    this.height = this.size * 0.85;
+    this.height = this.size;
   }
 
   render(ctx: CanvasRenderingContext2D = Config.ctx) {
