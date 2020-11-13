@@ -5,11 +5,90 @@ import Text from '../Text/Text';
 export default class Chip extends Container {
   backgroundColor: string;
 
+  moveSpeed = 400;
+
   protected labelId: number | null = null;
+
+  private dragged: boolean = false;
+
+  private savedPosition = {
+    x: 0,
+    y: 0,
+  };
+
+  private mouseOffset = {
+    x: 0,
+    y: 0,
+  };
 
   constructor(x: number, y: number, width: number, height: number) {
     super(x, y, width, height);
+
+    this.savedPosition.x = x;
+    this.savedPosition.y = y;
+
     this.backgroundColor = `rgb( 255, 125, ${Math.round(Math.random() * 255)} )`;
+
+    this.setupListeners();
+  }
+
+  private setupListeners() {
+    const { canvas } = Config;
+
+    this.on('mouseover', () => {
+      canvas.style.cursor = 'pointer';
+    });
+
+    this.on('mouseout', () => {
+      canvas.style.cursor = 'default';
+    });
+
+    this.on('mousedown', this.onMouseDown.bind(this));
+
+    this.on('mouseup', this.onMouseUp.bind(this));
+  }
+
+  private onMouseOut() {
+    this.dragged = false;
+    this.onMouseUp();
+  }
+
+  private onMouseDown(e) {
+    const mouseEvent: MouseEvent = e.data;
+
+    this.mouseOffset.x = mouseEvent.offsetX - this.x;
+    this.mouseOffset.y = mouseEvent.offsetY - this.y;
+
+    this.dragged = true;
+
+    this.savedPosition.x = this.x;
+    this.savedPosition.y = this.y;
+  }
+
+  protected processMouseEvent(e): void {
+    super.processMouseEvent(e);
+    if (e.data.type === 'mouseout') this.onMouseOut(e);
+    if (e.data.type !== 'mousemove' || !this.dragged) return;
+
+    const mouseEvent: MouseEvent = e.data;
+
+    const x = mouseEvent.offsetX - this.mouseOffset.x;
+    const y = mouseEvent.offsetY - this.mouseOffset.y;
+
+    this.setPosition(x, y);
+  }
+
+  private onMouseUp() {
+    this.dragged = false;
+
+    const { x, y } = this.savedPosition;
+
+    this.moveTo(x, y);
+  }
+
+  protected animatePosition(delta: number) {
+    if (this.dragged) return;
+    super.animatePosition(delta);
   }
 
   setNumber(num: number) {
