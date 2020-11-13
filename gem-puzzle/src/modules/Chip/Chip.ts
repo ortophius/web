@@ -39,9 +39,7 @@ export default class Chip extends Container {
       canvas.style.cursor = 'pointer';
     });
 
-    this.on('mouseout', () => {
-      canvas.style.cursor = 'default';
-    });
+    this.on('mouseout', this.onMouseOut.bind(this));
 
     this.on('mousedown', this.onMouseDown.bind(this));
 
@@ -50,6 +48,9 @@ export default class Chip extends Container {
 
   private onMouseOut() {
     this.dragged = false;
+
+    Config.canvas.style.cursor = 'default';
+
     this.onMouseUp();
   }
 
@@ -67,7 +68,7 @@ export default class Chip extends Container {
 
   protected processMouseEvent(e): void {
     super.processMouseEvent(e);
-    if (e.data.type === 'mouseout') this.onMouseOut(e);
+    if (e.data.type === 'mouseout') this.onMouseOut();
     if (e.data.type !== 'mousemove' || !this.dragged) return;
 
     const mouseEvent: MouseEvent = e.data;
