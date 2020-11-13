@@ -28,6 +28,8 @@ export default abstract class Container extends Events {
 
   protected _zIndex: number = 0;
 
+  protected mouseOver: boolean = false;
+
   constructor(
     x: number = 0,
     y: number = 0,
@@ -40,6 +42,8 @@ export default abstract class Container extends Events {
     this.width = width;
     this.height = height;
     this.children = [];
+
+    Config.MouseEvents.on('mouseEvent', this.processMouseEvent.bind(this));
   }
 
   abstract render(ctx: CanvasRenderingContext2D);
@@ -59,6 +63,38 @@ export default abstract class Container extends Events {
 
   protected postRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.restore();
+  }
+
+  protected processMouseEvent(e): void {
+    const mouseEvent: MouseEvent = e.data;
+
+    const mouseX = mouseEvent.offsetX;
+    const mouseY = mouseEvent.offsetY;
+
+    const { x } = this;
+    const x2 = x + this.width;
+
+    const { y } = this;
+    const y2 = y + this.height;
+
+    const isOnX = (mouseX >= x && mouseX <= x2);
+    const isOnY = (mouseY >= y && mouseY <= y2);
+
+    const isOnContainer = (isOnX && isOnY);
+
+    if (!isOnContainer && this.mouseOver) {
+      this.mouseOver = false;
+      this.emit('mouseout', mouseEvent);
+      return;
+    }
+
+    if (isOnContainer) {
+      if (!this.mouseOver) {
+        this.mouseOver = true;
+        this.emit('mouseover', mouseEvent);
+      }
+      this.emit(mouseEvent.type, mouseEvent);
+    }
   }
 
   update(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
@@ -107,7 +143,7 @@ export default abstract class Container extends Events {
     this.height = height;
   }
 
-  animatePosition(delta) {
+  protected animatePosition(delta: number) {
     const { moveSpeed } = this;
     function getNextStep(from: number, to: number) {
       const length = Math.abs(to - from);
