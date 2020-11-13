@@ -46,7 +46,7 @@ export default abstract class Container extends Events {
     Config.MouseEvents.on('mouseEvent', this.processMouseEvent.bind(this));
   }
 
-  abstract render(ctx: CanvasRenderingContext2D);
+  protected abstract render(ctx: CanvasRenderingContext2D);
 
   protected preRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.save();

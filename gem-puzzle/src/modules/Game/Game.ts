@@ -1,12 +1,17 @@
-import Chip from '../Chip/Chip';
+// import Chip from '../Chip/Chip';
 import Config from '../Config/Config';
+import MainMenu from '../MainMenu/MainMenu';
+import Menu from '../Menu/Menu';
 import MouseEventDispatcher from '../MouseEventDispatcher/MouseEventDispatcher';
 import template from './Game.pug';
 
-let chip: Chip;
+// let chip: Chip;
+let menu: Menu;
 
 export default class Game {
   private lastTime: number = 0;
+
+  private intervalId: number;
 
   constructor(id: string) {
     const DOMElement: HTMLElement = document.querySelector(id);
@@ -23,9 +28,7 @@ export default class Game {
   }
 
   start(): void {
-    chip = new Chip(0, 0, 40, 40);
-    chip.setNumber(433);
-    chip.moveTo(100, 100);
+    menu = new MainMenu();
 
     const updateFunc: Function = this.preUpdate.bind(this);
     this.intervalId = setInterval(updateFunc, 1000 / 120);
@@ -43,6 +46,6 @@ export default class Game {
     this.lastTime = newTime;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    chip.update(delta);
+    menu.update(delta);
   }
 }

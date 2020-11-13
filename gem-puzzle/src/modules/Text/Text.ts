@@ -2,7 +2,7 @@ import Config from '../Config/Config';
 import Container from '../Container/Container';
 
 export default class Text extends Container {
-  color: string = 'rgba(0, 0, 0, 1)';
+  color: string = 'rgb(0, 0, 0, 1)';
 
   private _text: string;
 
