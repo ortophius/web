@@ -4,9 +4,10 @@ import Text from '../Text/Text';
 export default class MenuItem extends Text {
   active: boolean = true;
 
+  hover: boolean = false;
+
   constructor(text: string, size?: number, x?: number, y?: number) {
     super(text, size, 'Arial', x, y);
-    this.color = Config.menu.color.active;
     this.setupListeners();
   }
 
@@ -17,22 +18,29 @@ export default class MenuItem extends Text {
   }
 
   private onMouseOver() {
-    if (this.active) this.color = Config.menu.color.hover;
     Config.canvas.style.cursor = 'pointer';
+    this.hover = true;
   }
 
   private onMouseOut() {
-    this.color = (this.active)
-      ? Config.menu.color.active
-      : Config.menu.color.inactive;
-
+    this.hover = false;
     Config.canvas.style.cursor = 'default';
   }
 
   render(ctx: CanvasRenderingContext2D) {
     ctx.save();
 
-    ctx.fillStyle = this.color;
+    const colors = Config.menu.color;
+    let color: string;
+
+    if (this.active) {
+      if (this.hover) color = colors.hover;
+      else color = colors.active;
+    } else {
+      color = colors.inactive;
+    }
+
+    ctx.fillStyle = color;
     ctx.font = `${this.size}px ${this.fontFamily}`;
     ctx.textBaseline = 'top';
 
