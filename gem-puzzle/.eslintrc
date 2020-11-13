@@ -12,9 +12,6 @@
   "parserOptions": {
     "project": "tsconfig.json"
   },
-  "include": [
-    "webpack.config.js"
-  ],
   "rules": {
     "import/extensions": [
        "error",

@@ -1,5 +1,6 @@
 import Chip from '../Chip/Chip';
 import Config from '../Config/Config';
+import MouseEventDispatcher from '../MouseEventDispatcher/MouseEventDispatcher';
 import template from './Game.pug';
 
 let chip: Chip;
@@ -18,14 +19,20 @@ export default class Game {
 
     Config.ctx = ctx;
 
-    // ctx.clip = function () { console.log(new Error().stack); };
+    Config.MouseEvents = new MouseEventDispatcher(Config.canvas);
   }
 
   start(): void {
     chip = new Chip(0, 0, 40, 40);
     chip.setNumber(433);
-    chip.moveTo(200, 200);
-    this.update();
+    chip.moveTo(100, 100);
+
+    const updateFunc: Function = this.preUpdate.bind(this);
+    this.intervalId = setInterval(updateFunc, 1000 / 120);
+  }
+
+  preUpdate() {
+    window.requestAnimationFrame(this.update.bind(this));
   }
 
   update(time: number = 0) {
@@ -37,6 +44,5 @@ export default class Game {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     chip.update(delta);
-    window.requestAnimationFrame(this.update.bind(this));
   }
 }

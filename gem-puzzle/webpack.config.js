@@ -47,9 +47,8 @@ module.exports = {
   },
   plugins: [
     new EslintPlugin({
-      context: src,
-      emitWarning: true,
       emitError: false,
+      context: src,
       extensions: 'ts',
     }),
     new HtmlWebpackPlugin(),
