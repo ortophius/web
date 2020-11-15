@@ -7,7 +7,7 @@ export default class Chip extends Container {
 
   moveSpeed = 400;
 
-  protected labelId: number | null = null;
+  protected label: Text | null = null;
 
   private dragged: boolean = false;
 
@@ -93,7 +93,7 @@ export default class Chip extends Container {
   }
 
   setNumber(num: number) {
-    if (this.labelId) this.removeObject(this.labelId);
+    if (this.label) this.removeObject(this.label);
 
     const labelText = num.toString();
     const labelSize = this.height - 10;
@@ -105,7 +105,8 @@ export default class Chip extends Container {
     label.x = labelX;
     label.y = labelY;
 
-    this.labelId = this.addObject(label);
+    this.label = label;
+    this.addObject(label);
   }
 
   render(ctx: CanvasRenderingContext2D = Config.ctx) {

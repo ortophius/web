@@ -6,6 +6,8 @@ interface IMovingTo {
   y: number | null,
 }
 
+type Layer = Container[];
+
 export default abstract class Container extends Events {
   x: number;
 
@@ -15,9 +17,13 @@ export default abstract class Container extends Events {
 
   height: number;
 
-  children: Array<Container>;
+  layers: Layer[] = [];
 
   moveSpeed: number = 50;
+
+  display: boolean = true;
+
+  protected hover: boolean = false;
 
   protected isMoving: boolean;
 
@@ -41,9 +47,25 @@ export default abstract class Container extends Events {
     this.y = y;
     this.width = width;
     this.height = height;
-    this.children = [];
+  }
 
-    Config.MouseEvents.on('mouseEvent', this.processMouseEvent.bind(this));
+  set zIndex(newZIndex: number) {
+    this.emit('zIndex', { oldZIndex: this._zIndex, newZIndex });
+    this._zIndex = newZIndex;
+  }
+
+  get zIndex(): number {
+    return this._zIndex;
+  }
+
+  get children(): Container[] {
+    let children = [];
+
+    this.layers.forEach((layer) => {
+      children = children.concat(layer);
+    });
+
+    return children;
   }
 
   protected abstract render(ctx: CanvasRenderingContext2D);
@@ -65,47 +87,75 @@ export default abstract class Container extends Events {
     ctx.restore();
   }
 
-  protected processMouseEvent(e): void {
-    const mouseEvent: MouseEvent = e.data;
+  protected dispatchMouseEvent(e) {
+    const { children } = this;
 
-    const mouseX = mouseEvent.offsetX;
-    const mouseY = mouseEvent.offsetY;
+    const mouseX = e.offsetX;
+    const mouseY = e.offsetY;
 
-    const { x } = this;
-    const x2 = x + this.width;
+    let targetChild: Container;
 
-    const { y } = this;
-    const y2 = y + this.height;
+    children.forEach((child) => {
+      const left = child.x;
+      const right = left + child.width;
 
-    const isOnX = (mouseX >= x && mouseX <= x2);
-    const isOnY = (mouseY >= y && mouseY <= y2);
+      const top = child.y;
+      const bottom = top + child.height;
 
-    const isOnContainer = (isOnX && isOnY);
+      const inX = (mouseX >= left) && (mouseX <= right);
+      const inY = (mouseY >= top) && (mouseY <= bottom);
 
-    if (!isOnContainer && this.mouseOver) {
-      this.mouseOver = false;
-      this.emit('mouseout', mouseEvent);
-      return;
+      if (child.display && inX && inY) console.log(inX && inY, child);
+      if (child.display && inX && inY) targetChild = child;
+      else child.onMouseOut(e);
+    });
+
+    if (targetChild) targetChild.dispatchMouseEvent(e);
+    else this.onMouseEvent(e);
+  }
+
+  onMouseEvent(e): void {
+    if (e.type === 'mousemove') {
+      this.mouseOver = true;
+      this.emit('mouseover', e);
     }
 
-    if (isOnContainer) {
-      if (!this.mouseOver) {
-        this.mouseOver = true;
-        this.emit('mouseover', mouseEvent);
-      }
-      this.emit(mouseEvent.type, mouseEvent);
-    }
+    this.emit(e.type, e);
+  }
+
+  onMouseOut(e: MouseEvent) {
+    if (!this.mouseOver) return;
+    this.mouseOver = false;
+    this.emit('mouseout', e);
+  }
+
+  protected updateZIndex(e) {
+    const { caller } = e;
+    const { oldZIndex, newZIndex } = e.data;
+    const { layers } = this;
+
+    const layer = layers[oldZIndex];
+    const containerIndex = layer.indexOf(caller);
+
+    layer.splice(containerIndex, 1);
+
+    if (!layers[newZIndex]) layers[newZIndex] = [];
+
+    layers[newZIndex].push(caller);
   }
 
   update(delta: number = 0, ctx: CanvasRenderingContext2D = Config.ctx) {
     this.animatePosition(delta);
+
+    if (!this.display) return;
+
     this.preRender(ctx);
     this.render(ctx);
     this.renderChildren(delta, ctx);
     this.postRender(ctx);
   }
 
-  addObject(gameObject: Container): number {
+  addObject(gameObject: Container): void {
     const newPosition = {
       x: gameObject.x + this.x,
       y: gameObject.y + this.y,
@@ -113,15 +163,21 @@ export default abstract class Container extends Events {
 
     gameObject.setPosition(newPosition.x, newPosition.y);
 
-    this.children.push(gameObject);
+    if (!this.layers[gameObject.zIndex]) this.layers[gameObject.zIndex] = [];
 
-    const objectId = this.children.length - 1;
+    this.layers[gameObject.zIndex].push(gameObject);
 
-    return objectId;
+    gameObject.on('zindex', this.updateZIndex.bind(this));
   }
 
-  removeObject(id: number) {
-    this.children.splice(id, 1);
+  removeObject(child: Container) {
+    const layer = this.layers[child.zIndex];
+    const objectIndex = layer.indexOf(child);
+    this.layers[child.zIndex].splice(objectIndex, 1);
+  }
+
+  removeAllObjects() {
+    this.layers = [];
   }
 
   setPosition(x: number, y: number) {
