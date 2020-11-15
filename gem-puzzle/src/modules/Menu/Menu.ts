@@ -24,8 +24,8 @@ export default class Menu extends Container {
     this.itemsAreaHeight = this.height - (this.height * 0.8);
   }
 
-  addObject(gameObject: Container): number {
-    const objectId = super.addObject(gameObject);
+  addObject(gameObject: Container): void {
+    super.addObject(gameObject);
 
     const { y } = gameObject;
     const x = this.x + ((this.width - gameObject.width) / 2);
@@ -35,19 +35,11 @@ export default class Menu extends Container {
     this.itemsHeight += gameObject.height;
 
     this.centerItems();
-
-    return objectId;
   }
 
   private centerItems() {
     const topOffset: number = (this.height - this.itemsAreaHeight) / 2;
     const gutter: number = (this.itemsAreaHeight - this.itemsHeight) / (this.children.length + 1);
-
-    // this.children.reduce((usedHeight, item) => {
-    //   const gameObject: Container = item;
-    //   gameObject.y = topOffset + usedHeight + gutter;
-    //   return usedHeight + gutter + item.height;
-    // });
 
     let usedHeight = 0;
     this.children.forEach((child) => {
