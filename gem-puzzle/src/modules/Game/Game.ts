@@ -19,14 +19,12 @@ export default class Game extends Container {
 
   private sizeMenu: SizeMenu;
 
-  private MouseEvents: MouseEventDispatcher;
-
   constructor(id: string) {
     Config.DOMElement = document.querySelector(id);
 
     Config.DOMElement.innerHTML = template;
 
-    const canvas = document.querySelector('#game');
+    const canvas: HTMLCanvasElement = document.querySelector('#game');
 
     Config.canvas = canvas;
     Config.ctx = Config.canvas.getContext('2d');

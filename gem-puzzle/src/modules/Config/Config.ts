@@ -16,7 +16,6 @@ const Config: IConfig = {
   ctx: null,
   canvas: null,
   DOMElement: null,
-  MouseEvents: null,
   menu: {
     color: {
       text: '#ffffff',

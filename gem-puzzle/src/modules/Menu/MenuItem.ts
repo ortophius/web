@@ -12,19 +12,17 @@ export default class MenuItem extends Text {
   }
 
   private setupListeners() {
-    this.on('mouseover', this.onMouseOver.bind(this));
+    const self = this;
 
-    this.on('mouseout', this.onMouseOut.bind(this));
-  }
+    this.on('mouseover', () => {
+      Config.canvas.style.cursor = 'pointer';
+      self.hover = true;
+    });
 
-  private onMouseOver() {
-    Config.canvas.style.cursor = 'pointer';
-    this.hover = true;
-  }
-
-  private onMouseOut() {
-    this.hover = false;
-    Config.canvas.style.cursor = 'default';
+    this.on('mouseout', () => {
+      self.hover = false;
+      Config.canvas.style.cursor = 'default';
+    });
   }
 
   render(ctx: CanvasRenderingContext2D) {
