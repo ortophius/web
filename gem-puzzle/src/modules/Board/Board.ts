@@ -33,50 +33,41 @@ export default class Board extends Container {
       nums.push(i);
     }
 
-    // let solvable: boolean = false;
-    // let emptyIndex: number;
+    let solvable: boolean = false;
+    let emptyIndex: number;
 
-    // while (!solvable) {
-    //   for (let c = 0; c < nums.length; c += 1) {
-    //     const newIndex = Math.floor(Math.random() * (nums.length));
-    //     const tempNum = nums[c];
-    //     nums[c] = nums[newIndex];
-    //     nums[newIndex] = tempNum;
-    //   }
+    while (!solvable) {
+      for (let c = 0; c < nums.length; c += 1) {
+        const newIndex = Math.floor(Math.random() * (nums.length));
+        const tempNum = nums[c];
+        nums[c] = nums[newIndex];
+        nums[newIndex] = tempNum;
+      }
 
-    //   emptyIndex = Math.floor(Math.random() * (nums.length));
-    //   const emptyRow = Math.ceil((emptyIndex + 1) / size);
+      emptyIndex = Math.floor(Math.random() * (nums.length));
+      const emptyRow = Math.ceil((emptyIndex + 1) / size);
 
-    //   let pairCount = emptyRow;
+      let pairCount = emptyRow;
 
-    //   nums.forEach((firstNum, index) => {
-    //     const subArray: number[] = nums.slice(index + 1);
+      nums.forEach((firstNum, index) => {
+        const subArray: number[] = nums.slice(index + 1);
 
-    //     subArray.forEach((secondNum) => {
-    //       if (firstNum > secondNum) pairCount += 1;
-    //     });
-    //   });
+        subArray.forEach((secondNum) => {
+          if (firstNum > secondNum) pairCount += 1;
+        });
+      });
 
-    //   if ((pairCount % 2) === 0) solvable = true;
-    // }
+      if ((pairCount % 2) === 0) solvable = true;
+    }
 
-    // nums.splice(emptyIndex, 0, 0);
+    nums.splice(emptyIndex, 0, 0);
 
-    // nums.forEach((num, index) => {
-    //   const rowIndex = Math.floor(index / size);
-    //   const { table } = this;
-    //   if (!table[rowIndex]) table[rowIndex] = [];
-    //   table[rowIndex].push(num);
-    // });
-
-    // console.log(this.table);
-
-    this.table = [
-      [1, 2, 3, 4],
-      [5, 6, 7, 8],
-      [9, 10, 11, 12],
-      [13, 14, 0, 15],
-    ];
+    nums.forEach((num, index) => {
+      const rowIndex = Math.floor(index / size);
+      const { table } = this;
+      if (!table[rowIndex]) table[rowIndex] = [];
+      table[rowIndex].push(num);
+    });
 
     const colorRate = 360 / (nums.length - 1);
 

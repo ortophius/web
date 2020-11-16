@@ -2,6 +2,7 @@
 import Board from '../Board/Board';
 import Config from '../Config/Config';
 import Container from '../Container/Container';
+import Img from '../Img/Img';
 import MainMenu from '../MainMenu/MainMenu';
 import Menu from '../Menu/Menu';
 import MenuItem from '../Menu/MenuItem';
@@ -24,6 +25,8 @@ export default class Game extends Container {
   private sizeMenu: SizeMenu;
 
   private board: Board;
+
+  private toggleMenu: Img;
 
   constructor(id: string) {
     Config.DOMElement = document.querySelector(id);
@@ -48,10 +51,22 @@ export default class Game extends Container {
   }
 
   start(): void {
+    const self = this;
     this.layers = [];
+
     this.createMenu();
 
     this.setupListeners();
+
+    this.toggleMenu = new Img('./assets/cog-solid.svg', 820, 0, 20, 20);
+
+    this.toggleMenu.on('click', () => {
+      self.mainMenu.display = !self.mainMenu.display;
+    });
+
+    this.toggleMenu.zIndex = 11;
+
+    this.addObject(this.toggleMenu);
 
     this.update(0);
   }
@@ -80,6 +95,7 @@ export default class Game extends Container {
   }
 
   createBoard(e) {
+    if (this.board) this.removeObject(this.board);
     this.board = new Board(e.data.size);
     this.sizeMenu.display = false;
     this.board.on('win', this.win.bind(this));
