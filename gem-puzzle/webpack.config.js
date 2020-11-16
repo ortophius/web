@@ -1,6 +1,7 @@
 const path = require('path');
 const EslintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 
 const src = path.resolve(__dirname, 'src', 'modules');
@@ -54,6 +55,14 @@ module.exports = {
     new HtmlWebpackPlugin(),
     new webpack.ProvidePlugin({
       DOMParser: 'dom-parser',
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'src/assets/',
+          to: 'dist/',
+        }
+      ]
     }),
   ],
   devServer: {

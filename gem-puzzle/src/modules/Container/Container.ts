@@ -49,6 +49,12 @@ export default abstract class Container extends Events {
     this.height = height;
   }
 
+  setHover(state: boolean, e: MouseEvent) {
+    if (this.hover && !state) this.emit('mouseout', e);
+    if (!this.hover && state) this.emit('mouseover', e);
+    this.hover = state;
+  }
+
   set zIndex(newZIndex: number) {
     this.emit('zIndex', { oldZIndex: this._zIndex, newZIndex });
     this._zIndex = newZIndex;
@@ -68,7 +74,10 @@ export default abstract class Container extends Events {
     return children;
   }
 
-  protected abstract render(ctx: CanvasRenderingContext2D);
+  protected render(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
 
   protected preRender(ctx: CanvasRenderingContext2D = Config.ctx) {
     ctx.save();
@@ -105,28 +114,24 @@ export default abstract class Container extends Events {
       const inX = (mouseX >= left) && (mouseX <= right);
       const inY = (mouseY >= top) && (mouseY <= bottom);
 
-      if (child.display && inX && inY) console.log(inX && inY, child);
       if (child.display && inX && inY) targetChild = child;
       else child.onMouseOut(e);
     });
 
     if (targetChild) targetChild.dispatchMouseEvent(e);
-    else this.onMouseEvent(e);
+    this.onMouseEvent(e);
   }
 
   onMouseEvent(e): void {
     if (e.type === 'mousemove') {
-      this.mouseOver = true;
-      this.emit('mouseover', e);
+      this.setHover(true, e.data);
     }
 
     this.emit(e.type, e);
   }
 
-  onMouseOut(e: MouseEvent) {
-    if (!this.mouseOver) return;
-    this.mouseOver = false;
-    this.emit('mouseout', e);
+  onMouseOut(e) {
+    this.setHover(false, e.data);
   }
 
   protected updateZIndex(e) {
@@ -218,7 +223,10 @@ export default abstract class Container extends Events {
 
     this.setPosition(newX, newY);
 
-    if (this.x === this.movingTo.x && this.y === this.movingTo.y) this.isMoving = false;
+    if (this.x === this.movingTo.x && this.y === this.movingTo.y) {
+      this.isMoving = false;
+      this.emit('endmove');
+    }
   }
 
   moveTo(x: number, y: number) {

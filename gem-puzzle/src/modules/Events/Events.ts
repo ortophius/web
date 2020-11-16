@@ -21,4 +21,14 @@ export default abstract class Events {
     if (this.events[eventType] === undefined) this.events[eventType] = [];
     this.events[eventType].push(callback);
   }
+
+  off(eventType: string, callback: Function) {
+    if (!this.events[eventType]) return;
+    const subs = this.events[eventType];
+    const subIndex = subs.indexOf(callback);
+
+    if (subIndex === -1) return;
+
+    subs.splice(subIndex, 1);
+  }
 }

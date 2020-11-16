@@ -1,7 +1,11 @@
 // import Chip from '../Chip/Chip';
+import Board from '../Board/Board';
 import Config from '../Config/Config';
 import Container from '../Container/Container';
 import MainMenu from '../MainMenu/MainMenu';
+import Menu from '../Menu/Menu';
+import MenuItem from '../Menu/MenuItem';
+import MenuText from '../Menu/MenuText';
 import SizeMenu from '../Menu/SizeMenu';
 // import Menu from '../Menu/Menu';
 // import MenuText from '../Menu/MenuText';
@@ -18,6 +22,8 @@ export default class Game extends Container {
   private mainMenu: MainMenu;
 
   private sizeMenu: SizeMenu;
+
+  private board: Board;
 
   constructor(id: string) {
     Config.DOMElement = document.querySelector(id);
@@ -42,6 +48,7 @@ export default class Game extends Container {
   }
 
   start(): void {
+    this.layers = [];
     this.createMenu();
 
     this.setupListeners();
@@ -63,13 +70,38 @@ export default class Game extends Container {
   createMenu() {
     this.mainMenu = new MainMenu();
     this.sizeMenu = new SizeMenu();
+
+    this.mainMenu.zIndex = 9;
+    this.sizeMenu.zIndex = 9;
+
     this.sizeMenu.display = false;
     this.addObject(this.mainMenu);
     this.addObject(this.sizeMenu);
   }
 
   createBoard(e) {
-    console.log(e.data.size);
+    this.board = new Board(e.data.size);
+    this.sizeMenu.display = false;
+    this.board.on('win', this.win.bind(this));
+    this.addObject(this.board);
+  }
+
+  win() {
+    const self = this;
+    const congrat = new Menu();
+    const again = new MenuItem('Заново');
+    const text = new MenuText('Поздравляем! У вас получилось!');
+    congrat.addObject(text);
+    congrat.addObject(again);
+
+    congrat.zIndex = 10;
+
+    this.addObject(congrat);
+
+    again.on('click', () => {
+      self.removeObject(congrat);
+      self.start.bind(self)();
+    });
   }
 
   render() {
