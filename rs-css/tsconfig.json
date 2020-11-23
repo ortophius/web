@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "./dist/",
+    "module": "es6",
+    "target": "es6",
+    "moduleResolution": "node",
+    "typeRoots" : ["./@types"]
+  },
+  "include": [
+    "src/modules/**/*",
+    "@types/Extensions.d.ts",
+    "@types/Config.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "files": [
+    "@types/Extensions.d.ts"
+  ]
+}

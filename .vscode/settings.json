@@ -1,0 +1,17 @@
+{
+  "eslint.alwaysShowStatus": true,
+  "editor.fontSize": 12,
+  "editor.tabSize": 2,
+  "explorer.confirmDragAndDrop": false,
+  "eslint.validate": [
+    "typescript"
+  ],
+  "eslint.workingDirectories": [
+    "./rs-css"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": 0
+}

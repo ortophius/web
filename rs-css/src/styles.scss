@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Jura:wght@300;400;700&family=Raleway:wght@200;300;400&family=Merriweather&display=swap');
+
+$color-dark: #1d232f;
+$color-darker: #212631;
+$color-darkest: #181e2b;
+$color-totally-dark: #181d27;
+
+$text-color-main: #ffffff;
+
+$header-family: 'Merriweather', serif;
+$monospace-family: 'Cutive Mono', monospace;;
+$main-family: 'Raleway', sans-serif;
+$title-family: 'Jura', sans-serif;
+
+:root {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  grid-template-rows: min-content auto;
+  min-height: 100vh;
+  background-color: $color-darkest;
+  color: $text-color-main;
+  font-family: $main-family;
+  font-size: 1.8rem;
+  font-weight: 300;
+}
+
+pre {
+  padding-left: 1.2em;
+  font-family: $monospace-family;
+  font-weight: 600;
+  background-color: $color-totally-dark;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+  background-color: #242b3a;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.85);
+  z-index: 3;
+}
+
+.logo {
+  font-family: $header-family;
+  font-size: 3.2rem;
+  color: #cca449;
+  text-shadow: 2px 3px 1px #171717;
+
+  &__highlight {
+    color: #ffd5a8;
+  }
+}
+
+main {
+  display: grid;
+  width: 100vw;
+  grid-template-areas:
+        "cafe cafe side"
+        "editor editor side";
+  grid-template-columns: 2fr 2fr 1fr;
+}
+
+.cafe {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: cafe;
+  z-index: 2;
+}
+
+.editor {
+  grid-area: editor;
+  z-index: 2;
+}
+
+.sidebar {
+  grid-area: side;
+
+  padding: 2rem;
+  text-align: justify;
+  line-height: 3rem;
+  font-size: 1.6rem;
+  color: #dcdcdc;
+
+  z-index: 2;
+  background-color: $color-darker;
+  border-left: 1px solid #2e354487;
+
+  &__title {
+    font-size: 2.4rem;
+    text-align: center;
+    min-height: 5rem;
+
+    font-family: $title-family;
+  }
+
+  &__description {
+    font-size: 1.4rem;
+  }
+}

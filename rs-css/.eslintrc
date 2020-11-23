@@ -1,0 +1,44 @@
+{
+  "root":  true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "extends": [
+    "airbnb-typescript/base"
+  ],
+  "parserOptions": {
+    "project": "tsconfig.json"
+  },
+  "rules": {
+    "import/extensions": [
+       "error",
+       "ignorePackages",
+       {
+         "js": "never",
+         "jsx": "never",
+         "ts": "never",
+         "tsx": "never"
+       }
+    ],
+    "class-methods-use-this": [
+      1,
+      {
+        "exceptMethods": [
+          "preRender",
+          "render",
+          "postRender",
+          "draw"
+        ]
+      }
+    ],
+    "no-underscore-dangle": [
+      2,
+      {
+        "allowAfterThis": true 
+      }
+    ]
+  }
+}
