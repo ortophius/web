@@ -34,7 +34,8 @@ body {
 }
 
 pre {
-  padding-left: 1.2em;
+  padding: 0.5em;
+  margin-bottom: 1rem;
   font-family: $monospace-family;
   font-weight: 600;
   background-color: $color-totally-dark;
@@ -63,24 +64,28 @@ header {
 
 main {
   display: grid;
-  width: 100vw;
   grid-template-areas:
         "cafe cafe side"
         "editor editor side";
   grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
 }
 
 .cafe {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   grid-area: cafe;
   z-index: 2;
-}
 
-.editor {
-  grid-area: editor;
-  z-index: 2;
+  &__goal {
+    font-weight: 600;
+    font-size: 3.2rem;
+    color: #ffffff7a;
+    letter-spacing: 0.2rem;
+    margin-bottom: 4rem;
+  }
 }
 
 .sidebar {
@@ -97,14 +102,266 @@ main {
   border-left: 1px solid #2e354487;
 
   &__title {
+    color: #fff;
     font-size: 2.4rem;
     text-align: center;
-    min-height: 5rem;
-
     font-family: $title-family;
+  }
+
+  &__subtitle {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   &__description {
     font-size: 1.4rem;
   }
+
+  &__selector {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  hr {
+    height: 1px;
+    border: none;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    background-color: #ffffff3b;
+  }
 }
+
+.table-space-3d {
+  perspective: 300px;
+}
+
+.table {
+  min-height: 14rem;
+  min-width: 30rem;
+  background-color: #c1873e;
+  transform-style: preserve-3d;
+  transform: rotateX(30deg);
+  transform-origin: bottom;
+  box-shadow: 0px 35px 4px 0px #161b27;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min-content;
+  grid-template-rows: min-content;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  column-gap: 2rem;
+  padding: 1rem;
+
+  &__border {
+    position: relative;
+    min-height: 0.5rem;
+    transform: rotateX(-30deg);
+    transform-origin: top;
+    background-color: #5f3f19;
+  }
+
+  &__legs {
+    position: absolute;
+    top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  &__leg {
+    background-color: #462d10;
+    min-height: 1rem;
+    min-width: 2rem;
+  }
+}
+
+sushi, plate, sushimi, bento, pickle {
+  position: relative;
+  box-shadow: 0px 5px #0000001f;
+  cursor: pointer;
+}
+
+sushi {
+  border-top: 1px solid #717171;
+  border-radius: 50%;
+  background-color: #fff;
+  min-width: 4.3rem;
+  min-height: 4.5rem;
+  border-bottom: 12px solid #0b2b09;
+
+  &::after {
+    position: absolute;
+    display: inline-block;
+    content: "";
+    min-width: 2rem;
+    min-height: 1.7rem;
+    border-radius: 50%;
+    top: 25%;
+    left: 27%;
+    background-color: #ff4d4d;
+  }
+}
+
+plate {
+  min-width: 9rem;
+  min-height: 9rem;
+  background-color: #fff;
+  border-radius: 50%;
+  border-bottom: 5px solid #cfcfcf;
+
+  &::after {
+    position: absolute;
+    left: 18%;
+    top: 20%;
+    content: "";
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    box-shadow: inset 0px 5px 0px 0px #00000030;
+  }
+}
+
+sushimi {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100% 20%;
+  background-color: #f94d4e;
+  transform: rotateZ(-45deg);
+  z-index: 1;
+
+  &::before {
+    position: absolute;
+    top: 43%;
+    left: -8%;
+    display: inline-block;
+    height: 3rem;
+    width: 60%;
+    content: "";
+    border-radius: 100%;
+    border-top: 5px solid #f7f7f785;
+    transform: rotateZ(45deg);
+  }
+
+  &::after {
+    position: absolute;
+    top: 7%;
+    left: 26%;
+    display: inline-block;
+    height: 3rem;
+    width: 60%;
+    content: "";
+    border-radius: 100%;
+    border-top: 5px solid #f7f7f785;
+    transform: rotateZ(45deg);
+  }
+}
+
+bento {
+  width: 8rem;
+  height: 10rem;
+  background-color: #ffffff;
+  border-width: 17px 4px;
+  border-style: solid;
+  border-color: #79422d;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background-color: #79422d78;
+  }
+}
+
+pickle {
+  height: 6rem;
+  width: 2rem;
+  background-color: #18a916;
+  border-style: solid;
+  border-width: 0px 1px 8px 1px;
+  border-color: #0000009c;
+  border-radius: 34%;
+}
+
+.editor {
+  display: flex;
+  grid-area: editor;
+  padding: 2rem;
+  background-color: $color-darker;
+  z-index: 2;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  font-family: $monospace-family;
+  flex-basis: 50%;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: $color-totally-dark;
+    border-bottom: 1px solid #ffffff3b;
+  }
+
+  &__pane {
+    display: flex;
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+    color: #888888;
+    background-color: #e6e6e6;
+    cursor: text;
+
+    &_dark {
+      .view__lines {
+        color: #bbbbbb;
+        background-color: $color-darkest;
+      }
+
+      .view__numbers {
+        color: #bbbbbb;
+        background-color: #222a3a;
+      }
+    }
+  }
+
+  &__numbers {
+    background-color: #dcdcdc;
+    padding: 1rem;
+    text-align: right;
+    border-right: 1px solid #ffffff3b;
+  }
+
+  &__lines {
+    position: relative;
+    padding: 1rem;
+    flex-basis: 100%;
+  }
+
+  &__editable {
+    display: block;
+    outline: none;
+
+    &::after {
+      position: absolute;
+      right: 1rem;
+      content: "Enter";
+      font-size: 1rem;
+      text-transform: uppercase;
+      background-color: #808080;
+      color: #d2d2d2;
+      padding: 0 1rem;
+      line-height: 1.5rem;
+      border-radius: 0.4rem;
+      border-bottom: 4px solid #5a5a5a;
+      cursor: pointer;
+    }
+  }
+}
+
