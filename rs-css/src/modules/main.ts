@@ -11,7 +11,56 @@ let sidebarSelector: HTMLElement;
 let description: HTMLElement;
 let table: HTMLElement;
 
+let currentLevel: number;
+
+let errAnimation: boolean = false;
+
 const parser = new DOMParser();
+
+function setErrAnimation(selector: string, state: boolean = true) {
+  const views = document.querySelectorAll('.view');
+  const elems = document.querySelectorAll(`.table ${selector}`);
+
+  views.forEach((elem) => {
+    if (state) elem.classList.add('wrong');
+    else elem.classList.remove('wrong');
+  });
+
+  elems.forEach((elem) => {
+    if (state) elem.classList.add('wrong');
+    else elem.classList.remove('wrong');
+  });
+
+  if (!errAnimation) {
+    setTimeout(() => {
+      setErrAnimation(selector, false);
+      errAnimation = false;
+    }, 400);
+  }
+
+  errAnimation = true;
+}
+
+function checkAnswer(e: KeyboardEvent) {
+  if (e.code !== 'Enter') return;
+
+  let win = true;
+
+  e.preventDefault();
+
+  const selector = (e.target as HTMLElement).innerText;
+
+  if (selector === '') return;
+
+  const rightCollection = document.querySelectorAll(`.table ${levels[currentLevel].selector}`);
+  const collection = document.querySelectorAll(`.table ${selector}`);
+
+  if (collection && collection.length) {
+    collection.forEach((item, i) => { if (item !== rightCollection[i]) win = false; });
+  } else win = false;
+
+  if (!win) setErrAnimation(selector);
+}
 
 function insertElemIntoViewer(elem: Element, parent: Element) {
   const elems: Element[] = Array.from(elem.children);
@@ -39,26 +88,6 @@ function insertElemIntoViewer(elem: Element, parent: Element) {
   });
 }
 
-// function setId(elem: HTMLElement) {
-//   let i = 0;
-
-//   function privSetId(el: HTMLElement) {
-//     el.dataset.uid = i.toString();
-//     i += 1;
-
-//     if (el.children.length === 0) return;
-
-//     const children = Array.from(el.children);
-
-//     children.forEach((child) => {
-//       privSetId(child as HTMLElement);
-//     });
-//   }
-
-//   privSetId(elem);
-//   return elem;
-// }
-
 function toggletoolTip(element: Element, show: boolean = true) {
   if (!show) {
     Array
@@ -74,6 +103,7 @@ function toggletoolTip(element: Element, show: boolean = true) {
 
   const attrString = Array.from(element.attributes)
     .filter((attr) => attr.name !== 'data-active')
+    .filter((attr) => attr.value !== 'select')
     .map((attr) => `${attr.name}="${attr.value}"`)
     .join(' ');
 
@@ -151,6 +181,12 @@ function loadLevel(level: Level) {
     item.addEventListener('mouseover', highlight);
     item.addEventListener('mouseout', highlight);
   });
+
+  const { selector } = level;
+
+  setInterval(() => {
+    document.querySelectorAll(`.table ${selector}`).forEach((item) => { item.classList.add('select'); });
+  }, 200);
 }
 
 function start() {
@@ -161,7 +197,10 @@ function start() {
   description = document.querySelector('.sidebar__description');
   sidebarSelector = document.querySelector('.sidebar__selector');
 
-  loadLevel(levels[0]);
+  currentLevel = 0;
+  loadLevel(levels[currentLevel]);
+
+  document.querySelector('.view__editable').addEventListener('keydown', checkAnswer);
 }
 
 document.addEventListener('DOMContentLoaded', start);
