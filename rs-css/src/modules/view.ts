@@ -1,5 +1,4 @@
 function focus(e) {
-  console.log(e.target, e.target.innerText);
   if (e.target.innerText === 'Type selector here') e.target.innerText = '';
 }
 
