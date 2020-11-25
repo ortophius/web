@@ -59,28 +59,59 @@ function insertElemIntoViewer(elem: Element, parent: Element) {
 //   return elem;
 // }
 
+function toggletoolTip(element: Element, show: boolean = true) {
+  if (!show) {
+    Array
+      .from(document.querySelectorAll('.tooltip'))
+      .forEach((item) => { item.remove(); });
+    return;
+  }
+
+  const toolTipDiv = document.createElement('div');
+  toolTipDiv.classList.add('tooltip');
+
+  toolTipDiv.innerHTML += `&lt;${element.tagName.toLowerCase()}`;
+
+  const attrString = Array.from(element.attributes)
+    .filter((attr) => attr.name !== 'data-active')
+    .map((attr) => `${attr.name}="${attr.value}"`)
+    .join(' ');
+
+  if (attrString.length) toolTipDiv.innerHTML += ` ${attrString}`;
+
+  const endPart = (element.children.length)
+    ? `&gt;&lt;${element.tagName.toLowerCase()}/&gt;`
+    : '/&gt;';
+
+  toolTipDiv.innerHTML += endPart;
+
+  document.querySelector('.table').appendChild(toolTipDiv);
+}
+
 function highlight(e: MouseEvent) {
   e.stopPropagation();
 
   const tableItems = Array.from(document.querySelectorAll('.table *'));
   const HTMLLines = Array.from(document.querySelectorAll('.html-view .view__lines *'));
-  const element = e.target;
+  const element = e.target as Element;
 
   let elIndex = tableItems.indexOf(element);
 
   if (elIndex === -1) elIndex = HTMLLines.indexOf(element);
 
-  const tableElement = tableItems[elIndex];
-  const viewElememnt = HTMLLines[elIndex];
+  const tableElement = tableItems[elIndex] as HTMLElement;
+  const viewElememnt = HTMLLines[elIndex] as HTMLElement;
 
   if (e.type === 'mouseover') {
-    tableElement.classList.add('active');
-    viewElememnt.classList.add('active');
+    tableElement.dataset.active = 'true';
+    viewElememnt.dataset.active = 'true';
+    toggletoolTip(tableElement);
   }
 
   if (e.type === 'mouseout') {
-    tableElement.classList.remove('active');
-    viewElememnt.classList.remove('active');
+    tableElement.dataset.active = 'false';
+    viewElememnt.dataset.active = 'false';
+    toggletoolTip((tableElement), false);
   }
 }
 

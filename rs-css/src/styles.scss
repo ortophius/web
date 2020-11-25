@@ -154,6 +154,7 @@ main {
   justify-content: center;
   column-gap: 2rem;
   padding: 1rem;
+  padding-bottom: calc(2rem + 4px);
 
   &__border {
     position: relative;
@@ -187,7 +188,7 @@ sushi, plate, sushimi, bento, pickle {
   box-shadow: 0px 5px #0000001f;
   cursor: pointer;
 
-  &.active {
+  &[data-active="true"] {
     box-shadow: 0 0 0px 5px #ffffff5c;
   }
 }
@@ -334,7 +335,7 @@ pickle {
         color: #bbbbbb;
         background-color: $color-darkest;
 
-        & .active {
+        & [data-active="true"] {
           background-color: #ffffff26;
           color: #d2d2d2;
         }
@@ -387,5 +388,10 @@ pickle {
       cursor: pointer;
     }
   }
+}
+
+.tooltip {
+  position: absolute;
+  bottom: 4px;
 }
 
