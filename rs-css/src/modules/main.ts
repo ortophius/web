@@ -21,32 +21,67 @@ function insertElemIntoViewer(elem: Element, parent: Element) {
     div.dataset.uid = (child as HTMLElement).dataset.uid;
     parent.appendChild(div);
 
-    div.innerHTML += `&lt;${child.tagName.toLowerCase()}&gt;`;
+    div.innerHTML += `&lt;${child.tagName.toLowerCase()}`;
 
-    if (child.children.length > 0) insertElemIntoViewer(child, div);
+    const { attributes } = child;
+    if (attributes && attributes.length > 0) {
+      for (let i = 0; i < attributes.length; i += 1) {
+        const attr = attributes[i];
+        div.innerHTML += ` ${attr.name}="${attr.value}"`;
+      }
+    }
 
-    div.innerHTML += `&lt;${child.tagName.toLowerCase()}/&gt;`;
+    if (child.children.length > 0) {
+      div.innerHTML += '&gt;';
+      insertElemIntoViewer(child, div);
+      div.innerHTML += `&lt;/${child.tagName.toLowerCase()}&gt;`;
+    } else div.innerHTML += '/&gt;';
   });
 }
 
-function setId(elem: HTMLElement) {
-  let i = 0;
+// function setId(elem: HTMLElement) {
+//   let i = 0;
 
-  function privSetId(el: HTMLElement) {
-    el.dataset.uid = i.toString();
-    i += 1;
+//   function privSetId(el: HTMLElement) {
+//     el.dataset.uid = i.toString();
+//     i += 1;
 
-    if (el.children.length === 0) return;
+//     if (el.children.length === 0) return;
 
-    const children = Array.from(el.children);
+//     const children = Array.from(el.children);
 
-    children.forEach((child) => {
-      privSetId(child as HTMLElement);
-    });
+//     children.forEach((child) => {
+//       privSetId(child as HTMLElement);
+//     });
+//   }
+
+//   privSetId(elem);
+//   return elem;
+// }
+
+function highlight(e: MouseEvent) {
+  e.stopPropagation();
+
+  const tableItems = Array.from(document.querySelectorAll('.table *'));
+  const HTMLLines = Array.from(document.querySelectorAll('.html-view .view__lines *'));
+  const element = e.target;
+
+  let elIndex = tableItems.indexOf(element);
+
+  if (elIndex === -1) elIndex = HTMLLines.indexOf(element);
+
+  const tableElement = tableItems[elIndex];
+  const viewElememnt = HTMLLines[elIndex];
+
+  if (e.type === 'mouseover') {
+    tableElement.classList.add('active');
+    viewElememnt.classList.add('active');
   }
 
-  privSetId(elem);
-  return elem;
+  if (e.type === 'mouseout') {
+    tableElement.classList.remove('active');
+    viewElememnt.classList.remove('active');
+  }
 }
 
 function loadLevel(level: Level) {
@@ -67,8 +102,6 @@ function loadLevel(level: Level) {
 
   const { body } = parser.parseFromString(level.dom, 'text/html');
 
-  console.log(setId(body));
-
   const htmlViewer: HTMLElement = document
     .querySelector('.html-view')
     .querySelector('.view__lines');
@@ -77,6 +110,16 @@ function loadLevel(level: Level) {
 
   table.innerHTML = '';
   table.innerHTML = body.innerHTML;
+
+  const tableItems = Array.from(document.querySelectorAll('.table *'));
+  const HTMLLines = Array.from(document.querySelectorAll('.html-view .view__lines *'));
+
+  const elements = [...tableItems, ...HTMLLines];
+
+  elements.forEach((item) => {
+    item.addEventListener('mouseover', highlight);
+    item.addEventListener('mouseout', highlight);
+  });
 }
 
 function start() {

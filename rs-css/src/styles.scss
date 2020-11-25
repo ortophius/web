@@ -186,6 +186,14 @@ sushi, plate, sushimi, bento, pickle {
   position: relative;
   box-shadow: 0px 5px #0000001f;
   cursor: pointer;
+
+  &.active {
+    box-shadow: 0 0 0px 5px #ffffff5c;
+  }
+}
+
+plate .active {
+  box-shadow: 0 0 0px 5px #0000004d;
 }
 
 sushi {
@@ -282,13 +290,13 @@ bento {
 }
 
 pickle {
-  height: 6rem;
+  height: 5rem;
   width: 2rem;
   background-color: #18a916;
   border-style: solid;
-  border-width: 0px 1px 8px 1px;
+  border-width: 1px 2px 7px 2px;
   border-color: #0000009c;
-  border-radius: 34%;
+  border-radius: 10px;
 }
 
 .editor {
@@ -325,6 +333,11 @@ pickle {
       .view__lines {
         color: #bbbbbb;
         background-color: $color-darkest;
+
+        & .active {
+          background-color: #ffffff26;
+          color: #d2d2d2;
+        }
       }
 
       .view__numbers {
