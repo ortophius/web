@@ -62,9 +62,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src', 'template.pug')
     }),
-    new webpack.ProvidePlugin({
-      DOMParser: 'dom-parser',
-    }),
     new CopyPlugin({
       patterns: [
         {
