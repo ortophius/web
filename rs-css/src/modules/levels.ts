@@ -1,12 +1,7 @@
 const levels: Level[] = [
   {
     goal: 'Выберите все вещи на столе',
-    dom:
-      `<root>
-      <bento></bento>
-      <pickle></pickle>
-      <sushi></sushi>
-      </root>`,
+    dom: '<plate><pickle></pickle></plate><pickle></pickle>',
     selector: '*',
     description: {
       title: 'Универсальный селектор',

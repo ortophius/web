@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import '../styles.scss';
 import './view';
 import levels from './levels';
@@ -10,6 +12,42 @@ let description: HTMLElement;
 let table: HTMLElement;
 
 const parser = new DOMParser();
+
+function insertElemIntoViewer(elem: Element, parent: Element) {
+  const elems: Element[] = Array.from(elem.children);
+
+  elems.forEach((child) => {
+    const div = document.createElement('div');
+    div.dataset.uid = (child as HTMLElement).dataset.uid;
+    parent.appendChild(div);
+
+    div.innerHTML += `&lt;${child.tagName.toLowerCase()}&gt;`;
+
+    if (child.children.length > 0) insertElemIntoViewer(child, div);
+
+    div.innerHTML += `&lt;${child.tagName.toLowerCase()}/&gt;`;
+  });
+}
+
+function setId(elem: HTMLElement) {
+  let i = 0;
+
+  function privSetId(el: HTMLElement) {
+    el.dataset.uid = i.toString();
+    i += 1;
+
+    if (el.children.length === 0) return;
+
+    const children = Array.from(el.children);
+
+    children.forEach((child) => {
+      privSetId(child as HTMLElement);
+    });
+  }
+
+  privSetId(elem);
+  return elem;
+}
 
 function loadLevel(level: Level) {
   goalElem.innerText = level.goal;
@@ -27,11 +65,18 @@ function loadLevel(level: Level) {
     description.innerHTML += example;
   });
 
-  const root = parser.parseFromString(level.dom, 'text/html').getElementsByTagName('root')[0];
-  // const nodes: ChildNode[] = Array.from(root.childNodes);
+  const { body } = parser.parseFromString(level.dom, 'text/html');
+
+  console.log(setId(body));
+
+  const htmlViewer: HTMLElement = document
+    .querySelector('.html-view')
+    .querySelector('.view__lines');
+
+  insertElemIntoViewer(body, htmlViewer);
 
   table.innerHTML = '';
-  table.innerHTML = root.innerHTML;
+  table.innerHTML = body.innerHTML;
 }
 
 function start() {
