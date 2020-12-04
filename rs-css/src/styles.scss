@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Jura:wght@300;400;700&family=Raleway:wght@200;300;400&family=Merriweather&display=swap');
+@import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
 
 $color-dark: #1d232f;
 $color-darker: #212631;
@@ -31,6 +32,7 @@ body {
   font-family: $main-family;
   font-size: 1.8rem;
   font-weight: 300;
+  overflow-x: hidden;
 }
 
 pre {
@@ -191,6 +193,10 @@ sushi, plate, sushimi, bento, pickle {
 
   &[data-active="true"] {
     box-shadow: 0 0 0px 5px #ffffff5c;
+  }
+
+  &.remove {
+    animation: 0.2s ease-in 1 disappear;
   }
 }
 
@@ -394,7 +400,13 @@ pickle {
 
 .tooltip {
   position: absolute;
-  bottom: 4px;
+  top: 0px;
+  left: 0px;
+  padding: 0.5rem;
+  background-color: #cfcfcf;
+  color: #101010;
+  border-radius: 8px;
+  z-index: 10;
 }
 
 .select {
@@ -407,6 +419,53 @@ pickle {
 
 .wrong {
   animation: 0.02s ease-in-out 5 wrong;
+}
+
+.level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 1rem;
+
+  &:hover {
+    background-color: #2a3140;
+  }
+}
+
+.levels {
+  display: none;
+  &_active {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.burger {
+  font-size: 2.4rem;
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.arrow {
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+
+.info {
+  display: none;
+  &_active {
+    display: block;
+  }
 }
 
 @keyframes toselect {
@@ -425,11 +484,21 @@ pickle {
 
 @keyframes appear {
   0% {
-    transform: scale(0.01);
+    left: 1000px;
   }
 
   100% {
-    transform: scale(1);
+    left: 0px;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    right: 0px;
+  }
+
+  100% {
+    right: 1000px;
   }
 }
 

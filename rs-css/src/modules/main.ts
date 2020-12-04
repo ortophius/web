@@ -2,7 +2,7 @@
 
 import '../styles.scss';
 import './view';
-import levels from './levels';
+import levels, { getTemplate } from './levels';
 
 let goalElem: HTMLElement;
 let sidebarTitle: HTMLElement;
@@ -10,12 +10,78 @@ let sidebarSubTitle: HTMLElement;
 let sidebarSelector: HTMLElement;
 let description: HTMLElement;
 let table: HTMLElement;
-
-let currentLevel: number;
+let listDiv: HTMLElement;
+let info: HTMLElement;
 
 let errAnimation: boolean = false;
 
+let showLevels = false;
+
 const parser = new DOMParser();
+
+function congrats() {
+  goalElem.textContent = 'Поздравляем, теперь вы можете в CSS!';
+}
+
+function initStorage() {
+  const solvedLevels = JSON.stringify(Array(levels.length).fill(false));
+  localStorage.setItem('currentLevel', '0');
+  localStorage.setItem('solvedLevels', solvedLevels);
+}
+
+function getLevel(): number | null {
+  const res = localStorage.getItem('currentLevel');
+
+  return (!res) ? null : Number(res);
+}
+
+function getSolved(): boolean[] | null {
+  const res = localStorage.getItem('solvedLevels');
+
+  if (!res) return null;
+
+  return JSON.parse(res);
+}
+
+function checkStorage() {
+  const level = getLevel();
+
+  if (level === null) initStorage();
+
+  const solvedLevels = getSolved();
+
+  if (solvedLevels.length !== levels.length) {
+    const addLength = levels.length - solvedLevels.length;
+    const addArray = Array(addLength).fill(false);
+
+    localStorage.setItem('solvedLevels', JSON.stringify([...solvedLevels, ...addArray]));
+  }
+}
+
+function toggleLevelsList() {
+  showLevels = !showLevels;
+
+  if (showLevels) {
+    listDiv.classList.add('levels_active');
+    info.classList.remove('info_active');
+  } else {
+    info.classList.add('info_active');
+    listDiv.classList.remove('levels_active');
+  }
+}
+
+function buildLevelList() {
+  levels.forEach((level, i) => {
+    const levelDiv = getTemplate() as HTMLElement;
+
+    levelDiv.dataset.num = i.toString();
+
+    levelDiv.querySelector('.level__title').innerHTML = level.description.title;
+    levelDiv.querySelector('.level__number').innerHTML = (i + 1).toString();
+
+    listDiv.appendChild(levelDiv);
+  });
+}
 
 function setErrAnimation(selector: string, state: boolean = true) {
   const views = document.querySelectorAll('.view');
@@ -41,7 +107,24 @@ function setErrAnimation(selector: string, state: boolean = true) {
   errAnimation = true;
 }
 
-function checkAnswer(e: KeyboardEvent) {
+function removeItems() {
+  return new Promise((resolve) => {
+    const { selector } = levels[getLevel()];
+    const elems = document.querySelectorAll(`.table ${selector}`);
+    const lines = Array.from(document.querySelector('.html-view .view__lines').children);
+
+    elems.forEach((elem) => elem.classList.add('remove'));
+
+    lines.forEach((line) => { line.remove(); });
+
+    setTimeout(() => {
+      elems.forEach((elem) => elem.remove());
+      resolve();
+    }, 200);
+  });
+}
+
+async function checkAnswer(e: KeyboardEvent) {
   if (e.code !== 'Enter') return;
 
   let win = true;
@@ -52,7 +135,7 @@ function checkAnswer(e: KeyboardEvent) {
 
   if (selector === '') return;
 
-  const rightCollection = document.querySelectorAll(`.table ${levels[currentLevel].selector}`);
+  const rightCollection = document.querySelectorAll(`.table ${levels[getLevel()].selector}`);
   const collection = document.querySelectorAll(`.table ${selector}`);
 
   if (collection && collection.length) {
@@ -60,6 +143,16 @@ function checkAnswer(e: KeyboardEvent) {
   } else win = false;
 
   if (!win) setErrAnimation(selector);
+
+  if (win) {
+    await removeItems();
+    const nextLevel = getLevel() + 1;
+    if (nextLevel > levels.length - 1) congrats();
+    else {
+      localStorage.setItem('currentLevel', nextLevel.toString());
+      loadLevel();
+    }
+  }
 }
 
 function insertElemIntoViewer(elem: Element, parent: Element) {
@@ -67,7 +160,6 @@ function insertElemIntoViewer(elem: Element, parent: Element) {
 
   elems.forEach((child) => {
     const div = document.createElement('div');
-    div.dataset.uid = (child as HTMLElement).dataset.uid;
     parent.appendChild(div);
 
     div.innerHTML += `&lt;${child.tagName.toLowerCase()}`;
@@ -115,7 +207,12 @@ function toggletoolTip(element: Element, show: boolean = true) {
 
   toolTipDiv.innerHTML += endPart;
 
-  document.querySelector('.table').appendChild(toolTipDiv);
+  const rect = element.getBoundingClientRect();
+
+  toolTipDiv.style.top = `${rect.top - 50}px`;
+  toolTipDiv.style.left = `${rect.left}px`;
+
+  document.body.appendChild(toolTipDiv);
 }
 
 function highlight(e: MouseEvent) {
@@ -145,8 +242,11 @@ function highlight(e: MouseEvent) {
   }
 }
 
-function loadLevel(level: Level) {
-  goalElem.innerText = level.goal;
+function loadLevel() {
+  const level = levels[getLevel()];
+
+  removeItems();
+  goalElem.innerText = `${getLevel() + 1} ${level.goal}`;
 
   description.innerHTML = '';
   sidebarTitle.innerText = level.description.title;
@@ -184,23 +284,49 @@ function loadLevel(level: Level) {
 
   const { selector } = level;
 
-  setInterval(() => {
+  setTimeout(() => {
     document.querySelectorAll(`.table ${selector}`).forEach((item) => { item.classList.add('select'); });
   }, 200);
 }
 
+function changeLevel(e) {
+  const prevLevel = getLevel();
+  let currentLevel = prevLevel;
+  const arrow = e.target;
+  const lastLevel = levels.length - 1;
+
+  if (arrow.classList.contains('prev')) currentLevel -= 1;
+  else currentLevel += 1;
+
+  if (currentLevel < 0) currentLevel = 0;
+  if (currentLevel > lastLevel) currentLevel = lastLevel;
+
+  localStorage.setItem('currentLevel', currentLevel.toString());
+
+  if (prevLevel !== currentLevel) loadLevel();
+}
+
 function start() {
+  listDiv = document.querySelector('.levels');
   table = document.querySelector('.table');
   goalElem = document.querySelector('.cafe__goal');
   sidebarTitle = document.querySelector('.sidebar__title');
   sidebarSubTitle = document.querySelector('.sidebar__subtitle');
   description = document.querySelector('.sidebar__description');
   sidebarSelector = document.querySelector('.sidebar__selector');
+  info = document.querySelector('.info');
 
-  currentLevel = 0;
-  loadLevel(levels[currentLevel]);
+  checkStorage();
+  buildLevelList();
+  loadLevel();
 
   document.querySelector('.view__editable').addEventListener('keydown', checkAnswer);
+
+  document.querySelector('.burger').addEventListener('click', toggleLevelsList);
+
+  document.querySelectorAll('.arrow').forEach((arrow) => {
+    arrow.addEventListener('click', changeLevel);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', start);
