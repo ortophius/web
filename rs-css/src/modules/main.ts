@@ -114,7 +114,13 @@ function buildLevelList() {
 
 function setErrAnimation(selector: string, state: boolean = true) {
   const views = document.querySelectorAll('.view');
-  const elems = document.querySelectorAll(`.table ${selector}`);
+  let elems: NodeListOf<Element> | any[];
+
+  try {
+    elems = document.querySelectorAll(`.table ${selector}`);
+  } catch (err) {
+    elems = [];
+  }
 
   views.forEach((elem) => {
     if (state) elem.classList.add('wrong');
@@ -137,7 +143,7 @@ function setErrAnimation(selector: string, state: boolean = true) {
 }
 
 function removeItems() {
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     const { selector } = levels[getLevel()];
     const elems = document.querySelectorAll(`.table ${selector}`);
     const lines = Array.from(document.querySelector('.html-view .view__lines').children);
@@ -171,9 +177,15 @@ async function checkAnswer(e: KeyboardEvent | MouseEvent) {
   if (selector === '') return;
 
   const rightCollection = document.querySelectorAll(`.table ${levels[getLevel()].selector}`);
-  const collection = document.querySelectorAll(`.table ${selector}`);
+  let collection: NodeListOf<Element>;
 
-  if (collection && collection.length) {
+  try {
+    collection = document.querySelectorAll(`.table ${selector}`);
+  } catch (err) {
+    win = false;
+  }
+
+  if (collection && collection.length && (collection.length === rightCollection.length)) {
     collection.forEach((item, i) => { if (item !== rightCollection[i]) win = false; });
   } else win = false;
 
@@ -320,6 +332,8 @@ function loadLevel() {
 
   const elements = [...tableItems, ...HTMLLines];
 
+  tableItems.forEach((item) => { item.classList.add('appear'); });
+
   elements.forEach((item) => {
     item.addEventListener('mouseover', highlight);
     item.addEventListener('mouseout', highlight);
@@ -328,6 +342,7 @@ function loadLevel() {
   const { selector } = level;
 
   setTimeout(() => {
+    tableItems.forEach((item) => { item.classList.remove('appear'); });
     document.querySelectorAll(`.table ${selector}`).forEach((item) => { item.classList.add('select'); });
   }, 200);
 }

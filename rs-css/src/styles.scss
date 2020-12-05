@@ -189,7 +189,6 @@ sushi, plate, sushimi, bento, pickle {
   position: relative;
   box-shadow: 0px 5px #0000001f;
   cursor: pointer;
-  animation: 0.2s ease-in 1 appear;
 
   &[data-active="true"] {
     box-shadow: 0 0 0px 5px #ffffff5c;
@@ -198,10 +197,22 @@ sushi, plate, sushimi, bento, pickle {
   &.remove {
     animation: 0.2s ease-in 1 disappear;
   }
+
+  &.appear {
+    animation: 0.2s ease-in 1 appear;
+  }
 }
 
 plate .active {
   box-shadow: 0 0 0px 5px #0000004d;
+}
+
+plate.blue {
+  background-color: #4369d3;
+  border-color: #2b4794;
+  &::before {
+    background-color: #5a82f1;
+  }
 }
 
 sushi {
