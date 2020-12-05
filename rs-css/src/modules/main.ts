@@ -20,6 +20,11 @@ let showLevels = false;
 
 const parser = new DOMParser();
 
+/**
+ * Time for kostily!
+ */
+const tmp = document.createElement('textarea');
+
 function congrats() {
   goalElem.textContent = 'Поздравляем, теперь вы можете в CSS!';
 }
@@ -99,8 +104,8 @@ function buildLevelList() {
 
     levelDiv.dataset.num = i.toString();
 
-    levelDiv.querySelector('.level__title').innerHTML = level.description.title;
-    levelDiv.querySelector('.level__number').innerHTML = (i + 1).toString();
+    levelDiv.querySelector('.level__title').innerHTML = `${(i + 1).toString()}. `;
+    levelDiv.querySelector('.level__title').innerHTML += level.description.title;
 
     if (solved[i]) levelDiv.querySelector('.level__icon').innerHTML = '<i class="fas fa-check"></i>';
 
@@ -172,7 +177,8 @@ async function checkAnswer(e: KeyboardEvent | MouseEvent) {
 
   e.preventDefault();
 
-  const selector = document.querySelector('.view__editable').innerHTML;
+  tmp.innerHTML = document.querySelector('.view__editable').innerHTML;
+  const selector = tmp.value;
 
   if (selector === '') return;
 
@@ -247,6 +253,7 @@ function toggletoolTip(element: Element, show: boolean = true) {
   toolTipDiv.innerHTML += `&lt;${element.tagName.toLowerCase()}`;
 
   const attrString = Array.from(element.attributes)
+    .filter((attr) => attr.value !== '')
     .filter((attr) => attr.name !== 'data-active')
     .filter((attr) => attr.value !== 'select')
     .map((attr) => `${attr.name}="${attr.value}"`)
