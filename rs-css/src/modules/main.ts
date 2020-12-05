@@ -12,6 +12,7 @@ let description: HTMLElement;
 let table: HTMLElement;
 let listDiv: HTMLElement;
 let info: HTMLElement;
+let enter: HTMLElement;
 
 let errAnimation: boolean = false;
 
@@ -27,6 +28,7 @@ function initStorage() {
   const solvedLevels = JSON.stringify(Array(levels.length).fill(false));
   localStorage.setItem('currentLevel', '0');
   localStorage.setItem('solvedLevels', solvedLevels);
+  localStorage.setItem('menu', '0');
 }
 
 function getLevel(): number | null {
@@ -68,9 +70,30 @@ function toggleLevelsList() {
     info.classList.add('info_active');
     listDiv.classList.remove('levels_active');
   }
+
+  localStorage.setItem('menu', (showLevels) ? '1' : '0');
+}
+
+function setLevel(e) {
+  if (!(this).classList.contains('level')) return;
+
+  const num = Number(e.currentTarget.dataset.num);
+  const currentLevel = getLevel();
+
+  if (num === currentLevel) return;
+
+  localStorage.setItem('currentLevel', num.toString());
+
+  loadLevel();
 }
 
 function buildLevelList() {
+  const solved = getSolved();
+
+  const levelLines = document.querySelectorAll('.level');
+
+  if (levelLines.length > 0) levelLines.forEach((line) => line.remove());
+
   levels.forEach((level, i) => {
     const levelDiv = getTemplate() as HTMLElement;
 
@@ -79,7 +102,13 @@ function buildLevelList() {
     levelDiv.querySelector('.level__title').innerHTML = level.description.title;
     levelDiv.querySelector('.level__number').innerHTML = (i + 1).toString();
 
+    if (solved[i]) levelDiv.querySelector('.level__icon').innerHTML = '<i class="fas fa-check"></i>';
+
     listDiv.appendChild(levelDiv);
+  });
+
+  document.querySelectorAll('.level').forEach((line) => {
+    line.addEventListener('click', setLevel);
   });
 }
 
@@ -124,14 +153,20 @@ function removeItems() {
   });
 }
 
-async function checkAnswer(e: KeyboardEvent) {
-  if (e.code !== 'Enter') return;
+function allDone() {
+  const solved = getSolved();
+  return solved.every((isSolved) => isSolved);
+}
+
+async function checkAnswer(e: KeyboardEvent | MouseEvent) {
+  const keyboardEventObject = e as KeyboardEvent;
+  if (keyboardEventObject.code && keyboardEventObject.code !== 'Enter') return;
 
   let win = true;
 
   e.preventDefault();
 
-  const selector = (e.target as HTMLElement).innerText;
+  const selector = document.querySelector('.view__editable').innerHTML;
 
   if (selector === '') return;
 
@@ -145,10 +180,16 @@ async function checkAnswer(e: KeyboardEvent) {
   if (!win) setErrAnimation(selector);
 
   if (win) {
+    const solved = getSolved();
+    solved[getLevel()] = true;
+    localStorage.setItem('solvedLevels', JSON.stringify(solved));
+    buildLevelList();
+
     await removeItems();
-    const nextLevel = getLevel() + 1;
-    if (nextLevel > levels.length - 1) congrats();
-    else {
+
+    if (allDone()) congrats();
+    else if (getLevel() <= levels.length) {
+      const nextLevel = getLevel() + 1;
       localStorage.setItem('currentLevel', nextLevel.toString());
       loadLevel();
     }
@@ -243,6 +284,8 @@ function highlight(e: MouseEvent) {
 }
 
 function loadLevel() {
+  document.querySelector('.view__editable').innerHTML = '';
+
   const level = levels[getLevel()];
 
   removeItems();
@@ -315,18 +358,24 @@ function start() {
   description = document.querySelector('.sidebar__description');
   sidebarSelector = document.querySelector('.sidebar__selector');
   info = document.querySelector('.info');
+  enter = document.querySelector('.view__enter');
 
   checkStorage();
   buildLevelList();
   loadLevel();
 
   document.querySelector('.view__editable').addEventListener('keydown', checkAnswer);
-
   document.querySelector('.burger').addEventListener('click', toggleLevelsList);
-
+  document.querySelector('.reset').addEventListener('click', () => { initStorage(); start(); });
   document.querySelectorAll('.arrow').forEach((arrow) => {
     arrow.addEventListener('click', changeLevel);
   });
+
+  enter.addEventListener('click', checkAnswer);
+
+  const tab = localStorage.getItem('menu');
+
+  if (tab === '1') toggleLevelsList();
 }
 
 document.addEventListener('DOMContentLoaded', start);

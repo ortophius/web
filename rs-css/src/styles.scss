@@ -380,20 +380,27 @@ pickle {
   &__editable {
     display: block;
     outline: none;
+  }
 
-    &::after {
-      position: absolute;
-      right: 1rem;
-      content: "Enter";
-      font-size: 1rem;
-      text-transform: uppercase;
-      background-color: #808080;
-      color: #d2d2d2;
-      padding: 0 1rem;
-      line-height: 1.5rem;
-      border-radius: 0.4rem;
-      border-bottom: 4px solid #5a5a5a;
-      cursor: pointer;
+  &__enter {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    content: "Enter";
+    font-size: 1rem;
+    text-transform: uppercase;
+    background-color: #808080;
+    color: #d2d2d2;
+    padding: 0 1rem;
+    line-height: 1.5rem;
+    border-radius: 0.4rem;
+    border-bottom: 0.4rem solid #5a5a5a;
+    cursor: pointer;
+    user-select: none;
+
+    &:active:hover {
+      border: none;
+      top: 1.4rem;
     }
   }
 }
@@ -465,6 +472,18 @@ pickle {
   display: none;
   &_active {
     display: block;
+  }
+}
+
+.reset {
+  font-size: 2.4rem;
+  align-self: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.4s ease-in-out;
+
+  &:hover {
+    transform: rotate(360deg);
   }
 }
 
