@@ -36,6 +36,7 @@ body {
 }
 
 pre {
+  display: inline;
   padding: 0.5em;
   margin-bottom: 1rem;
   font-family: $monospace-family;
@@ -121,6 +122,7 @@ main {
   }
 
   &__selector {
+    display: block;
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -189,6 +191,17 @@ sushi, plate, sushimi, bento, pickle {
   position: relative;
   box-shadow: 0px 5px #0000001f;
   cursor: pointer;
+
+  & * {  
+    position: absolute;
+    &:nth-child(2) {
+      bottom: 3rem;
+    }
+  
+    &:nth-child(3) {
+      bottom: 5rem;
+    }
+  }
 
   &[data-active="true"] {
     box-shadow: 0 0 0px 5px #ffffff5c;
