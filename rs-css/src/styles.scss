@@ -461,6 +461,10 @@ pickle {
   transition: background-color 0.2s;
   padding: 1rem;
 
+  &__current {
+    background-color: #41495d;
+  }
+
   &:hover {
     background-color: #2a3140;
   }
@@ -566,5 +570,45 @@ pickle {
   to {
     top: 1rem;
     border-bottom: 4px solid #5a5a5a;
+  }
+}
+
+// @media (max-width: 1200px) and (min-width: 768px) {
+//   .editor {
+//     flex-direction: column;
+//   }
+
+//   main {
+//     grid-template-columns: 1fr 1fr 1fr;
+//   }
+// }
+
+@media (max-width: 980px) {
+  .editor {
+    flex-direction: column;
+  }
+
+  main {
+    grid-template-areas:
+    "cafe"
+    "side"
+    "editor";
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    font-size: 8px;
+  }
+
+  .cafe__goal {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 6px;
   }
 }

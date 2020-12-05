@@ -352,6 +352,12 @@ function loadLevel() {
     tableItems.forEach((item) => { item.classList.remove('appear'); });
     document.querySelectorAll(`.table ${selector}`).forEach((item) => { item.classList.add('select'); });
   }, 200);
+
+  const levelLines = document.querySelectorAll('.level');
+
+  levelLines.forEach((line) => { line.classList.remove('level__current'); });
+
+  levelLines[getLevel()].classList.add('level__current');
 }
 
 function changeLevel(e) {
