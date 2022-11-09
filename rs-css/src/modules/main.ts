@@ -79,141 +79,6 @@ function toggleLevelsList() {
   localStorage.setItem('menu', (showLevels) ? '1' : '0');
 }
 
-function setLevel(e) {
-  if (!(this).classList.contains('level')) return;
-
-  const num = Number(e.currentTarget.dataset.num);
-  const currentLevel = getLevel();
-
-  if (num === currentLevel) return;
-
-  localStorage.setItem('currentLevel', num.toString());
-
-  loadLevel();
-}
-
-function buildLevelList() {
-  const solved = getSolved();
-
-  const levelLines = document.querySelectorAll('.level');
-
-  if (levelLines.length > 0) levelLines.forEach((line) => line.remove());
-
-  levels.forEach((level, i) => {
-    const levelDiv = getTemplate() as HTMLElement;
-
-    levelDiv.dataset.num = i.toString();
-
-    levelDiv.querySelector('.level__title').innerHTML = `${(i + 1).toString()}. `;
-    levelDiv.querySelector('.level__title').innerHTML += level.description.title;
-
-    if (solved[i]) levelDiv.querySelector('.level__icon').innerHTML = '<i class="fas fa-check"></i>';
-
-    listDiv.appendChild(levelDiv);
-  });
-
-  document.querySelectorAll('.level').forEach((line) => {
-    line.addEventListener('click', setLevel);
-  });
-}
-
-function setErrAnimation(selector: string, state: boolean = true) {
-  const views = document.querySelectorAll('.view');
-  let elems: NodeListOf<Element> | any[];
-
-  try {
-    elems = document.querySelectorAll(`.table ${selector}`);
-  } catch (err) {
-    elems = [];
-  }
-
-  views.forEach((elem) => {
-    if (state) elem.classList.add('wrong');
-    else elem.classList.remove('wrong');
-  });
-
-  elems.forEach((elem) => {
-    if (state) elem.classList.add('wrong');
-    else elem.classList.remove('wrong');
-  });
-
-  if (!errAnimation) {
-    setTimeout(() => {
-      setErrAnimation(selector, false);
-      errAnimation = false;
-    }, 400);
-  }
-
-  errAnimation = true;
-}
-
-function removeItems() {
-  return new Promise<void>((resolve) => {
-    const { selector } = levels[getLevel()];
-    const elems = document.querySelectorAll(`.table ${selector}`);
-    const lines = Array.from(document.querySelector('.html-view .view__lines').children);
-
-    elems.forEach((elem) => elem.classList.add('remove'));
-
-    lines.forEach((line) => { line.remove(); });
-
-    setTimeout(() => {
-      elems.forEach((elem) => elem.remove());
-      resolve();
-    }, 200);
-  });
-}
-
-function allDone() {
-  const solved = getSolved();
-  return solved.every((isSolved) => isSolved);
-}
-
-async function checkAnswer(e: KeyboardEvent | MouseEvent) {
-  const keyboardEventObject = e as KeyboardEvent;
-  if (keyboardEventObject.code && keyboardEventObject.code !== 'Enter') return;
-
-  let win = true;
-
-  e.preventDefault();
-
-  tmp.innerHTML = document.querySelector('.view__editable').innerHTML;
-  const selector = tmp.value;
-
-  if (selector === '') return;
-
-  const rightCollection = document.querySelectorAll(`.table ${levels[getLevel()].selector}`);
-  let collection: NodeListOf<Element>;
-
-  try {
-    collection = document.querySelectorAll(`.table ${selector}`);
-  } catch (err) {
-    win = false;
-  }
-
-  if (collection && collection.length && (collection.length === rightCollection.length)) {
-    collection.forEach((item, i) => { if (item !== rightCollection[i]) win = false; });
-  } else win = false;
-
-  if (!win) setErrAnimation(selector);
-
-  if (win) {
-    const solved = getSolved();
-    solved[getLevel()] = true;
-    localStorage.setItem('solvedLevels', JSON.stringify(solved));
-    buildLevelList();
-
-    await removeItems();
-
-    if (allDone()) congrats();
-    else if (getLevel() <= levels.length) {
-      const nextLevel = getLevel() + 1;
-      localStorage.setItem('currentLevel', nextLevel.toString());
-      loadLevel();
-    }
-  }
-}
-
 function insertElemIntoViewer(elem: Element, parent: Element) {
   const elems: Element[] = Array.from(elem.children);
 
@@ -236,6 +101,23 @@ function insertElemIntoViewer(elem: Element, parent: Element) {
       insertElemIntoViewer(child, div);
       div.innerHTML += `&lt;/${child.tagName.toLowerCase()}&gt;`;
     } else div.innerHTML += '/&gt;';
+  });
+}
+
+function removeItems() {
+  return new Promise<void>((resolve) => {
+    const { selector } = levels[getLevel()];
+    const elems = document.querySelectorAll(`.table ${selector}`);
+    const lines = Array.from(document.querySelector('.html-view .view__lines').children);
+
+    elems.forEach((elem) => elem.classList.add('remove'));
+
+    lines.forEach((line) => { line.remove(); });
+
+    setTimeout(() => {
+      elems.forEach((elem) => elem.remove());
+      resolve();
+    }, 200);
   });
 }
 
@@ -358,6 +240,124 @@ function loadLevel() {
   levelLines.forEach((line) => { line.classList.remove('level__current'); });
 
   levelLines[getLevel()].classList.add('level__current');
+}
+
+function setLevel(e) {
+  if (!(this).classList.contains('level')) return;
+
+  const num = Number(e.currentTarget.dataset.num);
+  const currentLevel = getLevel();
+
+  if (num === currentLevel) return;
+
+  localStorage.setItem('currentLevel', num.toString());
+
+  loadLevel();
+}
+
+function buildLevelList() {
+  const solved = getSolved();
+
+  const levelLines = document.querySelectorAll('.level');
+
+  if (levelLines.length > 0) levelLines.forEach((line) => line.remove());
+
+  levels.forEach((level, i) => {
+    const levelDiv = getTemplate() as HTMLElement;
+
+    levelDiv.dataset.num = i.toString();
+
+    levelDiv.querySelector('.level__title').innerHTML = `${(i + 1).toString()}. `;
+    levelDiv.querySelector('.level__title').innerHTML += level.description.title;
+
+    if (solved[i]) levelDiv.querySelector('.level__icon').innerHTML = '<i class="fas fa-check"></i>';
+
+    listDiv.appendChild(levelDiv);
+  });
+
+  document.querySelectorAll('.level').forEach((line) => {
+    line.addEventListener('click', setLevel);
+  });
+}
+
+function setErrAnimation(selector: string, state: boolean = true) {
+  const views = document.querySelectorAll('.view');
+  let elems: NodeListOf<Element> | any[];
+
+  try {
+    elems = document.querySelectorAll(`.table ${selector}`);
+  } catch (err) {
+    elems = [];
+  }
+
+  views.forEach((elem) => {
+    if (state) elem.classList.add('wrong');
+    else elem.classList.remove('wrong');
+  });
+
+  elems.forEach((elem) => {
+    if (state) elem.classList.add('wrong');
+    else elem.classList.remove('wrong');
+  });
+
+  if (!errAnimation) {
+    setTimeout(() => {
+      setErrAnimation(selector, false);
+      errAnimation = false;
+    }, 400);
+  }
+
+  errAnimation = true;
+}
+
+function allDone() {
+  const solved = getSolved();
+  return solved.every((isSolved) => isSolved);
+}
+
+async function checkAnswer(e: KeyboardEvent | MouseEvent) {
+  const keyboardEventObject = e as KeyboardEvent;
+  if (keyboardEventObject.code && keyboardEventObject.code !== 'Enter') return;
+
+  let win = true;
+
+  e.preventDefault();
+
+  tmp.innerHTML = document.querySelector('.view__editable').innerHTML;
+  const selector = tmp.value;
+
+  if (selector === '') return;
+
+  const rightCollection = document.querySelectorAll(`.table ${levels[getLevel()].selector}`);
+  let collection: NodeListOf<Element>;
+
+  try {
+    collection = document.querySelectorAll(`.table ${selector}`);
+  } catch (err) {
+    win = false;
+  }
+
+  if (collection && collection.length && (collection.length === rightCollection.length)) {
+    collection.forEach((item, i) => { if (item !== rightCollection[i]) win = false; });
+  } else win = false;
+
+  if (!win) setErrAnimation(selector);
+
+  if (win) {
+    const solved = getSolved();
+    solved[getLevel()] = true;
+    localStorage.setItem('solvedLevels', JSON.stringify(solved));
+    buildLevelList();
+
+    await removeItems();
+
+    if (allDone()) congrats();
+    else if (getLevel() <= levels.length) {
+      const nextLevel = getLevel() + 1;
+      localStorage.setItem('currentLevel', nextLevel.toString());
+      loadLevel();
+    }
+  }
 }
 
 function changeLevel(e) {

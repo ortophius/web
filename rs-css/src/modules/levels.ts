@@ -1,4 +1,4 @@
-import * as levelTemplateString from './level.pug';
+import levelTemplateString from './level.pug';
 
 const parser = new DOMParser();
 const levelTemplate = parser
