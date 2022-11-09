@@ -3,12 +3,4 @@
   "editor.fontSize": 12,
   "editor.tabSize": 2,
   "explorer.confirmDragAndDrop": false,
-  "eslint.validate": ["typescript"],
-  "eslint.workingDirectories": [
-    { "directory": "gem-puzzle", "changeProcessCWD": true },
-  ],
-  "typescript.validate.enable": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
 }

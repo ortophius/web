@@ -1,0 +1,54 @@
+- var pre = '<span class="test">Nice</span>'
+
+doctype html
+html
+  head
+  meta(
+    name="viewport",
+    content="width=device-width,initial-scale=1")
+  body
+    header
+      .logo CSS
+        span.logo__highlight  Cafe
+  main
+    .cafe
+      .cafe__goal
+      .table-space-3d
+        .table
+        .table__border
+          .table__legs
+            .table__leg
+            .table__leg
+    .editor 
+      .view.editor-view
+        .view__title
+          .view__name CSS Editor
+          .view__filename style.css
+        .view__pane.view__pane_light
+          .view__numbers
+          .view__lines
+            span.view__editable(contenteditable=true) Type selector here
+            span.view__enter Enter
+      .view.html-view
+        .view__title
+          .view__name HTML Viewer
+          .view__filename index.html
+        .view__pane.view__pane_dark
+          .view__numbers
+          .view__lines
+    .sidebar
+      .menu
+        i.arrow.prev.fas.fa-chevron-left
+        i.burger.fas.fa-bars
+        i.arrow.next.fas.fa-chevron-right
+      .levels
+        i.reset.fas.fa-redo-alt
+      .info.info_active
+        .sidebar__title Task title
+        .sidebar__subtitle
+        pre.sidebar__selector
+        .sidebar__description
+          | Задача организации, в особенности же рамки и место обучения кадров позволяет оценить значение новых предложений. 
+          | Повседневная практика показывает, что новая модель организационной деятельности в значительной степени обуславливает создание форм развития.
+          pre plate .big
+        

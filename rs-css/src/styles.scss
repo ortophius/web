@@ -1,0 +1,614 @@
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&family=Jura:wght@300;400;700&family=Raleway:wght@200;300;400&family=Merriweather&display=swap');
+@import url('https://pro.fontawesome.com/releases/v5.10.0/css/all.css');
+
+$color-dark: #1d232f;
+$color-darker: #212631;
+$color-darkest: #181e2b;
+$color-totally-dark: #181d27;
+
+$text-color-main: #ffffff;
+
+$header-family: 'Merriweather', serif;
+$monospace-family: 'Cutive Mono', monospace;;
+$main-family: 'Raleway', sans-serif;
+$title-family: 'Jura', sans-serif;
+
+:root {
+  font-size: 10px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  grid-template-rows: min-content auto;
+  min-height: 100vh;
+  background-color: $color-darkest;
+  color: $text-color-main;
+  font-family: $main-family;
+  font-size: 1.8rem;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+pre {
+  display: inline;
+  padding: 0.5em;
+  margin-bottom: 1rem;
+  font-family: $monospace-family;
+  font-weight: 600;
+  background-color: $color-totally-dark;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem 2rem;
+  background-color: #242b3a;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.85);
+  z-index: 3;
+}
+
+.logo {
+  font-family: $header-family;
+  font-size: 3.2rem;
+  color: #cca449;
+  text-shadow: 2px 3px 1px #171717;
+
+  &__highlight {
+    color: #ffd5a8;
+  }
+}
+
+main {
+  display: grid;
+  grid-template-areas:
+        "cafe cafe side"
+        "editor editor side";
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr 1.5fr;
+}
+
+.cafe {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  grid-area: cafe;
+  z-index: 2;
+
+  &__goal {
+    font-weight: 600;
+    font-size: 3.2rem;
+    color: #ffffff7a;
+    letter-spacing: 0.2rem;
+    margin-bottom: 4rem;
+  }
+}
+
+.sidebar {
+  grid-area: side;
+
+  padding: 2rem;
+  text-align: justify;
+  line-height: 3rem;
+  font-size: 1.6rem;
+  color: #dcdcdc;
+
+  z-index: 2;
+  background-color: $color-darker;
+  border-left: 1px solid #2e354487;
+
+  &__title {
+    color: #fff;
+    font-size: 2.4rem;
+    text-align: center;
+    font-family: $title-family;
+  }
+
+  &__subtitle {
+    color: #e0e0e0;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &__description {
+    font-size: 1.4rem;
+  }
+
+  &__selector {
+    display: block;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  hr {
+    height: 1px;
+    border: none;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    background-color: #ffffff3b;
+  }
+}
+
+.table-space-3d {
+  perspective: 300px;
+}
+
+.table {
+  min-height: 14rem;
+  min-width: 30rem;
+  background-color: #c1873e;
+  transform-style: preserve-3d;
+  transform: rotateX(30deg);
+  transform-origin: bottom;
+  box-shadow: 0px 35px 4px 0px #161b27;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min-content;
+  grid-template-rows: min-content;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  column-gap: 2rem;
+  padding: 1rem;
+  padding-bottom: calc(2rem + 4px);
+
+  &__border {
+    position: relative;
+    min-height: 0.5rem;
+    transform: rotateX(-30deg);
+    transform-origin: top;
+    background-color: #5f3f19;
+  }
+
+  &__legs {
+    position: absolute;
+    top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  &__leg {
+    background-color: #462d10;
+    min-height: 1rem;
+    min-width: 2rem;
+  }
+}
+
+sushi, plate, sushimi, bento, pickle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0px 5px #0000001f;
+  cursor: pointer;
+
+  & * {  
+    position: absolute;
+    &:nth-child(2) {
+      bottom: 3rem;
+    }
+  
+    &:nth-child(3) {
+      bottom: 5rem;
+    }
+  }
+
+  &[data-active="true"] {
+    box-shadow: 0 0 0px 5px #ffffff5c;
+  }
+
+  &.remove {
+    animation: 0.2s ease-in 1 disappear;
+  }
+
+  &.appear {
+    animation: 0.2s ease-in 1 appear;
+  }
+}
+
+plate .active {
+  box-shadow: 0 0 0px 5px #0000004d;
+}
+
+plate.blue {
+  background-color: #4369d3;
+  border-color: #2b4794;
+  &::before {
+    background-color: #5a82f1;
+  }
+}
+
+sushi {
+  border-top: 1px solid #717171;
+  border-radius: 50%;
+  background-color: #fff;
+  min-width: 4.3rem;
+  min-height: 4.5rem;
+  border-bottom: 12px solid #0b2b09;
+
+  &::before {
+    position: absolute;
+    display: inline-block;
+    content: "";
+    min-width: 2rem;
+    min-height: 1.7rem;
+    border-radius: 50%;
+    top: 25%;
+    left: 27%;
+    background-color: #ff4d4d;
+  }
+}
+
+plate {
+  min-width: 9rem;
+  min-height: 9rem;
+  background-color: #fff;
+  border-radius: 50%;
+  border-bottom: 5px solid #cfcfcf;
+
+  &::before {
+    position: absolute;
+    left: 18%;
+    top: 20%;
+    content: "";
+    display: inline-block;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
+    box-shadow: inset 0px 5px 0px 0px #00000030;
+  }
+}
+
+sushimi {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 100% 20%;
+  background-color: #f94d4e;
+  transform: rotateZ(-45deg);
+  z-index: 1;
+
+  &::before {
+    position: absolute;
+    top: 43%;
+    left: -8%;
+    display: inline-block;
+    height: 3rem;
+    width: 60%;
+    content: "";
+    border-radius: 100%;
+    border-top: 5px solid #f7f7f785;
+    transform: rotateZ(45deg);
+  }
+
+  // &::after {
+  //   position: absolute;
+  //   top: 7%;
+  //   left: 26%;
+  //   display: inline-block;
+  //   height: 3rem;
+  //   width: 60%;
+  //   content: "";
+  //   border-radius: 100%;
+  //   border-top: 5px solid #f7f7f785;
+  //   transform: rotateZ(45deg);
+  // }
+}
+
+bento {
+  width: 8rem;
+  height: 10rem;
+  background-color: #ffffff;
+  border-width: 17px 4px;
+  border-style: solid;
+  border-color: #79422d;
+
+  &::before {
+    content: "";
+    top: 0px;
+    position: absolute;
+    width: 100%;
+    height: 6px;
+    background-color: #79422d78;
+  }
+}
+
+pickle {
+  height: 5rem;
+  width: 2rem;
+  background-color: #18a916;
+  border-style: solid;
+  border-width: 1px 2px 7px 2px;
+  border-color: #0000009c;
+  border-radius: 10px;
+}
+
+.editor {
+  display: flex;
+  grid-area: editor;
+  padding: 2rem;
+  background-color: $color-darker;
+  z-index: 2;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  font-family: $monospace-family;
+  flex-basis: 50%;
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: $color-totally-dark;
+    border-bottom: 1px solid #ffffff3b;
+  }
+
+  &__pane {
+    display: flex;
+    font-size: 1.8rem;
+    line-height: 2.1rem;
+    color: #888888;
+    background-color: #e6e6e6;
+    cursor: text;
+
+    &_dark {
+      .view__lines {
+        color: #bbbbbb;
+        background-color: $color-darkest;
+
+        & [data-active="true"] {
+          background-color: #ffffff26;
+          color: #d2d2d2;
+        }
+      }
+
+      .view__numbers {
+        color: #bbbbbb;
+        background-color: #222a3a;
+      }
+    }
+  }
+
+  &__numbers {
+    background-color: #dcdcdc;
+    padding: 1rem;
+    text-align: right;
+    border-right: 1px solid #ffffff3b;
+  }
+
+  &__lines {
+    position: relative;
+    padding: 1rem;
+    flex-basis: 100%;
+
+    & div {
+      padding-left: 2rem;
+    }
+
+    & > div {
+      padding-left: 0;
+    }
+  }
+
+  &__editable {
+    display: block;
+    outline: none;
+  }
+
+  &__enter {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    content: "Enter";
+    font-size: 1rem;
+    text-transform: uppercase;
+    background-color: #808080;
+    color: #d2d2d2;
+    padding: 0 1rem;
+    line-height: 1.5rem;
+    border-radius: 0.4rem;
+    border-bottom: 0.4rem solid #5a5a5a;
+    cursor: pointer;
+    user-select: none;
+
+    &:active:hover {
+      border: none;
+      top: 1.4rem;
+    }
+  }
+}
+
+.tooltip {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding: 0.5rem;
+  background-color: #cfcfcf;
+  color: #101010;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.select {
+  animation: 0.8s ease-in-out infinite normal toselect;
+}
+
+.select :not([class~="select"]) {
+  animation: 0.8s ease-in-out infinite reverse toselect;
+}
+
+.wrong {
+  animation: 0.02s ease-in-out 5 wrong;
+}
+
+.level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  padding: 1rem;
+
+  &__current {
+    background-color: #41495d;
+  }
+
+  &:hover {
+    background-color: #2a3140;
+  }
+}
+
+.levels {
+  display: none;
+  &_active {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.burger {
+  font-size: 2.4rem;
+  cursor: pointer;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.arrow {
+  font-size: 2.2rem;
+  cursor: pointer;
+}
+
+.info {
+  display: none;
+  &_active {
+    display: block;
+  }
+}
+
+.reset {
+  font-size: 2.4rem;
+  align-self: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: transform 0.4s ease-in-out;
+
+  &:hover {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes toselect {
+  0% {
+    transform: scale(1)
+  }
+  
+  50% {
+    transform: scale(1.05)
+  }
+  
+    100% {
+    transform: scale(1)
+  }
+}
+
+@keyframes appear {
+  0% {
+    left: 1000px;
+  }
+
+  100% {
+    left: 0px;
+  }
+}
+
+@keyframes disappear {
+  0% {
+    right: 0px;
+  }
+
+  100% {
+    right: 1000px;
+  }
+}
+
+@keyframes wrong {
+  from {
+    position: relative;
+    left: -0.5rem;
+  }
+  
+  to {
+    position: relative;
+    left: 0.5rem;
+  }
+}
+
+@keyframes enter {
+  from {
+    top: 1.4rem;
+    border-bottom: none;
+  }
+
+  to {
+    top: 1rem;
+    border-bottom: 4px solid #5a5a5a;
+  }
+}
+
+// @media (max-width: 1200px) and (min-width: 768px) {
+//   .editor {
+//     flex-direction: column;
+//   }
+
+//   main {
+//     grid-template-columns: 1fr 1fr 1fr;
+//   }
+// }
+
+@media (max-width: 980px) {
+  .editor {
+    flex-direction: column;
+  }
+
+  main {
+    grid-template-areas:
+    "cafe"
+    "side"
+    "editor";
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    font-size: 8px;
+  }
+
+  .cafe__goal {
+    font-size: 2.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 6px;
+  }
+}
